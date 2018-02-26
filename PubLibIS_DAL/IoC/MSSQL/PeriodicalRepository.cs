@@ -17,6 +17,7 @@ namespace PubLibIS_DAL.IoC.MSSQL
         public void Create(Periodical periodical)
         {
             context.Periodicals.Add(periodical);
+            context.SaveChanges();
         }
 
         public void Delete(int periodicalId)

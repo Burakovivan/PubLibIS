@@ -11,12 +11,22 @@ namespace PubLibIS.Controllers
 {
     public class AuthorController : Controller
     {
-        
+        private ServiceContainer service;
+        public AuthorController()
+        {
+            service = ServiceContainer.GetInstance();
+        }
+
         // GET: Author
         public ActionResult Index()
         {
-            var s = new AuthorService();
-            var model = s.GetAllAuthors();
+            var model = service.Author.GetAll();
+            return View(model);
+        }
+
+        public ActionResult Info(int id)
+        {
+            var model = service.Author.Get(id);
             return View(model);
         }
 

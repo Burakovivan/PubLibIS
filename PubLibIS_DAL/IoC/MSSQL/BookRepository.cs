@@ -17,6 +17,7 @@ namespace PubLibIS_DAL.IoC.MSSQL
         public void Create(Book book)
         {
             context.Books.Add(book);
+            context.SaveChanges();
         }
 
         public void Delete(int bookId)

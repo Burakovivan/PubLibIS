@@ -17,6 +17,7 @@ namespace PubLibIS_DAL.IoC.MSSQL
         public void Create(Article article)
         {
             context.Articles.Add(article);
+            context.SaveChanges();
         }
 
         public void Delete(int articleId)

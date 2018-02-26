@@ -17,6 +17,7 @@ namespace PubLibIS_DAL.IoC.MSSQL
         public void Create(Author authtor)
         {
             context.Authors.Add(authtor);
+            context.SaveChanges();
         }
 
         public void Delete(int authtorId)

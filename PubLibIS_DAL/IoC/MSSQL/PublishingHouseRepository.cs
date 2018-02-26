@@ -17,6 +17,7 @@ namespace PubLibIS_DAL.IoC.MSSQL
         public void Create(PublishingHouse publishingHouse)
         {
             context.PublishingHouses.Add(publishingHouse);
+            context.SaveChanges();
         }
 
         public void Delete(int publishingHouseId)
