@@ -1,6 +1,6 @@
 ﻿using PubLibIS_DAL.IoC;
-using PubLibIS_BLL.Model;
 using System.Collections.Generic;
+using ViewModels.Author;
 
 namespace PubLibIS_BLL.Services
 {
@@ -10,9 +10,9 @@ namespace PubLibIS_BLL.Services
 
         public AuthorService()
         {
-            repos = new LibraryRepository();
+            repos = LibraryRepository.GetInstance();
         }
-        public IEnumerable<Author> GetAllAuthors()
+        public IEnumerable<AuthorViewModel> GetAllAuthors()
         {
             var authors = repos.AuthorRepository.Read();
             return Mappers.AuthorMapper.MapManyUp(authors);

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace PubLibIS.Models.Author
+namespace ViewModels.Author
 {
     public class AuthorViewModel
     {
@@ -21,6 +18,13 @@ namespace PubLibIS.Models.Author
                 return $"{SecondName}" +
                     (string.IsNullOrEmpty(FirstName) ? " " : $" {FirstName.TrimStart()[0]}.") +
                     (string.IsNullOrEmpty(Patronymic) ? " " : $" {Patronymic.TrimStart()[0]}.");
+            }
+        }
+        public string LifeTime
+        {
+            get
+            {
+                return $"{DateOfBirth:dd.MM.yyyy} - {DateOfDeath:dd.MM.yyyy}";
             }
         }
     }

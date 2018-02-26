@@ -6,9 +6,16 @@ namespace PubLibIS_DAL.IoC
 {
     public class LibraryRepository
     {
-        public LibraryRepository()
+        private static LibraryRepository instance;
+        public static LibraryRepository GetInstance()
         {
-            var context = LibraryContext.GetContext();
+            if (instance == null)
+                instance = new LibraryRepository();
+            return instance;
+        }
+        private LibraryRepository()
+        {
+            var context = LibraryContext.GetInstance();
             RepositoryService = new ArticleRepository(context);
             AuthorRepository = new AuthorRepository(context);
             BookRepository = new BookRepository(context);

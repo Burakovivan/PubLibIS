@@ -4,9 +4,11 @@ namespace PubLibIS_DAL.Model
 {
     public class LibraryContext : DbContext
     {
-        private static LibraryContext singleContext;
+        private static LibraryContext instance;
         private LibraryContext() : base("LibConnection")
-        { }
+        {
+            Database.SetInitializer(new LibraryInitializer());
+        }
 
         public DbSet<Article> Articles { get; set; }
         public DbSet<Author> Authors { get; set; }
@@ -15,13 +17,13 @@ namespace PubLibIS_DAL.Model
         public DbSet<PeriodicalEdition> PeriodicalEditions { get; set; }
         public DbSet<PublishingHouse> PublishingHouses { get; set; }
 
-        public static LibraryContext GetContext()
+        public static LibraryContext GetInstance()
         {
-            if (singleContext == null)
+            if (instance == null)
             {
-                singleContext = new LibraryContext();
+                instance = new LibraryContext();
             }
-            return singleContext;
+            return instance;
         }
     }
 }

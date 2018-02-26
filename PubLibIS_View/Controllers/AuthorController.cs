@@ -4,21 +4,22 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
-using PubLibIS.Models.Author;
 using PubLibIS_BLL.Services;
-using AuthorDLL = PubLibIS_BLL.Model.Author;
+using ViewModels.Author;
 
 namespace PubLibIS.Controllers
 {
     public class AuthorController : Controller
     {
+        
         // GET: Author
         public ActionResult Index()
         {
-            AuthorService s = new AuthorService();
-            var x = s.GetAllAuthors();
-            var model = Mapper.Map<IEnumerable<AuthorDLL>, IEnumerable<AuthorViewModel>>(x);
+            var s = new AuthorService();
+            var model = s.GetAllAuthors();
             return View(model);
         }
+
+        
     }
 }
