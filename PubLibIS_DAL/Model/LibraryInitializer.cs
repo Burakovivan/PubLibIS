@@ -46,6 +46,33 @@ namespace PubLibIS_DAL.Model
             context.PublishingHouses.Add(ph1);
             context.SaveChanges();
 
+            Book b1 = new Book
+            {
+                Capation = "Капитанская дочь",
+                ISBN = "978-5-386-06612-3",
+                AdditionalData = "klasseca",
+            };
+
+            context.Books.Add(b1);
+            context.SaveChanges();
+            AuthorInBook ainb1 = new AuthorInBook
+            {
+                Author = a1,
+                Book = b1
+            };
+
+            PublishedBook pb1 = new PublishedBook()
+            {
+                Book = b1,
+                DateOfPublication = new DateTime(2013, 01, 01),
+                PublishingHouse = ph1,
+                Volume = 336
+            };
+
+            context.AuthorsInBooks.Add(ainb1);
+            context.PublishedBooks.Add(pb1);
+            context.SaveChanges();
+
 
             base.Seed(context);
         }

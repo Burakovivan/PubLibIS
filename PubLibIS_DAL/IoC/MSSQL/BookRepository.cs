@@ -14,10 +14,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             this.context = context;
         }
 
-        public void Create(Book book)
+        public int Create(Book book)
         {
             context.Books.Add(book);
             context.SaveChanges();
+            return book.Id;
         }
 
         public void Delete(int bookId)
@@ -37,9 +38,16 @@ namespace PubLibIS_DAL.IoC.MSSQL
             return context.Books.AsEnumerable();
         }
 
+        public IEnumerable<Book> Read(int skip, int take)
+        {
+            return context.Books.Skip(skip).Take(take).AsEnumerable();
+        }
+
         public void Update(Book book)
         {
-            var current = Read(book.Id);
+            var current = context.Books.Find(book.Id);
+            //current.Author = context.Authors.Find(book.Author.Id);
+            //context.Entry(current).State = System.Data.Entity.EntityState.Modified;
             context.Entry(current).CurrentValues.SetValues(book);
             context.SaveChanges();
         }

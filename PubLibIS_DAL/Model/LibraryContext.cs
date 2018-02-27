@@ -16,6 +16,8 @@ namespace PubLibIS_DAL.Model
         public DbSet<Periodical> Periodicals { get; set; }
         public DbSet<PeriodicalEdition> PeriodicalEditions { get; set; }
         public DbSet<PublishingHouse> PublishingHouses { get; set; }
+        public DbSet<PublishedBook> PublishedBooks { get; set; }
+        public DbSet<AuthorInBook> AuthorsInBooks { get; set; }
 
         public static LibraryContext GetInstance()
         {

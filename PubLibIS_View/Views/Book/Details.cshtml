@@ -1,0 +1,96 @@
+﻿@model ViewModels.BookViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BookViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Capation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Capation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorsFormated)
+        </dt>
+
+        <dd>
+           @foreach (var author in Model.Authors)
+           {
+               @: @Html.ActionLink(author.FullName, "Details", "Author", new { id = author.Id }, new { })
+           }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseDateFormated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdditionalData)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalData)
+        </dd>
+
+    </dl>
+</div>
+<h1>Publications:</h1>
+<table class="table">
+    <tr>
+        <th>
+            Publishing House
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Volume
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in (IEnumerable<ViewModels.PublishedBookViewModel>)ViewBag.Publications)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishingHouse.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfPublication)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Volume)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

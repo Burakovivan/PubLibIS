@@ -11,7 +11,7 @@ namespace ViewModels
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string Phone { get; set; }
-        public string FoundationDate { get; set; }
+        public DateTime FoundationDate { get; set; }
 
         public string FullAddresFormated
         {
@@ -24,7 +24,7 @@ namespace ViewModels
         {
             get
             {
-                return $"{FoundationDate:dd.MM.yyyy}";
+                    return $"{FoundationDate:dd.MM.yyyy}";
             }
         }
     }

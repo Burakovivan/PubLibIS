@@ -42,7 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Author\AuthorViewModel.cs" />
+    <Compile Include="Book\BookViewModel.cs" />
+    <Compile Include="Book\BookViewModelSlim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublishedBook\PublishedBookSlim.cs" />
+    <Compile Include="PublishedBook\PublishedBookViewModel.cs" />
     <Compile Include="PublishingHouse\PublishingHouseViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

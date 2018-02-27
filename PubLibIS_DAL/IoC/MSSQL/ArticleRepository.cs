@@ -37,6 +37,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             return context.Articles.AsEnumerable();
         }
 
+        public IEnumerable<Article> Read(int skip, int take)
+        {
+            return context.Articles.Skip(skip).Take(take).AsEnumerable();
+        }
+
         public void Update(Article article)
         {
             var current = Read(article.Id);

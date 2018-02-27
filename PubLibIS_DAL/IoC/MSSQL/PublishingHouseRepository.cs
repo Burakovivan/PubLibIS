@@ -38,6 +38,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             return context.PublishingHouses.AsEnumerable();
         }
 
+        public IEnumerable<PublishingHouse> Read(int skip, int take)
+        {
+            return context.PublishingHouses.Skip(skip).Take(take);
+        }
+
         public void Update(PublishingHouse publishingHouse)
         {
             var current = Read(publishingHouse.Id);

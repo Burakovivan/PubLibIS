@@ -22,9 +22,13 @@ namespace PubLibIS_BLL.Services
         {
             Author = new AuthorService();
             PublishingHouse = new PublishingHouseService();
+            Book = new BookService();
+            PublishedBook = new PublishedBookService();
         }
 
         public AuthorService Author { get; set; }
         public PublishingHouseService PublishingHouse { get; set; }
+        public BookService Book { get; set; }
+        public PublishedBookService PublishedBook { get; set; }
     }
 }

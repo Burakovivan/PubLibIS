@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PubLibIS_DAL.Model
 {
@@ -8,10 +9,8 @@ namespace PubLibIS_DAL.Model
         public string ISBN { get; set; }
         public string Capation { get; set; }
         public string AdditionalData { get; set; }
-        public int Volume { get; set; }
-        public DateTime ReleaseDate { get; set; }
-
-        public virtual Author Author { get; set; }
-        public virtual PublishingHouse PublishingHouse { get; set; }
+        
+        public virtual ICollection<PublishedBook> PublishedBooks { get; set; }
+        public virtual ICollection<AuthorInBook> Authors { get; set; }
     }
 }

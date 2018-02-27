@@ -22,6 +22,7 @@ namespace PubLibIS_DAL.IoC
             PeriodicalRepository = new PeriodicalRepository(context);
             PeriodicalEditionRepository = new PeriodicalEditionRepository(context);
             PublishingHouseRepository = new PublishingHouseRepository(context);
+            PublishedBookRepository = new PublishedBookRepository(context);
         }
 
         public IArticleRepository RepositoryService { get; private set; }
@@ -30,5 +31,6 @@ namespace PubLibIS_DAL.IoC
         public IPeriodicalRepository PeriodicalRepository { get; private set; }
         public IPeriodicalEditionRepository PeriodicalEditionRepository { get; private set; }
         public IPublishingHouseRepository PublishingHouseRepository { get; private set; }
+        public IPublishedBookRepository PublishedBookRepository { get; private set; }
     }
 }

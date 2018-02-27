@@ -37,6 +37,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             return context.Periodicals.AsEnumerable();
         }
 
+        public IEnumerable<Periodical> Read(int skip, int take)
+        {
+            return context.Periodicals.Skip(skip).Take(take).AsEnumerable();
+        }
+
         public void Update(Periodical periodical)
         {
             var current = Read(periodical.Id);

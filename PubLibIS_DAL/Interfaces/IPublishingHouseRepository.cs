@@ -8,6 +8,7 @@ namespace PubLibIS_DAL.Interfaces
         int Create(PublishingHouse publishingHouse);
         PublishingHouse Read(int publishingHouseId);
         IEnumerable<PublishingHouse> Read();
+        IEnumerable<PublishingHouse> Read(int skip, int take);
         void Update(PublishingHouse publishingHouse);
         void Delete(int publishingHouseId);
     }

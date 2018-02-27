@@ -9,7 +9,7 @@ namespace ViewModels
         public string SecondName { get; set; }
         public string Patronymic { get; set; }
         public DateTime DateOfBirth { get; set; }
-        
+
         public DateTime? DateOfDeath { get; set; }
 
         public string FullName
@@ -21,11 +21,27 @@ namespace ViewModels
                     (string.IsNullOrEmpty(Patronymic) ? " " : $" {Patronymic.TrimStart()[0]}.");
             }
         }
+        public string DateofBirthFormated
+        {
+            get
+            {
+                return $"{DateOfBirth:dd.MM.yyyy}";
+            }
+        }
+        public string DateOfDeathFormated
+        {
+            get
+            {
+                return DateOfDeath != null ?
+                 $"{DateOfDeath:dd.MM.yyyy}" :
+                 "still alive :)";
+            }
+        }
         public string LifeTime
         {
             get
             {
-                return $"{DateOfBirth:dd.MM.yyyy} - {DateOfDeath:dd.MM.yyyy}";
+                return $"{DateOfBirth:dd.MM.yyyy} - {(DateOfDeath != null ? $"{DateOfDeath:dd.MM.yyyy}" : "now")}";
             }
         }
     }
