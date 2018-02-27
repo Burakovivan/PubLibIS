@@ -5,7 +5,7 @@ namespace PubLibIS_DAL.Interfaces
 {
     public interface IPublishingHouseRepository
     {
-        void Create(PublishingHouse publishingHouse);
+        int Create(PublishingHouse publishingHouse);
         PublishingHouse Read(int publishingHouseId);
         IEnumerable<PublishingHouse> Read();
         void Update(PublishingHouse publishingHouse);

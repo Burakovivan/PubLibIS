@@ -1,6 +1,6 @@
 ﻿using PubLibIS_DAL.IoC;
 using System.Collections.Generic;
-using ViewModels.Author;
+using ViewModels;
 
 namespace PubLibIS_BLL.Services
 {
@@ -36,10 +36,10 @@ namespace PubLibIS_BLL.Services
             repos.AuthorRepository.Update(mappedAuthor);
         }
 
-        public void Create(AuthorViewModel author)
+        public int Create(AuthorViewModel author)
         {
             var mappedAuthor = Mappers.AuthorMapper.MapOneDown(author);
-            repos.AuthorRepository.Create(mappedAuthor);
+            return repos.AuthorRepository.Create(mappedAuthor);
         }
 
     }

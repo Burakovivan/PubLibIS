@@ -39,7 +39,8 @@ namespace PubLibIS_DAL.IoC.MSSQL
 
         public void Update(Book book)
         {
-            context.Entry(book).State = System.Data.Entity.EntityState.Modified;
+            var current = Read(book.Id);
+            context.Entry(current).CurrentValues.SetValues(book);
             context.SaveChanges();
         }
     }

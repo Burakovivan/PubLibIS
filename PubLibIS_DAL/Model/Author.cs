@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PubLibIS_DAL.Model
 {
@@ -15,8 +16,10 @@ namespace PubLibIS_DAL.Model
         public string SecondName { get; set; }
         public string Patronymic { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime DateOfBirth { get; set; }
-        public DateTime DateOfDeath { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? DateOfDeath { get; set; }
 
         public virtual ICollection<Book> Books { get; set; }
         public virtual ICollection<Article> Articles { get; set; }

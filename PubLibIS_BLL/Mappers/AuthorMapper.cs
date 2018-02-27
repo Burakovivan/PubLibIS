@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PubLibIS_DAL.Model;
 using System.Collections.Generic;
-using ViewModels.Author;
+using ViewModels;
 
 namespace PubLibIS_BLL.Mappers
 {

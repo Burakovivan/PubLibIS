@@ -160,6 +160,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PublishingHouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +204,13 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Author\Index.cshtml" />
+    <Content Include="Views\Author\Details.cshtml" />
+    <Content Include="Views\Author\Edit.cshtml" />
+    <Content Include="Views\PublishingHouse\Index.cshtml" />
+    <Content Include="Views\PublishingHouse\Create.cshtml" />
+    <Content Include="Views\PublishingHouse\Edit.cshtml" />
+    <Content Include="Views\PublishingHouse\Details.cshtml" />
+    <Content Include="Views\Author\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

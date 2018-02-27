@@ -39,7 +39,8 @@ namespace PubLibIS_DAL.IoC.MSSQL
 
         public void Update(Periodical periodical)
         {
-            context.Entry(periodical).State = System.Data.Entity.EntityState.Modified;
+            var current = Read(periodical.Id);
+            context.Entry(current).CurrentValues.SetValues(periodical);
             context.SaveChanges();
         }
     }

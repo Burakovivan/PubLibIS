@@ -21,8 +21,10 @@ namespace PubLibIS_BLL.Services
         private ServiceContainer()
         {
             Author = new AuthorService();
+            PublishingHouse = new PublishingHouseService();
         }
 
         public AuthorService Author { get; set; }
+        public PublishingHouseService PublishingHouse { get; set; }
     }
 }

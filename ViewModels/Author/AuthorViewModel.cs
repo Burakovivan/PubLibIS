@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ViewModels.Author
+namespace ViewModels
 {
     public class AuthorViewModel
     {
@@ -9,7 +9,8 @@ namespace ViewModels.Author
         public string SecondName { get; set; }
         public string Patronymic { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public DateTime DateOfDeath { get; set; }
+        
+        public DateTime? DateOfDeath { get; set; }
 
         public string FullName
         {

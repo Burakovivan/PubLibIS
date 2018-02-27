@@ -1,56 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PubLibIS_BLL.Services;
 using System.Web.Mvc;
-using AutoMapper;
-using PubLibIS_BLL.Services;
 using ViewModels;
 
 namespace PubLibIS.Controllers
 {
-    public class AuthorController : Controller
+    public class PublishingHouseController : Controller
     {
         private ServiceContainer service;
-        public AuthorController()
+        public PublishingHouseController()
         {
             service = ServiceContainer.GetInstance();
         }
-
-        // GET: Author
+        // GET: PublishingHouse
         [HttpGet]
         public ActionResult Index()
         {
-            var model = service.Author.GetAll();
+            var model = service.PublishingHouse.GetAll();
             return View(model);
         }
-
         [HttpGet]
         public ActionResult Details(int id)
         {
-            var model = service.Author.Get(id);
+            var model = service.PublishingHouse.Get(id);
             return View(model);
         }
-
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var model = service.Author.Get(id);
+            var model = service.PublishingHouse.Get(id);
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(AuthorViewModel author)
+        public ActionResult Edit(PublishingHouseViewModel ph)
         {
-            service.Author.Update(author);
-            return RedirectToAction("Details", new { id = author.Id });
+            service.PublishingHouse.Update(ph);
+            return RedirectToAction("Details", new { id = ph.Id });
         }
 
         public ActionResult Delete(int id)
         {
-            service.Author.Delete(id);
+            service.PublishingHouse.Delete(id);
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -58,16 +51,14 @@ namespace PubLibIS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(AuthorViewModel author)
+        public ActionResult Create(PublishingHouseViewModel ph)
         {
             if (!ModelState.IsValid)
             {
-                return View(author);
+                return View(ph);
             }
-           var id =  service.Author.Create(author);
+            var id = service.PublishingHouse.Create(ph);
             return RedirectToAction("Details", new { id });
-        } 
-
-
+        }
     }
 }

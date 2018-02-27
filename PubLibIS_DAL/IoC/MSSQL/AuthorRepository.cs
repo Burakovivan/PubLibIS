@@ -14,10 +14,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             this.context = context;
         }
 
-        public void Create(Author authtor)
+        public int Create(Author authtor)
         {
             context.Authors.Add(authtor);
             context.SaveChanges();
+            return authtor.Id;
         }
 
         public void Delete(int authtorId)
@@ -39,7 +40,8 @@ namespace PubLibIS_DAL.IoC.MSSQL
 
         public void Update(Author authtor)
         {
-            context.Entry(authtor).State = System.Data.Entity.EntityState.Modified;
+            var current = Read(authtor.Id);
+            context.Entry(current).CurrentValues.SetValues(authtor);
             context.SaveChanges();
         }
     }

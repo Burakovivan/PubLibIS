@@ -5,7 +5,7 @@ namespace PubLibIS_DAL.Interfaces
 {
     public interface IAuthorRepository
     {
-        void Create(Author auhtor);
+        int Create(Author auhtor);
         Author Read(int authorId);
         IEnumerable<Author> Read();
         void Update(Author author);

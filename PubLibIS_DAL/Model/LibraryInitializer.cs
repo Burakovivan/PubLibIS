@@ -30,8 +30,20 @@ namespace PubLibIS_DAL.Model
                 DateOfDeath = new DateTime(1861, 03, 10)
             };
 
+            PublishingHouse ph1 = new PublishingHouse
+            {
+                Name = "Весна",
+                Country = "Украина",
+                City = "Харьков",
+                Address = "пр. Гагарина, д.20",
+                PostalCode = "61010",
+                Phone = "+38 (057) 760 23 89",
+                FoundationDate = new DateTime(2016, 01, 01)
+            };
+
             context.Authors.Add(a1);
             context.Authors.Add(a2);
+            context.PublishingHouses.Add(ph1);
             context.SaveChanges();
 
 
