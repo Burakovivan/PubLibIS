@@ -1,8 +1,10 @@
-﻿using PubLibIS_BLL.Services;
+﻿using PubLibIS.Helpers;
+using PubLibIS_BLL.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -30,27 +32,17 @@ namespace PubLibIS.Controllers
         public ActionResult Details(int id)
         {
             var model = service.Book.Get(id);
-            ViewBag.Publications = service.PublishedBook.GetByBook(id);
+            model.Publications = service.PublishedBook.GetByBook(id);
             return View(model);
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var authors = service.Author.GetAll();
-            var authorOfBooks = service.Book.GetAuthorIdsByBook(id);
-            ViewBag.Authors = new List<SelectListItem>();
-            foreach (var author in authors)
-            {
-                ViewBag.Authors.Add(new SelectListItem()
-                {
-                    Text = author.FullName,
-                    Value = author.Id.ToString(),
-                    Selected = authors.Any(a => authorOfBooks.Any(aId => a.Id == aId))
-                });
-            }
-
             var model = service.Book.Get(id);
+
+            model.AuthorsSelectList = BookHelper.GetAuthorsSelectList(id);
+
             return View(model);
         }
 
@@ -70,7 +62,7 @@ namespace PubLibIS.Controllers
             {
                 var authors = service.Author.GetAll();
                 if (authors.Count() > 0)
-                    ViewBag.Authors = new SelectList(authors, "Id", "FullName", authors.First());
+                    book.AuthorsSelectList = BookHelper.GetAuthorsSelectList(book.Id);
 
                 return View(book);
             }
@@ -87,12 +79,12 @@ namespace PubLibIS.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var authors = service.Author.GetAll();
+            var model = new BookViewModel
+            {
+                AuthorsSelectList = BookHelper.GetAuthorsSelectList()
+            };
 
-            if (authors.Count() > 0)
-                ViewBag.Authors = new SelectList(authors, "Id", "FullName", authors.First());
-
-            return View();
+            return View(model);
         }
 
 
@@ -115,19 +107,38 @@ namespace PubLibIS.Controllers
         public ActionResult CreatePublication(int id)
         {
             var book = service.Book.Get(id);
-            ViewBag.Book = book;
-            return View();
+            var pBook = new PublishedBookViewModel
+            {
+                Book = book,
+                PublishingHouseSelectList = BookHelper.GetPublishingHouseSelectList()
+            };
+            return PartialView(pBook);
         }
 
         [HttpPost]
         public ActionResult CreatePublication(PublishedBookViewModel pBook)
         {
+            string documentContents;
+            using (Stream receiveStream = Request.InputStream)
+            {
+                using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
+                {
+                    documentContents = readStream.ReadToEnd();
+                }
+            }
             if (!ModelState.IsValid)
             {
                 var book = service.Book.Get(pBook.Book.Id);
             }
             var id = service.PublishedBook.Create(pBook);
-            return RedirectToAction("Details", new { id = pBook.Book.Id });
+            return PublicationList(pBook.Book.Id);
+        }
+
+        public ActionResult PublicationList(int id)
+        {
+            var publications = service.PublishedBook.GetByBook(id);
+            var model = new Tuple<int, IEnumerable<PublishedBookViewModel>>(id, publications);
+            return PartialView("PublicationList",model);
         }
 
         public ActionResult RemovePublication(int id)

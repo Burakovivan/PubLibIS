@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
@@ -10,6 +7,7 @@ namespace ViewModels
     {
         public int Id { get; set; }
         public int Volume { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfPublication { get; set; }
     }
 }

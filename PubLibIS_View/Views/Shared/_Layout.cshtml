@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,21 +34,21 @@
                             <li>@Html.ActionLink("Publishing house", "index", "publishinghouse")</li>
                             <li>@Html.ActionLink("Book", "index", "book")</li>
                             @*<li class="divider"></li>
-        <li class="dropdown-submenu">
-            <a tabindex="-1" href="#">Hover me for more options</a>
-            <ul class="dropdown-menu">
-                <li><a tabindex="-1" href="#">Second level</a></li>
-                <li class="dropdown-submenu">
-                    <a href="#">Even More..</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">3rd level</a></li>
-                        <li><a href="#">3rd level</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Second level</a></li>
-                <li><a href="#">Second level</a></li>
-            </ul>
-        </li>*@
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">Hover me for more options</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a tabindex="-1" href="#">Second level</a></li>
+                                        <li class="dropdown-submenu">
+                                            <a href="#">Even More..</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">3rd level</a></li>
+                                                <li><a href="#">3rd level</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Second level</a></li>
+                                        <li><a href="#">Second level</a></li>
+                                    </ul>
+                                </li>*@
                         </ul>
                     </li>
                 </ul>
@@ -61,9 +62,8 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/ui-elements")
     @RenderSection("scripts", required: false)
 </body>
 </html>

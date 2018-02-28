@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace PubLibIS_DAL.Interfaces
 {
-    public interface IAuthorInBookRepository
+    public interface IBookRepository
     {
-        int Create(AuthorInBook book);
-        AuthorInBook Read(int bookId);
-        IEnumerable<AuthorInBook> Read();
-        IEnumerable<AuthorInBook> Read(int skip, int take);
-        void Update(AuthorInBook book);
+        int Create(Book book);
+        Book Read(int bookId);
+        IEnumerable<Book> Read();
+        IEnumerable<Book> Read(int skip, int take);
+        IEnumerable<int> GetAuthorIdsByBook(int id);
+        void Update(Book book);
         void Delete(int bookId);
     }
 }

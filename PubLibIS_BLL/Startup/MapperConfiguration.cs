@@ -17,11 +17,14 @@ namespace PubLibIS_BLL
                 cfg.CreateMap<PublishingHouseViewModel, PublishingHouse>();
                 cfg.CreateMap<PublishingHouse, PublishingHouseViewModel>();
 
-                cfg.CreateMap<BookViewModel, Book>();
+                cfg.CreateMap<BookViewModel, Book>()
+                .ForMember(
+                        book => book.Authors,
+                        opt => opt.MapFrom(bookVM => bookVM.Authors));
                 cfg.CreateMap<Book, BookViewModel>()
                     .ForMember(
                         bookVM => bookVM.ReleaseDate,
-                            opt => opt.MapFrom(book => book.PublishedBooks.Any() ? new System.DateTime?(book.PublishedBooks.Select(x => x.DateOfPublication).Min()) : null))
+                            opt => opt.MapFrom(book => book.PublishedBooks.Any() ? book.PublishedBooks.Select(x => x.DateOfPublication).Min() : null))
                     .ForMember(
                         bookVM => bookVM.Authors,
                         opt => opt.MapFrom(book => book.Authors.Select(x => x.Author)));
@@ -31,7 +34,10 @@ namespace PubLibIS_BLL
                         pBook => pBook.Book,
                         opt => opt.MapFrom(pBookVM => Mappers.BookMapper.MapOneUp(pBookVM.Book)));
 
-
+                cfg.CreateMap<AuthorViewModel, AuthorInBook>()
+                .ForMember(
+                    ainb => ainb.Author,
+                    opt => opt.MapFrom(avm => avm));
 
                 cfg.CreateMap<PublishedBookViewModel, PublishedBook>()
                     .ForMember(

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
@@ -11,6 +12,7 @@ namespace ViewModels
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string Phone { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FoundationDate { get; set; }
 
         public string FullAddresFormated
@@ -20,11 +22,12 @@ namespace ViewModels
                 return $"{Address}. {Country}, {City}, {PostalCode}";
             }
         }
-        public string FoundationDateFormated
+
+        public string ListBoxInfo
         {
             get
             {
-                    return $"{FoundationDate:dd.MM.yyyy}";
+                return $"{Name} ({Country}, {City})";
             }
         }
     }

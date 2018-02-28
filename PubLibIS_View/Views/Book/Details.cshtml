@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>BookViewModel</h4>
+    <h4>Book</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -31,10 +31,9 @@
         </dt>
 
         <dd>
-           @foreach (var author in Model.Authors)
-           {
-               @: @Html.ActionLink(author.FullName, "Details", "Author", new { id = author.Id }, new { })
-           }
+            @Html.Raw(
+                               string.Join(", ", Model.Authors.Select(
+                                   author => Html.ActionLink(author.FullName, "Details", "Author", new { id = author.Id }, new { }).ToString())))
         </dd>
 
         <dt>
@@ -42,7 +41,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ReleaseDateFormated)
+            @Html.DisplayFor(model => model.ReleaseDate)
         </dd>
 
         <dt>
@@ -56,41 +55,26 @@
     </dl>
 </div>
 <h1>Publications:</h1>
-<table class="table">
-    <tr>
-        <th>
-            Publishing House
-        </th>
-        <th>
-            Date
-        </th>
-        <th>
-            Volume
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in (IEnumerable<ViewModels.PublishedBookViewModel>)ViewBag.Publications)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishingHouse.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfPublication)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Volume)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+<table class="table" id="publication-list">
+@Html.Action("PublicationList", new { id = Model.Id })
 </table>
+<script>
+    $(document).ready(function() {
+        $('#add-publication').click(function() {
+                $.ajax({
+                    url: '@Url.Action("CreatePublication",new { id = Model.Id})',
+                    type: 'GET',
+                    cache: false,
+                }).done(function (result) {
+                    $('#create-publication').html(result);
+                    $('#PublishingHouse_Id').ready($('#PublishingHouse_Id').chosen());
+                    $('#DateOfPublication').ready($('#DateOfPublication').datepicker({}));
+                });
+        });
+    });
+</script>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+

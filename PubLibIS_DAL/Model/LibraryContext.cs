@@ -19,6 +19,12 @@ namespace PubLibIS_DAL.Model
         public DbSet<PublishedBook> PublishedBooks { get; set; }
         public DbSet<AuthorInBook> AuthorsInBooks { get; set; }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Properties<System.DateTime>().Configure(c => c.HasColumnType("datetime2"));
+            base.OnModelCreating(modelBuilder);
+        }
+
         public static LibraryContext GetInstance()
         {
             if (instance == null)

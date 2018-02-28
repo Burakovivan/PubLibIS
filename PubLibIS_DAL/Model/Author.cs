@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS_DAL.Model
 {
@@ -17,7 +18,7 @@ namespace PubLibIS_DAL.Model
         public string Patronymic { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? DateOfDeath { get; set; }
 

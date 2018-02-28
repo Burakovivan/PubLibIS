@@ -30,7 +30,7 @@ namespace PubLibIS_BLL.Services
         }
         public IEnumerable<int> GetAuthorIdsByBook(int id)
         {
-            return repos.BookRepository.Read(id).Authors.Select(x => x.Author.Id);
+            return repos.BookRepository.GetAuthorIdsByBook(id);
         }
 
         public void Delete(int id)
@@ -41,6 +41,7 @@ namespace PubLibIS_BLL.Services
         public void Update(BookViewModel book)
         {
             var mappedBook = Mappers.BookMapper.MapOneDown(book);
+           
             repos.BookRepository.Update(mappedBook);
         }
 
@@ -49,5 +50,6 @@ namespace PubLibIS_BLL.Services
             var mappedBook = Mappers.BookMapper.MapOneDown(book);
             return repos.BookRepository.Create(mappedBook);
         }
+
     }
 }

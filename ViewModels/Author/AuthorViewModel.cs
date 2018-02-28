@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
@@ -8,8 +9,10 @@ namespace ViewModels
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public string Patronymic { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfDeath { get; set; }
 
         public string FullName
@@ -21,27 +24,12 @@ namespace ViewModels
                     (string.IsNullOrEmpty(Patronymic) ? " " : $" {Patronymic.TrimStart()[0]}.");
             }
         }
-        public string DateofBirthFormated
-        {
-            get
-            {
-                return $"{DateOfBirth:dd.MM.yyyy}";
-            }
-        }
-        public string DateOfDeathFormated
-        {
-            get
-            {
-                return DateOfDeath != null ?
-                 $"{DateOfDeath:dd.MM.yyyy}" :
-                 "still alive :)";
-            }
-        }
+        
         public string LifeTime
         {
             get
             {
-                return $"{DateOfBirth:dd.MM.yyyy} - {(DateOfDeath != null ? $"{DateOfDeath:dd.MM.yyyy}" : "now")}";
+                return $"{DateOfBirth} - {(DateOfDeath != null ? $"{DateOfDeath}" : "now")}";
             }
         }
     }

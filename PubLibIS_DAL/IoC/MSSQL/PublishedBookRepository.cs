@@ -16,6 +16,9 @@ namespace PubLibIS_DAL.IoC.MSSQL
 
         public int Create(PublishedBook pBook)
         {
+           
+            pBook.Book = context.Books.Find(pBook.Book.Id);
+            pBook.PublishingHouse = context.PublishingHouses.Find(pBook.PublishingHouse.Id);
             context.PublishedBooks.Add(pBook);
             context.SaveChanges();
             return pBook.Id;

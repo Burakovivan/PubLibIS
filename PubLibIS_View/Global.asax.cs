@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PubLibIS.Models.BindingModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,10 +13,14 @@ namespace PubLibIS
     {
         protected void Application_Start()
         {
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            ModelBinders.Binders.Add(typeof(ViewModels.BookViewModel), new BookModelBinder());
+            ModelBinders.Binders.Add(typeof(ViewModels.PublishedBookViewModel), new PublishedBookModelBinder());
+
         }
     }
 }

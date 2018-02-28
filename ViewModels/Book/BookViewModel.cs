@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ViewModels
 {
@@ -13,18 +15,12 @@ namespace ViewModels
         public string Capation { get; set; }
         public string AdditionalData { get; set; }
 
-        public List<AuthorViewModel> Authors { get; set; }
+        public IEnumerable<AuthorViewModel> Authors { get; set; }
+        public MultiSelectList AuthorsSelectList { get; set; }
+        public IEnumerable<PublishedBookViewModel> Publications { get; set; }
 
-
-        public string ReleaseDateFormated
-        {
-            get
-            {
-                if (ReleaseDate != null && ReleaseDate.HasValue)
-                    return $"{ReleaseDate:dd.MM.yyyy}";
-                else return "No releases";
-            }
-        }
+        
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? ReleaseDate { get; set; }
 
         public string AuthorsFormated

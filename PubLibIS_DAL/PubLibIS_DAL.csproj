@@ -55,9 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IArticleRepository.cs" />
+    <Compile Include="Interfaces\IAuthorInBookRepository.cs" />
     <Compile Include="Interfaces\IAuthorRepository.cs" />
     <Compile Include="Interfaces\IBookRepository.cs" />
-    <Compile Include="Interfaces\IBookRepository1.cs" />
     <Compile Include="Interfaces\IPeriodicalEditionRepository.cs" />
     <Compile Include="Interfaces\IPeriodicalRepository.cs" />
     <Compile Include="Interfaces\IPublishedBookRepository.cs" />
@@ -73,9 +73,9 @@
     <Compile Include="IoC\MSSQL\PublishingHouseRepository.cs" />
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\AuthorInBook.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Brochure.cs" />
-    <Compile Include="Model\Class1.cs" />
     <Compile Include="Model\LibraryContext.cs" />
     <Compile Include="Model\LibraryInitializer.cs" />
     <Compile Include="Model\Periodical.cs" />

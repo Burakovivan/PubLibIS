@@ -1,0 +1,39 @@
+﻿@model Tuple<int, IEnumerable<ViewModels.PublishedBookViewModel>>
+
+
+
+<tr>
+    <th>
+        Publishing House
+    </th>
+    <th>
+        Date
+    </th>
+    <th>
+        Volume
+    </th>
+    <th></th>
+</tr>
+<tr id="create-publication">
+    <td id="add-publication" colspan="4" class="label label-success col-xs-12"><span class="glyphicon glyphicon-plus-sign"></span></td>
+</tr>
+@foreach (var item in Model.Item2)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PublishingHouse.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfPublication)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Volume)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+

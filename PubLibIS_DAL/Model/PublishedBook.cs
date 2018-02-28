@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,8 @@ namespace PubLibIS_DAL.Model
     {
         public int Id { get; set; }
         public int Volume { get; set; }
-        public DateTime DateOfPublication { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? DateOfPublication { get; set; }
 
         public virtual Book Book { get; set; }
         public virtual PublishingHouse PublishingHouse { get; set; }
