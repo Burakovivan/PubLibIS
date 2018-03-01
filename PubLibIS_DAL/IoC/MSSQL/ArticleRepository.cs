@@ -14,10 +14,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             this.context = context;
         }
 
-        public void Create(Article article)
+        public int Create(Article article)
         {
             context.Articles.Add(article);
             context.SaveChanges();
+            return article.Id;
         }
 
         public void Delete(int articleId)

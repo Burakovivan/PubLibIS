@@ -22,3 +22,32 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.publication-row .controls {
+    text-align: right
+}
+
+.publication-row > .controls > a.remove:hover {
+    color: darkred;
+}
+
+.publication-row > .controls > a.remove {
+    color: red;
+}
+
+.publication-row > .controls > a.edit:hover {
+    color: blue;
+}
+
+.publication-row > .controls > a.edit {
+    color: cornflowerblue;
+}
+
+#create-publication .controls {
+    color: green;
+    float: right;
+}
+
+td#add-publication {
+    cursor: pointer;
+}

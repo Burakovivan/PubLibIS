@@ -67,6 +67,6 @@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $('#Authors').load($('#Authors').chosen());
+        $('#Authors').ready(() => { $('#Authors').chosen() });
     </script>
 }

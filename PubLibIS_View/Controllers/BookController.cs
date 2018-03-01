@@ -112,40 +112,50 @@ namespace PubLibIS.Controllers
                 Book = book,
                 PublishingHouseSelectList = BookHelper.GetPublishingHouseSelectList()
             };
+            pBook.DateOfPublication = DateTime.Now;
             return PartialView(pBook);
         }
 
         [HttpPost]
-        public ActionResult CreatePublication(PublishedBookViewModel pBook)
+        public void CreatePublication(PublishedBookViewModel pBook)
         {
-            string documentContents;
-            using (Stream receiveStream = Request.InputStream)
-            {
-                using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
-                {
-                    documentContents = readStream.ReadToEnd();
-                }
-            }
             if (!ModelState.IsValid)
             {
                 var book = service.Book.Get(pBook.Book.Id);
             }
             var id = service.PublishedBook.Create(pBook);
-            return PublicationList(pBook.Book.Id);
         }
 
         public ActionResult PublicationList(int id)
         {
             var publications = service.PublishedBook.GetByBook(id);
             var model = new Tuple<int, IEnumerable<PublishedBookViewModel>>(id, publications);
-            return PartialView("PublicationList",model);
+            return PartialView("PublicationList", model);
         }
 
-        public ActionResult RemovePublication(int id)
+        public void RemovePublication(int id)
         {
-            var bookId = service.PublishedBook.Get(id).Book.Id;
             service.PublishedBook.Delete(id);
-            return RedirectToAction("Details", new { id = bookId });
+        }
+        [HttpGet]
+        public ActionResult EditPublication(int id)
+        {
+            var pBook = service.PublishedBook.Get(id);
+            pBook.PublishingHouseSelectList = BookHelper.GetPublishingHouseSelectList(pBook.PublishingHouse.Id);
+            return PartialView(pBook);
+        }
+
+        [HttpPost]
+        public ActionResult EditPublication(PublishedBookViewModel pBook)
+        {
+            if (!ModelState.IsValid)
+            {
+                pBook.PublishingHouseSelectList = BookHelper.GetPublishingHouseSelectList(pBook.PublishingHouse.Id);
+                return PartialView(pBook);
+
+            }
+            service.PublishedBook.Update(pBook);
+            return Json(new { success = true });
         }
 
     }

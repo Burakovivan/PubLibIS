@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\IAuthorInBookRepository.cs" />
     <Compile Include="Interfaces\IAuthorRepository.cs" />
     <Compile Include="Interfaces\IBookRepository.cs" />
+    <Compile Include="Interfaces\IBrochureRepository.cs" />
     <Compile Include="Interfaces\IPeriodicalEditionRepository.cs" />
     <Compile Include="Interfaces\IPeriodicalRepository.cs" />
     <Compile Include="Interfaces\IPublishedBookRepository.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="IoC\MSSQL\AuthorInBookRepository.cs" />
     <Compile Include="IoC\MSSQL\AuthorRepository.cs" />
     <Compile Include="IoC\MSSQL\BookRepository.cs" />
+    <Compile Include="IoC\MSSQL\BrochureRepository.cs" />
     <Compile Include="IoC\MSSQL\PeriodicalEditionRepository.cs" />
     <Compile Include="IoC\MSSQL\PeriodicalRepository.cs" />
     <Compile Include="IoC\MSSQL\PublishedBookRepository.cs" />

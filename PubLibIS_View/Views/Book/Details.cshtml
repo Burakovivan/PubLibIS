@@ -32,15 +32,15 @@
 
         <dd>
             @Html.Raw(
-                               string.Join(", ", Model.Authors.Select(
-                                   author => Html.ActionLink(author.FullName, "Details", "Author", new { id = author.Id }, new { }).ToString())))
+                                    string.Join(", ", Model.Authors.Select(
+                                        author => Html.ActionLink(author.FullName, "Details", "Author", new { id = author.Id }, new { }).ToString())))
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
 
-        <dd>
+        <dd id="ReleaseDate">
             @Html.DisplayFor(model => model.ReleaseDate)
         </dd>
 
@@ -55,23 +55,11 @@
     </dl>
 </div>
 <h1>Publications:</h1>
-<table class="table" id="publication-list">
-@Html.Action("PublicationList", new { id = Model.Id })
-</table>
+    @Html.Action("PublicationList", new { id = Model.Id })
 <script>
-    $(document).ready(function() {
-        $('#add-publication').click(function() {
-                $.ajax({
-                    url: '@Url.Action("CreatePublication",new { id = Model.Id})',
-                    type: 'GET',
-                    cache: false,
-                }).done(function (result) {
-                    $('#create-publication').html(result);
-                    $('#PublishingHouse_Id').ready($('#PublishingHouse_Id').chosen());
-                    $('#DateOfPublication').ready($('#DateOfPublication').datepicker({}));
-                });
-        });
-    });
+   
+
+  
 </script>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

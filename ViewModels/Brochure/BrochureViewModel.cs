@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PubLibIS_DAL.Model
+namespace ViewModels
 {
-    public class Brochure
+    public class BrochureViewModel
     {
         public int Id { get; set; }
         public string Capation { get; set; }
@@ -11,6 +15,6 @@ namespace PubLibIS_DAL.Model
         public int Circulation { get; set; }//тираж
 
 
-        public virtual PublishingHouse PublishingHouse { get; set; }
+        public PublishingHouseViewModel PublishingHouse { get; set; }
     }
 }

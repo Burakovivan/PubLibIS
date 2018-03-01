@@ -16,7 +16,7 @@ namespace PubLibIS_DAL.IoC
         private LibraryRepository()
         {
             var context = LibraryContext.GetInstance();
-            RepositoryService = new ArticleRepository(context);
+            ArticleRepository = new ArticleRepository(context);
             AuthorRepository = new AuthorRepository(context);
             BookRepository = new BookRepository(context);
             PeriodicalRepository = new PeriodicalRepository(context);
@@ -25,9 +25,10 @@ namespace PubLibIS_DAL.IoC
             PublishedBookRepository = new PublishedBookRepository(context);
         }
 
-        public IArticleRepository RepositoryService { get; private set; }
+        public IArticleRepository ArticleRepository { get; private set; }
         public IAuthorRepository AuthorRepository { get; private set; }
         public IBookRepository BookRepository { get; private set; }
+        public IBrochureRepository BrochureRepository { get; private set; }
         public IPeriodicalRepository PeriodicalRepository { get; private set; }
         public IPeriodicalEditionRepository PeriodicalEditionRepository { get; private set; }
         public IPublishingHouseRepository PublishingHouseRepository { get; private set; }

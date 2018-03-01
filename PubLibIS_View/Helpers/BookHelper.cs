@@ -29,10 +29,16 @@ namespace PubLibIS.Helpers
 
         }
 
-        internal static SelectList GetPublishingHouseSelectList()
+        public static SelectList GetPublishingHouseSelectList()
         {
             var houses = service.PublishingHouse.GetAll();
             return new SelectList(houses, "Id", "ListBoxInfo", houses.First());
+        }
+
+        public static SelectList GetPublishingHouseSelectList(int pHouseid)
+        {
+            var houses = service.PublishingHouse.GetAll();
+            return new SelectList(houses, "Id", "ListBoxInfo", houses.SingleOrDefault(ph => ph.Id == pHouseid));
         }
     }
 }

@@ -38,7 +38,7 @@ namespace PubLibIS_DAL.IoC.MSSQL
 
         public IEnumerable<PublishedBook> ReadByBookId(int bookId)
         {
-            return context.PublishedBooks.Where(pb => pb.Book.Id == bookId).AsEnumerable();
+            return context.PublishedBooks.Where(pb => pb.Book.Id == bookId).OrderByDescending(x=>x.Id).AsEnumerable();
         }
 
         public IEnumerable<PublishedBook> Read()

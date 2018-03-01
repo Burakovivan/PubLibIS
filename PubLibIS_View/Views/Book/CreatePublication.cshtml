@@ -2,27 +2,32 @@
 
 
 
-
 <td>
     @Html.HiddenFor(model => model.Book.Id)
-    @Html.DropDownListFor(model => model.PublishingHouse.Id, Model.PublishingHouseSelectList, new { @class = "form-control" })
+    @Html.DropDownListFor(model => model.PublishingHouse.Id, Model.PublishingHouseSelectList, new { @class = "form-control " })
     @Html.ValidationMessageFor(model => model.PublishingHouse.Id, "", new { @class = "text-danger" })
 </td>
 <td>
-    @Html.EditorFor(model => model.DateOfPublication, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+    @Html.EditorFor(model => model.DateOfPublication, new { htmlAttributes = new { @class = "form-control input-sm", type = "text" } })
     @Html.ValidationMessageFor(model => model.DateOfPublication, "", new { @class = "text-danger" })
 </td>
 <td>
-    @Html.EditorFor(model => model.Volume, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.Volume, new { htmlAttributes = new { @class = "form-control input-sm" } })
     @Html.ValidationMessageFor(model => model.Volume, "", new { @class = "text-danger" })
 </td>
 <td>
-    <input id="submit-publication" type="submit" value="Create" class="btn btn-default" />
+    <div id="submit-publication" class="btn btn-default btn-sm  controls"><span class="glyphicon glyphicon-plus"></span></div>
 </td>
 
-
 <script>
-    $($('#submit-publication').click(function () {
+
+    $('#PublishingHouse_Id').ready($('#PublishingHouse_Id').chosen());
+    $('#DateOfPublication').ready($('#DateOfPublication').datepicker({
+        format: "dd.mm.yyyy",
+    }));
+
+    $('#submit-publication').ready($('#submit-publication').click(function (e) {
+        e.preventDefault();
         var publication = {
             Book_Id: $("#Book_Id").val(),
             PublishingHouse_Id: $("#PublishingHouse_Id").val(),
@@ -33,16 +38,16 @@
             url: '/book/CreatePublication',
             dataType: "json",
             data: publication,
-            type: 'Post',
-            cache: false
-        }).always(function (result) {
-            alert("Done!");
-            $('#publication-list').html(result);
-
-            });
-        alert("Exit");
-    }));
+            type: 'POST',
+            cache: false,
+            complete: function () {
+                $('#publication-list').load('@Url.Action("PublicationList", new { id = Model.Book.Id })');
+            }
+        });
+        })
+    );
 </script>
+
 
 
 

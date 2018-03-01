@@ -43,6 +43,17 @@ namespace PubLibIS_BLL
                     .ForMember(
                         pBookVM => pBookVM.Book,
                         opt => opt.MapFrom(pBook => Mappers.BookMapper.MapOneDown(pBook.Book)));
+
+
+                cfg.CreateMap<Article, ArticleViewModel>();
+                cfg.CreateMap<ArticleViewModel, Article>();
+
+                cfg.CreateMap<Periodical, PeriodicalViewModel>();
+                cfg.CreateMap<PeriodicalViewModel, Periodical>();
+
+                cfg.CreateMap<PeriodicalEdition, PeriodicalEditionViewModel>();
+                cfg.CreateMap<PeriodicalEditionViewModel, PeriodicalEdition>();
+
             });
         }
     }

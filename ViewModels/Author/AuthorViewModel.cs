@@ -29,7 +29,7 @@ namespace ViewModels
         {
             get
             {
-                return $"{DateOfBirth} - {(DateOfDeath != null ? $"{DateOfDeath}" : "now")}";
+                return $"{DateOfBirth:dd.MM.yyyy} - {(DateOfDeath != null ? $"{DateOfDeath:dd.MM.yyyy}" : "now")}";
             }
         }
     }

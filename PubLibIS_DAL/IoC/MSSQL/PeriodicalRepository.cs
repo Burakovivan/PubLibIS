@@ -14,10 +14,11 @@ namespace PubLibIS_DAL.IoC.MSSQL
             this.context = context;
         }
 
-        public void Create(Periodical periodical)
+        public int Create(Periodical periodical)
         {
             context.Periodicals.Add(periodical);
             context.SaveChanges();
+            return periodical.Id;
         }
 
         public void Delete(int periodicalId)

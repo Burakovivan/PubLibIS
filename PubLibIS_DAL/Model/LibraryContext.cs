@@ -12,12 +12,13 @@ namespace PubLibIS_DAL.Model
 
         public DbSet<Article> Articles { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<AuthorInBook> AuthorsInBooks { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Brochure> Brochures { get; set; }
         public DbSet<Periodical> Periodicals { get; set; }
         public DbSet<PeriodicalEdition> PeriodicalEditions { get; set; }
         public DbSet<PublishingHouse> PublishingHouses { get; set; }
         public DbSet<PublishedBook> PublishedBooks { get; set; }
-        public DbSet<AuthorInBook> AuthorsInBooks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

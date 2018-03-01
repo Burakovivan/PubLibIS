@@ -5,7 +5,7 @@ namespace PubLibIS_DAL.Interfaces
 {
     public interface IPeriodicalRepository
     {
-        void Create(Periodical periodical);
+        int Create(Periodical periodical);
         Periodical Read(int periodicalId);
         IEnumerable<Periodical> Read();
         IEnumerable<Periodical> Read(int skip, int take);
