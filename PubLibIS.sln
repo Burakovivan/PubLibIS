@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS_View", "PubLibIS_View\PubLibIS_View.csproj", "{EF79EB02-ADDC-4D53-8D7B-DF40F1F42DBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.View", "PubLibIS.View\PubLibIS.View.csproj", "{EF79EB02-ADDC-4D53-8D7B-DF40F1F42DBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS_BLL", "PubLibIS_BLL\PubLibIS_BLL.csproj", "{CCAFEF56-05B1-404D-AAAF-800443CFBA7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.BLL", "PubLibIS.BLL\PubLibIS.BLL.csproj", "{CCAFEF56-05B1-404D-AAAF-800443CFBA7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS_DAL", "PubLibIS_DAL\PubLibIS_DAL.csproj", "{7127299F-849E-473F-B201-4273BA25B4A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.DAL", "PubLibIS.DAL\PubLibIS.DAL.csproj", "{7127299F-849E-473F-B201-4273BA25B4A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModels", "ViewModels\ViewModels.csproj", "{AC8A9FF0-2B2B-4C14-AC58-068CDA0A7C8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.ViewModels", "PubLibIS.ViewModels\PubLibIS.ViewModels.csproj", "{AC8A9FF0-2B2B-4C14-AC58-068CDA0A7C8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

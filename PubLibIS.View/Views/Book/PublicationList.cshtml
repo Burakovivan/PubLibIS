@@ -1,0 +1,63 @@
+﻿@model Tuple<int, IEnumerable<PubLibIS.ViewModels.PublishedBookViewModel>>
+
+
+<table class="table" id="publication-list">
+
+    <tr>
+        <th class="col-xs-5">
+            Publishing House
+        </th>
+        <th class="col-xs-3">
+            Date
+        </th>
+        <th class="col-xs-3">
+            Volume
+        </th>
+        <th class="col-xs-1 "></th>
+    </tr>
+    <tr id="create-publication">
+        <td id="add-publication" colspan="4" class="label label-success col-xs-12"><span class="glyphicon glyphicon-plus-sign"></span></td>
+    </tr>
+    @foreach (var item in Model.Item2)
+    {
+        <tr id="pub_@item.Id" class="publication-row">
+            <td class="col-xs-5">
+                @Html.DisplayFor(modelItem => item.PublishingHouse.ListBoxInfo)
+            </td>
+            <td class="col-xs-3">
+                @Html.DisplayFor(modelItem => item.DateOfPublication)
+            </td>
+            <td class="col-xs-3">
+                @Html.DisplayFor(modelItem => item.Volume)
+            </td>
+            <td class="col-xs-1 controls">
+                <a href="#" class="edit" onclick="EditPublication(@item.Id)"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="#" class="remove" onclick="RemovePublication(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
+            </td>
+        </tr>
+    }
+</table>
+<script>
+    $(document).ready(function () {
+        $('#ReleaseDate').html('@($"{(Model.Item2.Any()?($"{Model.Item2.Select(x => x.DateOfPublication).Min():dd.MM.yyy}") : "")}")');
+        $('#add-publication').click(function () {
+            $('#create-publication').load('@Url.Action("CreatePublication", new { id = Model.Item1 })');
+        });
+    });
+
+    function RemovePublication(id) {
+        $.ajax({
+            url: '/Book/RemovePublication/' + id,
+            type: 'POST',
+            complete: function () {
+                $('#publication-list').load('@Url.Action("PublicationList", new { id = Model.Item1 })');
+            }
+        })
+    }
+
+     function EditPublication(id) {
+        $('#pub_'+id).load('/Book/EditPublication/' + id);
+     }
+</script>
+
+
