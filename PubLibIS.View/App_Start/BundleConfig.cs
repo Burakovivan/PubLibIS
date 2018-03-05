@@ -13,7 +13,8 @@ namespace PubLibIS.View
 
             bundles.Add(new ScriptBundle("~/bundles/ui-elements").Include(
                     "~/Scripts/bootstrap-datepicker.min.js",
-                    "~/Scripts/chosen.jquery.min.js"));
+                    "~/Scripts/chosen.jquery.min.js",
+                    "~/Scripts/ui.element.loader.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

@@ -1,4 +1,4 @@
-﻿using PubLibIS.DAL.UoW;
+﻿using PubLibIS.DAL.UnitsOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,45 +7,58 @@ using System.Threading.Tasks;
 using PubLibIS.ViewModels;
 using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
+using AutoMapper;
+using PubLibIS.DAL.Models;
 
 namespace PubLibIS.BLL.Services
 {
     public class PublishingHouseService : IPublishingHouseService
     {
-        private IUnitOfWork repos;
+        private IUnitOfWork db;
+        private IMapper mapper;
 
-        public PublishingHouseService(IUnitOfWork uow)
+        public PublishingHouseService(IUnitOfWork uow, IMapper mapper)
         {
-            repos = uow;
+            db = uow;
+            this.mapper = mapper;
         }
 
         public IEnumerable<PublishingHouseViewModel> GetPublishingHouseViewModelList()
         {
-            var phs = repos.PublishingHouses.Read();
-            return Mappers.PublishingHouseMapper.MapManyUp(phs);
+            var phs = db.PublishingHouses.Read();
+            return mapper.Map<IEnumerable<PublishingHouse>,IEnumerable<PublishingHouseViewModel>>(phs);
         }
 
         public PublishingHouseViewModel GetPublishingHouseViewModel(int id)
         {
-            var ph = repos.PublishingHouses.Read(id);
-            return Mappers.PublishingHouseMapper.MapOneUp(ph);
+            var ph = db.PublishingHouses.Read(id);
+            return mapper.Map<PublishingHouse, PublishingHouseViewModel>(ph);
         }
 
-        public void PublishingHouse(int id)
+        public void DeletePublishingHouse(int id)
         {
-            repos.PublishingHouses.Delete(id);
+            db.PublishingHouses.Delete(id);
+            db.Save();
         }
 
         public void UpdatePublishingHouse(PublishingHouseViewModel ph)
         {
-            var mappedph = Mappers.PublishingHouseMapper.MapOneDown(ph);
-            repos.PublishingHouses.Update(mappedph);
+            var mappedph = mapper.Map<PublishingHouseViewModel, PublishingHouse>(ph);
+            db.PublishingHouses.Update(mappedph);
+            db.Save();
         }
 
         public int CreatePublishinHouse(PublishingHouseViewModel ph)
         {
-            var mappedph = Mappers.PublishingHouseMapper.MapOneDown(ph);
-            return repos.PublishingHouses.Create(mappedph);
+            var mappedph = mapper.Map<PublishingHouseViewModel, PublishingHouse>(ph);
+            var newId = db.PublishingHouses.Create(mappedph);
+            db.Save();
+            return newId;
+        }
+
+        public IEnumerable<PublishingHouseViewModelSlim> GetPublishingHouseViewModelSlimList()
+        {
+            return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModelSlim>>(db.PublishingHouses.Read());
         }
     }
 }

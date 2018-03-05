@@ -11,6 +11,5 @@ namespace PubLibIS.BLL.Interfaces
         IEnumerable<AuthorViewModel> GetAuthorViewModelList();
         void Update(AuthorViewModel author);
         IEnumerable<int> GetAuthorIdListByBook(int id);
-        IEnumerable<PublishingHouseViewModelSlim> GetPublishingHouseViewModelSlimList();
     }
 }

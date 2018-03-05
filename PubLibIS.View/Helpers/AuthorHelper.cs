@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using PubLibIS.BLL.Interfaces;
 
-namespace PubLibIS.View
+namespace PubLibIS.View.Helpers
 {
     public class AuthorHelper
     {
@@ -30,21 +30,7 @@ namespace PubLibIS.View
 
         }
 
-        public SelectList GetPublishingHouseSelectList()
-        {
-            var houses = service.GetPublishingHouseViewModelSlimList();
-            return new SelectList(houses, "Id", "ListBoxInfo", houses.First());
-        }
-
-        public SelectList GetPublishingHouseSelectList(int? selectedPHouseid)
-        {
-            if (!selectedPHouseid.HasValue)
-            {
-                return GetPublishingHouseSelectList();
-            }
-            var houses = service.GetPublishingHouseViewModelSlimList();
-            return new SelectList(houses, "Id", "ListBoxInfo", houses.SingleOrDefault(ph => ph.Id == selectedPHouseid));
-        }
+      
 
     }
 }

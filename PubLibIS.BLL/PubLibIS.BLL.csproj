@@ -97,14 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\UoWInjectionModule.cs" />
-    <Compile Include="Mappers\ArticleMapper.cs" />
-    <Compile Include="Mappers\AuthorMapper.cs" />
-    <Compile Include="Mappers\BookMapper - Copy.cs" />
-    <Compile Include="Mappers\BookMapper.cs" />
-    <Compile Include="Mappers\PeriodicalEditionMapper.cs" />
-    <Compile Include="Mappers\PeriodicalMapper.cs" />
-    <Compile Include="Mappers\PublishedBookMapper.cs" />
-    <Compile Include="Mappers\PublishingHouseMapper.cs" />
+    <Compile Include="MappingProfiles\ArticleMappingProfile.cs" />
+    <Compile Include="MappingProfiles\AuthorMappingProfile.cs" />
+    <Compile Include="MappingProfiles\BookMappingProfile.cs" />
+    <Compile Include="MappingProfiles\BrochureMappingProfile.cs" />
+    <Compile Include="MappingProfiles\PeriodicalMappingProfile.cs" />
+    <Compile Include="MappingProfiles\PublishingHouseMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\AuthorService.cs" />
@@ -118,8 +116,7 @@
     <Compile Include="Interfaces\IAuthorService.cs" />
     <Compile Include="Services\PeriodicalService.cs" />
     <Compile Include="Services\PublishingHouseService.cs" />
-    <Compile Include="Startup\MapperConfiguration.cs" />
-    <Compile Include="Startup\Startup.cs" />
+    <Compile Include="MapperConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

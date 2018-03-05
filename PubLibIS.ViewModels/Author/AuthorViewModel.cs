@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PubLibIS.ViewModels.Attributes;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PubLibIS.ViewModels
@@ -9,10 +10,10 @@ namespace PubLibIS.ViewModels
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public string Patronymic { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [CustomDataDisplayFormat]
         public DateTime DateOfBirth { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [CustomDataDisplayFormat]
         public DateTime? DateOfDeath { get; set; }
 
         public string FullName
@@ -28,8 +29,8 @@ namespace PubLibIS.ViewModels
         public string LifeTime
         {
             get
-            {
-                return $"{DateOfBirth:dd.MM.yyyy} - {(DateOfDeath != null ? $"{DateOfDeath:dd.MM.yyyy}" : "now")}";
+            {   //(48) xx.xx.1902 - yy.yy.1950
+                return $"{(DateOfDeath.HasValue? ($"({DateOfDeath.Value.Year - DateOfBirth.Year})"): ($"({DateTime.Now.Year - DateOfBirth.Year})"))} {DateOfBirth:dd.MM.yyyy} - {(DateOfDeath != null ? $"{DateOfDeath:dd.MM.yyyy}" : "now")}";
             }
         }
     }

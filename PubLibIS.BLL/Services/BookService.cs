@@ -1,80 +1,91 @@
-﻿using PubLibIS.DAL.UoW;
+﻿using PubLibIS.DAL.UnitsOfWork;
 using System.Collections.Generic;
 using PubLibIS.ViewModels;
 using System.Linq;
 using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
+using AutoMapper;
+using PubLibIS.DAL.Models;
 
 namespace PubLibIS.BLL.Services
 {
     public class BookService : IBookService
     {
         private IUnitOfWork db;
+        private IMapper mapper;
 
-        public BookService(IUnitOfWork uow)
+        public BookService(IUnitOfWork uow, IMapper mapper)
         {
             db = uow;
+            this.mapper = mapper;
         }
 
         public IEnumerable<BookViewModel> GetBookViewModelList()
         {
             var books = db.Books.Read();
-            var temp = books.ToList();
-            return Mappers.BookMapper.MapManyUp(temp);
+            return mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModel>>(books);
         }
 
         public BookViewModel Get(int id)
         {
             var book = db.Books.Read(id);
-            return Mappers.BookMapper.MapOneUp(book);
+            return mapper.Map<Book, BookViewModel>(book);
         }
-        
 
-        public void UpdateBook(int id)
+
+        public void DeleteBook(int id)
         {
             db.Books.Delete(id);
+            db.Save();
         }
 
         public void UpdateBook(BookViewModel book)
         {
-            var mappedBook = Mappers.BookMapper.MapOneDown(book);
-           
+            var mappedBook = mapper.Map<BookViewModel, Book>(book);
+
             db.Books.Update(mappedBook);
+            db.Save();
         }
 
         public int Create(BookViewModel book)
         {
-            var mappedBook = Mappers.BookMapper.MapOneDown(book);
-            return db.Books.Create(mappedBook);
+            var mappedBook = mapper.Map<BookViewModel, Book>(book);
+            var newId = db.Books.Create(mappedBook);
+            db.Save();
+            return newId;
         }
 
         public int CreatePublication(PublishedBookViewModel publication)
         {
-            var mappedPublication = Mappers.PublishedBookMapper.MapOneDown(publication);
-            return db.PublishedBooks.Create(mappedPublication);
+            var mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
+            var newId = db.PublishedBooks.Create(mappedPublication);
+            db.Save();
+            return newId;
         }
 
         public IEnumerable<PublishedBookViewModel> GetPublishedBookViewModelListByBook(int id)
         {
             var publications = db.PublishedBooks.ReadByBookId(id);
-            return Mappers.PublishedBookMapper.MapManyUp(publications);
+            return mapper.Map<IEnumerable<PublishedBook>, IEnumerable<PublishedBookViewModel>>(publications);
         }
 
         public void DeletePublication(int id)
         {
             db.PublishedBooks.Delete(id);
+            db.Save();
         }
 
         public PublishedBookViewModel GetPublication(int id)
         {
             var publication = db.PublishedBooks.Read(id);
-            return Mappers.PublishedBookMapper.MapOneUp(publication);
+            return mapper.Map<PublishedBook, PublishedBookViewModel>(publication);
         }
 
         public void UpdatePublication(PublishedBookViewModel publication)
         {
-            var mappedPublication = Mappers.PublishedBookMapper.MapOneDown(publication);
+            var mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
             db.PublishedBooks.Update(mappedPublication);
+            db.Save();
         }
     }
 }

@@ -9,12 +9,12 @@ namespace PubLibIS.BLL.Interfaces
         void CreatePeriodicalEdition(PeriodicalEditionViewModel edition);
         PeriodicalViewModel GetPeriodicalViewModel(int id);
         IEnumerable<PeriodicalViewModel> GetPeriodicalViewModelList();
-        int GetNextNumberByPeriodicalId(int periodicalId);
+        int GetNextEditionNumberByPeriodicalId(int periodicalId);
         IEnumerable<PeriodicalEditionViewModel> GetPeriodicalEditionViewModelByPeriodicalId(int periodicalId);
         void UpdatePeriodical(PeriodicalViewModel periodical);
         void UpdatePeriodicalEdition(PeriodicalEditionViewModel periodical);
-        IEnumerable<PublishingHouseViewModelSlim> GetPublishingHouseViewModelSlimList();
         void DeletePeriodical(int id);
         void DeletePeriodicalEdition(int id);
+        IEnumerable<PeriodicalTypeViewModel> GetPeriodicalTypeViewModelList();
     }
 }

@@ -16,11 +16,13 @@ namespace PubLibIS.View.Controllers
     public class PeriodicalController : Controller
     {
         private IPeriodicalService service;
+        private PublishingHouseHelper publishingHouseHelper;
         private PeriodicalHelper periodicalHelper;
-        public PeriodicalController(IPeriodicalService service)
+        public PeriodicalController(IPeriodicalService service, IPublishingHouseService publishingHouseService)
         {
             this.service = service;
             periodicalHelper = new PeriodicalHelper(service);
+            publishingHouseHelper = new PublishingHouseHelper(publishingHouseService);
         }
 
         // GET: Author
@@ -44,7 +46,7 @@ namespace PubLibIS.View.Controllers
         {
             var model = service.GetPeriodicalViewModel(id);
 
-            model.PublishingHouseSelectList = periodicalHelper.GetPublishingHouseSelectList();
+            model.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList();
 
             return View(model);
         }
@@ -63,7 +65,7 @@ namespace PubLibIS.View.Controllers
             //}
             if (!ModelState.IsValid)
             {
-                periodical.PublishingHouseSelectList = periodicalHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
+                periodical.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
                 return View(periodical);
             }
             service.UpdatePeriodical(periodical);
@@ -81,7 +83,7 @@ namespace PubLibIS.View.Controllers
         {
             var model = new PeriodicalViewModel
             {
-                PublishingHouseSelectList = periodicalHelper.GetPublishingHouseSelectList()
+                PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList()
             };
 
             return View(model);
@@ -93,7 +95,7 @@ namespace PubLibIS.View.Controllers
         {
             if (!ModelState.IsValid)
             {
-                periodical.PublishingHouseSelectList = periodicalHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
+                periodical.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
 
                 return View(periodical);
             }

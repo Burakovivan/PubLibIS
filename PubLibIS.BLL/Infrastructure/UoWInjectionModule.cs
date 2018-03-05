@@ -1,6 +1,7 @@
-﻿using Ninject.Modules;
+﻿using AutoMapper;
+using Ninject.Modules;
 using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.UoW;
+using PubLibIS.DAL.UnitsOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,17 @@ using System.Threading.Tasks;
 
 namespace PubLibIS.BLL.Infrastructure
 {
-    public class UoWInjectionModule : NinjectModule
+    public class UnitOfWWorkInjectionModule : NinjectModule
     {
         private string connectionName;
-        public UoWInjectionModule(string connectionName)
+        public UnitOfWWorkInjectionModule(string connectionName)
         {
             this.connectionName = connectionName;
         }
         public override void Load()
         {
-            Bind<IUnitOfWork>().To<LibraryUoWEF>().WithConstructorArgument(connectionName);
+            Bind<IUnitOfWork>().To<LibraryUnitOfWorkEntityFramework>().WithConstructorArgument(connectionName);
+            Bind<IMapper>().ToConstant(MappingProfile.InitializeAutoMapper().CreateMapper());
         }
     }
 }

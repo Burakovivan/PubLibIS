@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Author</h4>
         <hr />
@@ -71,4 +71,16 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    $(document).ready(
+        () => {
+            setDatePickerTo("@nameof(Model.DateOfBirth)");
+            setDatePickerTo("@nameof(Model.DateOfDeath)");
+            $.validator.addMethod('date',
+                function (value, element) {
+                    return true;
+                });
+        });
+</script>
 }

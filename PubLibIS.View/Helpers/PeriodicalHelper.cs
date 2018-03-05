@@ -19,23 +19,7 @@ namespace PubLibIS.View.Helpers
 
         public int GetNextPeriodicalEditionNumber(int periodicalId)
         {
-            return service.GetNextNumberByPeriodicalId(periodicalId);
-        }
-
-        public SelectList GetPublishingHouseSelectList()
-        {
-            var houses = service.GetPublishingHouseViewModelSlimList();
-            return new SelectList(houses, "Id", "ListBoxInfo", houses.First());
-        }
-
-        public SelectList GetPublishingHouseSelectList(int? selectedPHouseid)
-        {
-            if (!selectedPHouseid.HasValue)
-            {
-                return GetPublishingHouseSelectList();
-            }
-            var houses = service.GetPublishingHouseViewModelSlimList();
-            return new SelectList(houses, "Id", "ListBoxInfo", houses.SingleOrDefault(ph => ph.Id == selectedPHouseid));
+            return service.GetNextEditionNumberByPeriodicalId(periodicalId);
         }
     }
 }

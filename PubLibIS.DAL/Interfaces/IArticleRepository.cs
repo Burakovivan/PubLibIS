@@ -1,4 +1,4 @@
-﻿using PubLibIS.DAL.Model;
+﻿using PubLibIS.DAL.Models;
 using System.Collections.Generic;
 
 namespace PubLibIS.DAL.Interfaces

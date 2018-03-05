@@ -1,7 +1,9 @@
 ﻿namespace PubLibIS.ViewModels
 {
-    public enum PeriodicalType
+    public class PeriodicalTypeViewModel
     {
-        magazine, newspaper
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
+    
 }

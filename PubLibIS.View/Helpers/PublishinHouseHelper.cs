@@ -6,16 +6,31 @@ using System.Web;
 using System.Web.Mvc;
 using PubLibIS.BLL.Interfaces;
 
-namespace PubLibIS.View
+namespace PubLibIS.View.Helpers
 {
-    public class PublishinHouseHelper
+    public class PublishingHouseHelper
     {
         private IPublishingHouseService service;
 
-        PublishinHouseHelper(IPublishingHouseService service)
+        public PublishingHouseHelper(IPublishingHouseService service)
         {
             this.service = service;
         }
-        //TODO:??? Maybe remove?
+
+        public SelectList GetPublishingHouseSelectList()
+        {
+            var houses = service.GetPublishingHouseViewModelSlimList();
+            return new SelectList(houses, "Id", "Description", houses.First());
+        }
+
+        public SelectList GetPublishingHouseSelectList(int? selectedPHouseid)
+        {
+            if (!selectedPHouseid.HasValue)
+            {
+                return GetPublishingHouseSelectList();
+            }
+            var houses = service.GetPublishingHouseViewModelSlimList();
+            return new SelectList(houses, "Id", "Description", houses.SingleOrDefault(ph => ph.Id == selectedPHouseid));
+        }
     }
 }

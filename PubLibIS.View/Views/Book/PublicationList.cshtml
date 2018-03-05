@@ -20,7 +20,7 @@
     </tr>
     @foreach (var item in Model.Item2)
     {
-        <tr id="pub_@item.Id" class="publication-row">
+        <tr id="pub_@item.Id" ondblclick="EditPublication(@item.Id)" class="publication-row">
             <td class="col-xs-5">
                 @Html.DisplayFor(modelItem => item.PublishingHouse.ListBoxInfo)
             </td>
@@ -50,12 +50,15 @@
             url: '/Book/RemovePublication/' + id,
             type: 'POST',
             complete: function () {
-                $('#publication-list').load('@Url.Action("PublicationList", new { id = Model.Item1 })');
+              $.get("@Url.Action("PublicationList", new { id = Model.Item1 }) #publication-list", function (data) {
+                    $("#publication-list").replaceWith(data);
+                });
             }
         })
     }
 
-     function EditPublication(id) {
+    function EditPublication(id) {
+       
         $('#pub_'+id).load('/Book/EditPublication/' + id);
      }
 </script>

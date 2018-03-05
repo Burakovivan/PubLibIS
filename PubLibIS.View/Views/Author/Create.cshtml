@@ -69,5 +69,15 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
+    <script>
+        $(document).ready(
+            () => {
+                setDatePickerTo("DateOfBirth");
+                setDatePickerTo("DateOfDeath");
+                $.validator.addMethod('date',
+                    function (value, element) {
+                        return true;
+                    });
+            });
+    </script>
 }

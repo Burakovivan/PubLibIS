@@ -41,7 +41,7 @@ namespace PubLibIS.View.Controllers
 
         public ActionResult Delete(int id)
         {
-            service.PublishingHouse(id);
+            service.DeletePublishingHouse(id);
             return RedirectToAction("Index");
         }
 

@@ -15,12 +15,15 @@ namespace PubLibIS.View.Controllers
 {
     public class BookController : Controller
     {
+        //TODO: RESOLVE HELPER's PROBLEM
         private AuthorHelper authorHelper;
-        private PublishinHouseHelper publishinHouseHelper;
+        private PublishingHouseHelper publishingHouseHelper;
         private IBookService service;
-        public BookController(IBookService service)
+        public BookController(IBookService service, IAuthorService authorService, IPublishingHouseService publishingHouseService)
         {
             this.service = service;
+            authorHelper = new AuthorHelper(authorService);
+            publishingHouseHelper = new PublishingHouseHelper(publishingHouseService);
         }
 
         // GET: Author
@@ -73,7 +76,7 @@ namespace PubLibIS.View.Controllers
 
         public ActionResult Delete(int id)
         {
-            service.UpdateBook(id);
+            service.DeleteBook(id);
             return RedirectToAction("Index");
         }
 
@@ -107,7 +110,7 @@ namespace PubLibIS.View.Controllers
             var pBook = new PublishedBookViewModel
             {
                 Book = book,
-                PublishingHouseSelectList = authorHelper.GetPublishingHouseSelectList()
+                PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList()
             };
             pBook.DateOfPublication = DateTime.Now;
             return PartialView(pBook);
@@ -138,7 +141,7 @@ namespace PubLibIS.View.Controllers
         public ActionResult EditPublication(int id)
         {
             var pBook = service.GetPublication(id);
-            pBook.PublishingHouseSelectList = authorHelper.GetPublishingHouseSelectList(pBook.PublishingHouse.Id);
+            pBook.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(pBook.PublishingHouse.Id);
             return PartialView(pBook);
         }
 
@@ -147,7 +150,7 @@ namespace PubLibIS.View.Controllers
         {
             if (!ModelState.IsValid)
             {
-                pBook.PublishingHouseSelectList = authorHelper.GetPublishingHouseSelectList(pBook.PublishingHouse.Id);
+                pBook.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(pBook.PublishingHouse.Id);
                 return PartialView(pBook);
             }
             service.UpdatePublication(pBook);

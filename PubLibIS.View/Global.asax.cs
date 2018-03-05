@@ -3,11 +3,8 @@ using Ninject.Modules;
 using PubLibIS.BLL.Infrastructure;
 using PubLibIS.View.Models.BindingModels;
 using PubLibIS.View.Util;
+using PubLibIS.ViewModels.Util;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -26,8 +23,10 @@ namespace PubLibIS.View
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.Add(typeof(ViewModels.BookViewModel), new BookModelBinder());
             ModelBinders.Binders.Add(typeof(ViewModels.PublishedBookViewModel), new PublishedBookModelBinder());
-
-            NinjectModule uowInj = new UoWInjectionModule("LibConnection");
+            var binder = new DateTimeModelBinder(CultureFormatsModule.GetCustomDateFormat());
+            ModelBinders.Binders.Add(typeof(DateTime), binder);
+            ModelBinders.Binders.Add(typeof(DateTime?), binder);
+            NinjectModule uowInj = new UnitOfWWorkInjectionModule("LibConnection");
 
             var kernel = new StandardKernel(uowInj);
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

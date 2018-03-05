@@ -13,7 +13,7 @@ namespace PubLibIS.BLL.Interfaces
         IEnumerable<PublishedBookViewModel> GetPublishedBookViewModelListByBook(int id);
         void UpdateBook(BookViewModel book);
         void UpdatePublication(PublishedBookViewModel pBook);
-        void UpdateBook(int id);
+        void DeleteBook(int id);
         void DeletePublication(int id);
     }
 }

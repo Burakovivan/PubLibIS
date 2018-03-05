@@ -49,7 +49,9 @@
 
                 }
                 else {
-                    $('#publication-list').load('@Url.Action("PublicationList", new { id = Model.Book.Id })')
+                    $.get("@Url.Action("PublicationList", new { id = Model.Book.Id }) #publication-list", function (data) {
+                        $("#publication-list").replaceWith(data);
+                    });
                 }
             }
             });
