@@ -19,7 +19,7 @@ namespace PubLibIS.ViewModels
         {
             get
             {
-                return $"{Address}. {Country}, {City}, {PostalCode}";
+                return $"{(string.IsNullOrEmpty(Address)?"":$"{Address}.")} {Country}, {City}{(string.IsNullOrEmpty(PostalCode) ? "" : $", {PostalCode}")}";
             }
         }
 

@@ -16,7 +16,7 @@ namespace PubLibIS.View.Models.BindingModels
             var valueProvider = bindingContext.ValueProvider;
 
             // получаем данные по одному полю
-            string sBookid = valueProvider.GetValue("Id").AttemptedValue;
+            string sBookid = valueProvider.GetValue("Id")?.AttemptedValue;
             int.TryParse(sBookid, out int bookId);
 
             // получаем данные по остальным полям

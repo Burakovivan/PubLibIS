@@ -10,7 +10,6 @@ namespace PubLibIS.DAL.Models
         public Author()
         {
             Books = new List<AuthorInBook>();
-            Articles = new List<Article>();
         }
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -23,6 +22,5 @@ namespace PubLibIS.DAL.Models
         public DateTime? DateOfDeath { get; set; }
 
         public virtual ICollection<AuthorInBook> Books { get; set; }
-        public virtual ICollection<Article> Articles { get; set; }
     }
 }

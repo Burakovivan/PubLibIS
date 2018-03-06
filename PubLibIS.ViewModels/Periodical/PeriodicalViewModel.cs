@@ -14,7 +14,7 @@ namespace PubLibIS.ViewModels
         public int Id { get; set; }
         public string ISSN { get; set; }
         public string Name { get; set; }
-        public PeriodicalViewModel Type { get; set; }
+        public PeriodicalTypeViewModel Type { get; set; }
         [CustomDataDisplayFormat]
         public DateTime Foundation { get; set; }
         public bool IsPublished { get; set; }
@@ -24,5 +24,10 @@ namespace PubLibIS.ViewModels
 
         public SelectList PublishingHouseSelectList { get; set; }
         public SelectList PeriodicalTypeSelectList { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
 }

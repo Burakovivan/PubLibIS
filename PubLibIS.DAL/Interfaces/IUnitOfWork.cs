@@ -8,7 +8,6 @@ namespace PubLibIS.DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IArticleRepository Articles { get; }
         IAuthorRepository Authors { get; }
         IBookRepository Books { get; }
         IBrochureRepository Brochures { get; }
@@ -17,5 +16,7 @@ namespace PubLibIS.DAL.Interfaces
         IPublishingHouseRepository PublishingHouses { get; }
         IPublishedBookRepository PublishedBooks { get; }
         void Save();
+        void TurnOffProxy();
+        void TurnOnProxy();
     }
 }

@@ -37,7 +37,7 @@ namespace PubLibIS.View.Controllers
         public ActionResult Details(int id)
         {
             var model = service.GetPeriodicalViewModel(id);
-            model.PeriodicalEditions = service.GetPeriodicalEditionViewModelByPeriodicalId(id);
+            model.PeriodicalEditions = service.GetPeriodicalEditionViewModelListByPeriodicalId(id);
             return View(model);
         }
 
@@ -46,7 +46,8 @@ namespace PubLibIS.View.Controllers
         {
             var model = service.GetPeriodicalViewModel(id);
 
-            model.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList();
+            model.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(model.PublishingHouse?.Id);
+            model.PeriodicalTypeSelectList = periodicalHelper.GetPeriodicalTypeViewModelSelectList(model.Type?.Id);
 
             return View(model);
         }
@@ -66,6 +67,7 @@ namespace PubLibIS.View.Controllers
             if (!ModelState.IsValid)
             {
                 periodical.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
+                periodical.PeriodicalTypeSelectList = periodicalHelper.GetPeriodicalTypeViewModelSelectList(periodical.Type?.Id);
                 return View(periodical);
             }
             service.UpdatePeriodical(periodical);
@@ -83,7 +85,8 @@ namespace PubLibIS.View.Controllers
         {
             var model = new PeriodicalViewModel
             {
-                PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList()
+                PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(),
+                PeriodicalTypeSelectList = periodicalHelper.GetPeriodicalTypeViewModelSelectList()
             };
 
             return View(model);
@@ -96,6 +99,7 @@ namespace PubLibIS.View.Controllers
             if (!ModelState.IsValid)
             {
                 periodical.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
+                periodical.PeriodicalTypeSelectList = periodicalHelper.GetPeriodicalTypeViewModelSelectList();
 
                 return View(periodical);
             }
@@ -104,7 +108,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateEdition(int id)
+        public ActionResult CreatePeriodicalEdition(int id)
         {
             var edition = new PeriodicalEditionViewModel
             {
@@ -116,7 +120,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateEdition(PeriodicalEditionViewModel edition)
+        public ActionResult CreatePeriodicalEdition(PeriodicalEditionViewModel edition)
         {
             if (!ModelState.IsValid)
             {
@@ -126,10 +130,10 @@ namespace PubLibIS.View.Controllers
             return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
         }
 
-        public ActionResult PeriodicalEditionList(int periodicalId)
+        public ActionResult PeriodicalEditionList(int id)
         {
-            var editions = service.GetPeriodicalEditionViewModelByPeriodicalId(periodicalId);
-            var model = new Tuple<int, IEnumerable<PeriodicalEditionViewModel>>(periodicalId, editions);
+            var editions = service.GetPeriodicalEditionViewModelListByPeriodicalId(id);
+            var model = new Tuple<int, IEnumerable<PeriodicalEditionViewModel>>(id, editions);
             return PartialView( model);
         }
 
@@ -139,9 +143,9 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditPeriodicalEdition(int editionId)
+        public ActionResult EditPeriodicalEdition(int id)
         {
-            var periodical = service.GetPeriodicalViewModel(editionId);
+            var periodical = service.GetPeriodicalEditionViewModel(id);
             return PartialView(periodical);
         }
 

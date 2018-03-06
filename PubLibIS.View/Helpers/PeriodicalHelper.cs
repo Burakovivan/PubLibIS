@@ -21,5 +21,22 @@ namespace PubLibIS.View.Helpers
         {
             return service.GetNextEditionNumberByPeriodicalId(periodicalId);
         }
+
+        public SelectList GetPeriodicalTypeViewModelSelectList()
+        {
+            var typeList = service.GetPeriodicalTypeViewModelList();
+            return new SelectList(typeList, "Id", "Name");
+        }
+
+        public SelectList GetPeriodicalTypeViewModelSelectList(int? typeId)
+        {
+            if (!typeId.HasValue)
+                return GetPeriodicalTypeViewModelSelectList();
+
+            var typeList = service.GetPeriodicalTypeViewModelList();
+            return new SelectList(typeList, "Id", "Name", typeList.FirstOrDefault(t=>t.Id == typeId));
+
+        }
+
     }
 }

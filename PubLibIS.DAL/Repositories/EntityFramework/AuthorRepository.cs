@@ -23,28 +23,33 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int authtorId)
         {
-            var authtor = Read(authtorId);
+            var authtor = Get(authtorId);
             context.Authors.Remove(authtor);
         }
 
-        public Author Read(int authtorId)
+        public Author Get(int authtorId)
         {
             return context.Authors.Find(authtorId);
         }
 
-        public IEnumerable<Author> Read()
+        public IEnumerable<Author> Get()
         {
             return context.Authors.ToList();
         }
 
-        public IEnumerable<Author> Read(int skip, int take)
+        public IEnumerable<Author> Get(IEnumerable<int> ids)
+        {
+            return context.Authors.Where(a => ids.Contains(a.Id)).ToList().Cast<Author>();
+        }
+
+        public IEnumerable<Author> Get(int skip, int take)
         {
             return context.Authors.Skip(skip).Take(take).AsEnumerable();
         }
 
         public void Update(Author authtor)
         {
-            var current = Read(authtor.Id);
+            var current = Get(authtor.Id);
             context.Entry(current).CurrentValues.SetValues(authtor);
         }
     }

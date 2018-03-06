@@ -1,0 +1,65 @@
+﻿@model Tuple<int, IEnumerable<PubLibIS.ViewModels.PeriodicalEditionViewModel>>
+
+
+<table class="table" id="edition-list">
+
+    <tr>
+        <th class="col-xs-5">
+            Number
+        </th>
+        <th class="col-xs-3">
+            Date
+        </th>
+        <th class="col-xs-3">
+            Circulation
+        </th>
+        <th class="col-xs-1 "></th>
+    </tr>
+    <tr id="create-edition">
+        <td id="add-edition" colspan="4" class="label label-success col-xs-12"><span class="glyphicon glyphicon-plus-sign"></span></td>
+    </tr>
+    @foreach (var item in Model.Item2)
+    {
+        <tr id="per_@item.Id" ondblclick="EditPeriodicalEdition(@item.Id)" class="publication-row">
+            <td class="col-xs-5">
+                @Html.DisplayFor(modelItem => item.ReleaseNumber)
+            </td>
+            <td class="col-xs-3">
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td class="col-xs-3">
+                @Html.DisplayFor(modelItem => item.Circulation)
+            </td>
+            <td class="col-xs-1 controls">
+                <a href="#" class="edit" onclick="EditPeriodicalEdition(@item.Id)"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="#" class="remove" onclick="RemovePeriodicalEdition(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
+            </td>
+        </tr>
+    }
+</table>
+<script>
+    $(document).ready(function () {
+        $('#add-edition').click(function () {
+            $('#create-edition').load('@Url.Action("CreatePeriodicalEdition", new { id = Model.Item1 })');
+        });
+    });
+
+    function RemovePeriodicalEdition(id) {
+        $.ajax({
+            url: '/periodical/RemovePeriodicalEdition/' + id,
+            type: 'POST',
+            complete: function () {
+              $.get("@Url.Action("PeriodicalEditionList", new { id = Model.Item1 }) #edition-list", function (data) {
+                    $("#edition-list").replaceWith(data);
+                });
+            }
+        })
+    }
+
+    function EditPeriodicalEdition(id) {
+       
+        $('#per_'+id).load('/periodical/EditPeriodicalEdition/' + id);
+     }
+</script>
+
+

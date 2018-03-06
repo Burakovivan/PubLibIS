@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PubLibIS.ViewModels.Attributes;
+using System;
+using System.Web.Mvc;
 
 namespace PubLibIS.ViewModels
 {
@@ -11,10 +9,12 @@ namespace PubLibIS.ViewModels
         public int Id { get; set; }
         public string Capation { get; set; }
         public int Volume { get; set; }
+        [CustomDataDisplayFormat]
         public DateTime ReleaseDate { get; set; }
         public int Circulation { get; set; }//тираж
 
 
         public PublishingHouseViewModel PublishingHouse { get; set; }
+        public SelectList PublishingHouseSelectList { get; set; }
     }
 }

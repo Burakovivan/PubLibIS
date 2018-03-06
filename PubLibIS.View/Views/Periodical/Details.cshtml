@@ -33,7 +33,20 @@
         <dd>
             @Html.DisplayFor(model => model.Foundation)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.Type.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishingHouse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishingHouse.ListBoxInfo)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.IsPublished)
         </dt>
@@ -44,6 +57,8 @@
 
     </dl>
 </div>
+<h1>Editions:</h1>
+@Html.Action("PeriodicalEditionList", new { id = Model.Id })
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

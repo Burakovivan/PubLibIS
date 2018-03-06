@@ -7,7 +7,6 @@ namespace PubLibIS.DAL.Models
     {
         public PeriodicalEdition()
         {
-            Articles = new List<Article>();
         }
         public int Id { get; set; }
         public int ReleaseNumber { get; set; }
@@ -16,6 +15,5 @@ namespace PubLibIS.DAL.Models
 
             
         public virtual Periodical Periodical { get; set; }
-        public virtual ICollection<Article> Articles { get; set; }
     }
 }

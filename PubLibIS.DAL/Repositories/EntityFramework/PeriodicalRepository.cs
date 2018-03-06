@@ -45,6 +45,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public void Update(Periodical periodical)
         {
             var current = Read(periodical.Id);
+            current.PublishingHouse = context.PublishingHouses.Find(periodical.PublishingHouse.Id);
             context.Entry(current).CurrentValues.SetValues(periodical);
         }
     }

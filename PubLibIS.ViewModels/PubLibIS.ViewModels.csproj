@@ -64,12 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Article\ArticleViewModel.cs" />
+    <Compile Include="PeriodicalEdition\PeriodicalEditionViewModel.cs" />
     <Compile Include="Util\Attributes\CustomDataDisplayFormat.cs" />
     <Compile Include="Author\AuthorViewModel.cs" />
     <Compile Include="Book\BookViewModel.cs" />
     <Compile Include="Book\BookViewModelSlim.cs" />
     <Compile Include="Brochure\BrochureViewModel.cs" />
-    <Compile Include="PeriodicalEdition\PeriodicalEdition.cs" />
     <Compile Include="Periodical\PeriodicalType.cs" />
     <Compile Include="Periodical\PeriodicalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

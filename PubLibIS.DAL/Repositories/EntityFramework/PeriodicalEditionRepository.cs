@@ -17,6 +17,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public int Create(PeriodicalEdition periodicalEdition)
         {
+            periodicalEdition.Periodical = context.Periodicals.Find(periodicalEdition.Periodical.Id);
             context.PeriodicalEditions.Add(periodicalEdition);
             context.SaveChanges();
             return periodicalEdition.Id;
@@ -50,12 +51,13 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public void Update(PeriodicalEdition periodicalEdition)
         {
             var current = Read(periodicalEdition.Id);
+            current.Periodical = context.Periodicals.Find(periodicalEdition.Periodical.Id);
             context.Entry(current).CurrentValues.SetValues(periodicalEdition);
         }
 
-        public IEnumerable<PeriodicalEdition> Where(Func<PeriodicalEdition, bool> predicate)
+        public IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int id)
         {
-            return context.PeriodicalEditions.Where(predicate).AsEnumerable();
+            return context.Periodicals.Find(id).PeriodicalEditions.ToList();
         }
     }
 }

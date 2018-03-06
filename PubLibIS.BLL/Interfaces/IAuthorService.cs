@@ -5,11 +5,13 @@ namespace PubLibIS.BLL.Interfaces
 {
     public interface IAuthorService
     {
-        int Create(AuthorViewModel author);
-        void Delete(int id);
+        int CreateAuthor(AuthorViewModel author);
+        void DeleteAuthor(int id);
         AuthorViewModel GetAuthorViewModel(int id);
         IEnumerable<AuthorViewModel> GetAuthorViewModelList();
-        void Update(AuthorViewModel author);
+        void UpdateAuthor(AuthorViewModel author);
         IEnumerable<int> GetAuthorIdListByBook(int id);
+        string GetAuthorJson(IEnumerable<int> idList); 
+        void SetAuthorJson(string json);
     }
 }

@@ -6,9 +6,10 @@ namespace PubLibIS.DAL.Interfaces
     public interface IAuthorRepository
     {
         int Create(Author auhtor);
-        Author Read(int authorId);
-        IEnumerable<Author> Read();
-        IEnumerable<Author> Read(int skip, int take);
+        Author Get(int authorId);
+        IEnumerable<Author> Get();
+        IEnumerable<Author> Get(IEnumerable<int> ids);
+        IEnumerable<Author> Get(int skip, int take);
         void Update(Author author);
         void Delete(int authorId);
     }

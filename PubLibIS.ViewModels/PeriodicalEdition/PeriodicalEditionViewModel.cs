@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PubLibIS.ViewModels.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace PubLibIS.ViewModels
 
         public int Id { get; set; }
         public int ReleaseNumber { get; set; }
+        [CustomDataDisplayFormat]
         public DateTime ReleaseDate { get; set; }
         public int Circulation { get; set; }//тираж
 

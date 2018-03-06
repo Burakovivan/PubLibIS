@@ -22,10 +22,8 @@
 <script>
     $(document).ready(
         () => {
-            $('#PublishingHouse_Id').ready($('#PublishingHouse_Id').chosen());
-            $('#DateOfPublication').ready($('#DateOfPublication').datepicker({
-                format: "dd.mm.yyyy",
-            }));
+            $('#PublishingHouse_Id').chosen();
+            setDatePickerTo("DateOfPublication");
 
             $('#submit-publication').ready($('#submit-publication').click(function (e) {
                 e.preventDefault();

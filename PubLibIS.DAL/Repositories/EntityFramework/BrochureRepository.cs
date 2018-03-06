@@ -36,12 +36,12 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public IEnumerable<Brochure> Read()
         {
-            return context.Brochures.AsEnumerable();
+            return context.Brochures.ToList();
         }
 
         public IEnumerable<Brochure> Read(int skip, int take)
         {
-            return context.Brochures.Skip(skip).Take(take).AsEnumerable();
+            return context.Brochures.Skip(skip).Take(take).ToList();
         }
 
         public void Update(Brochure brochure)

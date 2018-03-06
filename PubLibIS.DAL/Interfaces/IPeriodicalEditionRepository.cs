@@ -13,7 +13,7 @@ namespace PubLibIS.DAL.Interfaces
         IEnumerable<PeriodicalEdition> ReadByPeriodicalId(int periodicalId);
         void Update(PeriodicalEdition periodicalEdition);
         void Delete(int periodicalEditionId);
+        IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int id);
 
-        IEnumerable<PeriodicalEdition> Where(Func<PeriodicalEdition, bool> predicate);
     }
 }

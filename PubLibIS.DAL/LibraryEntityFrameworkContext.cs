@@ -9,8 +9,7 @@ namespace PubLibIS.DAL
         {
             Database.SetInitializer(new LibraryInitializer());
         }
-
-        public DbSet<Article> Articles { get; set; }
+        
         public DbSet<Author> Authors { get; set; }
         public DbSet<AuthorInBook> AuthorsInBooks { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -23,6 +22,28 @@ namespace PubLibIS.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Properties<System.DateTime>().Configure(c => c.HasColumnType("datetime2"));
+
+            modelBuilder.Entity<PublishedBook>()
+                .HasOptional(pb => pb.Book)
+                .WithMany()
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<PublishedBook>()
+                .HasOptional(pb => pb.PublishingHouse)
+                .WithMany()
+                .WillCascadeOnDelete(true);
+
+
+            modelBuilder.Entity<Periodical>()
+               .HasOptional(p => p.PublishingHouse)
+               .WithMany()
+               .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Brochure>()
+               .HasOptional(p => p.PublishingHouse)
+               .WithMany()
+               .WillCascadeOnDelete(true);
+
             base.OnModelCreating(modelBuilder);
         }
 

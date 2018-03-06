@@ -6,6 +6,7 @@ using System.Linq;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
 using PubLibIS.DAL.Models;
+using Newtonsoft.Json;
 
 namespace PubLibIS.BLL.Services
 {
@@ -22,33 +23,33 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<AuthorViewModel> GetAuthorViewModelList()
         {
-            var authors = db.Authors.Read();
-            return mapper.Map<IEnumerable<Author>,IEnumerable< AuthorViewModel>>(authors);
+            var authors = db.Authors.Get();
+            return mapper.Map<IEnumerable<Author>, IEnumerable<AuthorViewModel>>(authors);
         }
 
         public AuthorViewModel GetAuthorViewModel(int id)
         {
-            var author = db.Authors.Read(id);
+            var author = db.Authors.Get(id);
             return mapper.Map<Author, AuthorViewModel>(author);
         }
 
-        public void Delete(int id)
+        public void DeleteAuthor(int id)
         {
             db.Authors.Delete(id);
             db.Save();
         }
 
-        public void Update(AuthorViewModel author)
+        public void UpdateAuthor(AuthorViewModel author)
         {
             var mappedAuthor = mapper.Map<AuthorViewModel, Author>(author);
             db.Authors.Update(mappedAuthor);
             db.Save();
         }
 
-        public int Create(AuthorViewModel author)
+        public int CreateAuthor(AuthorViewModel author)
         {
             var mappedAuthor = mapper.Map<AuthorViewModel, Author>(author);
-            var newId =  db.Authors.Create(mappedAuthor);
+            var newId = db.Authors.Create(mappedAuthor);
             db.Save();
             return newId;
         }
@@ -58,6 +59,18 @@ namespace PubLibIS.BLL.Services
             return db.Books.Read(id).Authors.Select(x => x.Author.Id);
         }
 
-        
+        public string GetAuthorJson(IEnumerable<int> idList)
+        {
+            db.TurnOffProxy();
+            var authorProxyList = db.Authors.Get(idList);
+            var result = JsonConvert.SerializeObject(authorProxyList, Formatting.Indented);
+            db.TurnOnProxy();
+            return result;
+        }
+
+        public void SetAuthorJson(string json)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

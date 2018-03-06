@@ -24,6 +24,7 @@ namespace PubLibIS.BLL.Services
         public IEnumerable<PeriodicalViewModel> GetPeriodicalViewModelList()
         {
             var periodicals = db.Periodicals.Read();
+            var ptvm = mapper.Map<PeriodicalType, PeriodicalTypeViewModel>(PeriodicalType.magazine);
             return mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals);
         }
 
@@ -57,14 +58,15 @@ namespace PubLibIS.BLL.Services
         public int GetNextEditionNumberByPeriodicalId(int periodicalId)
         {
             var editions = db.PeriodicalEditions.ReadByPeriodicalId(periodicalId);
-            return editions.Select(x => x.ReleaseNumber).Max() + 1;
+            return editions.Any()? editions.Select(x => x.ReleaseNumber).Max() + 1: 1;
         }
         
              
 
-        public IEnumerable<PeriodicalEditionViewModel> GetPeriodicalEditionViewModelByPeriodicalId(int periodicalId)
+        public IEnumerable<PeriodicalEditionViewModel> GetPeriodicalEditionViewModelListByPeriodicalId(int periodicalId)
         {
-            var periodical = db.PeriodicalEditions.Where(pe => pe.Periodical.Id == periodicalId);
+            var periodical = db.PeriodicalEditions.GetPeriodicalEditionByPeriodicalId(periodicalId);
+            periodical = periodical.OrderBy(p => p.ReleaseNumber).ToList();
             return mapper.Map<IEnumerable<PeriodicalEdition>, IEnumerable<PeriodicalEditionViewModel>>(periodical);
         }
 
@@ -93,11 +95,17 @@ namespace PubLibIS.BLL.Services
             var typesList = new List<PeriodicalTypeViewModel>();
             foreach(var name in Enum.GetNames(typeof(PeriodicalType)))
             {
-                if (Enum.TryParse(name, true, out int id))
-                    typesList.Add(new PeriodicalTypeViewModel {Id = id, Name = name });
+                if (Enum.TryParse(name, true, out PeriodicalType pt))
+                    typesList.Add(new PeriodicalTypeViewModel {Id = (int)pt, Name = name });
             }
             return typesList;
 
+        }
+
+        public PeriodicalEditionViewModel GetPeriodicalEditionViewModel(int id)
+        {
+            var pe = db.PeriodicalEditions.Read(id);
+            return mapper.Map<PeriodicalEdition, PeriodicalEditionViewModel>(pe);
         }
     }
 }

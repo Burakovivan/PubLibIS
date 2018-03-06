@@ -2,6 +2,6 @@
 {
     public enum PeriodicalType
     {
-        magazine, newspaper
+        none = 0, magazine = 1, newspaper = 2, newsreel = 3
     }
 }

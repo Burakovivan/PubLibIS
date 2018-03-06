@@ -28,9 +28,9 @@ namespace PubLibIS.View.Util
         }
         private void AddBindings()
         {
-            kernel.Bind<IArticleService>().To<ArticleService>();
             kernel.Bind<IAuthorService>().To<AuthorService>();
             kernel.Bind<IBookService>().To<BookService>();
+            kernel.Bind<IBrochureService>().To<BrochureService>();
             kernel.Bind<IPeriodicalService>().To<PeriodicalService>();
             kernel.Bind<IPublishingHouseService>().To<PublishingHouseService>();
         }

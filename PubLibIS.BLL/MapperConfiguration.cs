@@ -11,11 +11,10 @@ namespace PubLibIS.BLL
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new ArticleMappingProfile());  
+                cfg.AddProfile(new PeriodicalMappingProfile());
                 cfg.AddProfile(new AuthorMappingProfile());  
                 cfg.AddProfile(new BookMappingProfile());  
                 cfg.AddProfile(new BrochureMappingProfile());
-                cfg.AddProfile(new PeriodicalMappingProfile());
                 cfg.AddProfile(new PublishingHouseMappingProfile());
             });
 

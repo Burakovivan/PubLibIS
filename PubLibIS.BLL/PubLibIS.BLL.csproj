@@ -97,18 +97,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\UoWInjectionModule.cs" />
-    <Compile Include="MappingProfiles\ArticleMappingProfile.cs" />
     <Compile Include="MappingProfiles\AuthorMappingProfile.cs" />
     <Compile Include="MappingProfiles\BookMappingProfile.cs" />
     <Compile Include="MappingProfiles\BrochureMappingProfile.cs" />
     <Compile Include="MappingProfiles\PeriodicalMappingProfile.cs" />
     <Compile Include="MappingProfiles\PublishingHouseMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\BookService.cs" />
     <Compile Include="Services\BrochureService.cs" />
-    <Compile Include="Interfaces\IArticleService.cs" />
     <Compile Include="Interfaces\IBookService.cs" />
     <Compile Include="Interfaces\IBrochureService.cs" />
     <Compile Include="Interfaces\IPeriodicalService.cs" />

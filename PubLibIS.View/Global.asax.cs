@@ -23,6 +23,7 @@ namespace PubLibIS.View
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.Add(typeof(ViewModels.BookViewModel), new BookModelBinder());
             ModelBinders.Binders.Add(typeof(ViewModels.PublishedBookViewModel), new PublishedBookModelBinder());
+           // ModelBinders.Binders.Add(typeof(ViewModels.PeriodicalViewModel), new PeriodicalModelBinder());
             var binder = new DateTimeModelBinder(CultureFormatsModule.GetCustomDateFormat());
             ModelBinders.Binders.Add(typeof(DateTime), binder);
             ModelBinders.Binders.Add(typeof(DateTime?), binder);

@@ -54,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IArticleRepository.cs" />
     <Compile Include="Interfaces\IAuthorInBookRepository.cs" />
     <Compile Include="Interfaces\IAuthorRepository.cs" />
     <Compile Include="Interfaces\IBookRepository.cs" />
@@ -65,7 +64,6 @@
     <Compile Include="Interfaces\IPublishingHouseRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="LibraryEntityFrameworkContext.cs" />
-    <Compile Include="Repositories\EntityFramework\ArticleRepository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorInBookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorRepository.cs" />
     <Compile Include="Repositories\EntityFramework\BookRepository.cs" />
@@ -74,12 +72,11 @@
     <Compile Include="Repositories\EntityFramework\PeriodicalRepository.cs" />
     <Compile Include="Repositories\EntityFramework\PublishedBookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\PublishingHouseRepository.cs" />
-    <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\AuthorInBook.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Brochure.cs" />
-    <Compile Include="Models\LibraryInitializer.cs" />
+    <Compile Include="LibraryInitializer.cs" />
     <Compile Include="Models\Periodical.cs" />
     <Compile Include="Models\PeriodicalEdition.cs" />
     <Compile Include="Models\PeriodicalType.cs" />

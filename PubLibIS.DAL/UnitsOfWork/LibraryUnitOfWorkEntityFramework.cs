@@ -13,7 +13,6 @@ namespace PubLibIS.DAL.UnitsOfWork
             db = new LibraryEntityFrameworkContext(connectionName);
         }
 
-        private ArticleRepository articleRepository;
         private AuthorRepository authorRepository;
         private BookRepository bookRepository;
         private BrochureRepository brochureRepository;
@@ -22,15 +21,6 @@ namespace PubLibIS.DAL.UnitsOfWork
         private PublishingHouseRepository publishingHouseRepository;
         private PublishedBookRepository publishedBookRepository;
 
-        public IArticleRepository Articles
-        {
-            get
-            {
-                if (articleRepository == null)
-                    articleRepository = new ArticleRepository(db);
-                return articleRepository;
-            }
-        }
 
         public IAuthorRepository Authors
         {
@@ -104,6 +94,15 @@ namespace PubLibIS.DAL.UnitsOfWork
         public void Save()
         {
             db.SaveChanges();
+        }
+
+        public void TurnOffProxy()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+        }
+        public void TurnOnProxy()
+        {
+            db.Configuration.ProxyCreationEnabled = true;
         }
 
         public virtual void Dispose(bool disposing)

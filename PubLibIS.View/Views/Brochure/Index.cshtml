@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PubLibIS.ViewModels.PeriodicalViewModel>
+﻿@model IEnumerable<PubLibIS.ViewModels.BrochureViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,45 +12,40 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ISSN)
+            @Html.DisplayNameFor(model => model.Capation)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Volume)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Foundation)
+            @Html.DisplayNameFor(model => model.ReleaseDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PublishingHouse)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsPublished)
+            @Html.DisplayNameFor(model => model.Circulation)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ISSN)
+            @Html.DisplayFor(modelItem => item.Capation)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => item.Volume)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Foundation)
+            @Html.DisplayFor(modelItem => item.ReleaseDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PublishingHouse.ListBoxInfo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Type.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsPublished)
+            @Html.DisplayFor(modelItem => item.Circulation)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
@@ -58,6 +53,6 @@
             @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
-}
+    }
 
 </table>

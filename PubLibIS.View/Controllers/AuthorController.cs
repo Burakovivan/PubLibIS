@@ -37,13 +37,13 @@ namespace PubLibIS.View.Controllers
         [HttpPost]
         public ActionResult Edit(AuthorViewModel author)
         {
-            service.Update(author);
+            service.UpdateAuthor(author);
             return RedirectToAction("Details", new { id = author.Id });
         }
 
         public ActionResult Delete(int id)
         {
-            service.Delete(id);
+            service.DeleteAuthor(id);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -59,7 +59,7 @@ namespace PubLibIS.View.Controllers
             {
                 return View(author);
             }
-            var id = service.Create(author);
+            var id = service.CreateAuthor(author);
             return RedirectToAction("Details", new { id });
         }
 
