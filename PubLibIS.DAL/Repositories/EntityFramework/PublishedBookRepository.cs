@@ -26,33 +26,33 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int pBookId)
         {
-            var pBook = Read(pBookId);
+            var pBook = Get(pBookId);
             context.PublishedBooks.Remove(pBook);
         }
 
-        public PublishedBook Read(int pBookId)
+        public PublishedBook Get(int pBookId)
         {
             return context.PublishedBooks.Find(pBookId);
         }
 
-        public IEnumerable<PublishedBook> ReadByBookId(int bookId)
+        public IEnumerable<PublishedBook> GetByBookId(int bookId)
         {
             return context.PublishedBooks.Where(pb => pb.Book.Id == bookId).OrderByDescending(x=>x.Id).ToList();
         }
 
-        public IEnumerable<PublishedBook> Read()
+        public IEnumerable<PublishedBook> Get()
         {
             return context.PublishedBooks.AsEnumerable();
         }
 
-        public IEnumerable<PublishedBook> Read(int skip, int take)
+        public IEnumerable<PublishedBook> Get(int skip, int take)
         {
             return context.PublishedBooks.Skip(skip).Take(take).AsEnumerable();
         }
 
         public void Update(PublishedBook pBook)
         {
-            var current = Read(pBook.Id);
+            var current = Get(pBook.Id);
             current.PublishingHouse = context.PublishingHouses.Find(pBook.PublishingHouse.Id);
             context.Entry(current).CurrentValues.SetValues(pBook);
         }

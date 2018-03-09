@@ -20,6 +20,7 @@ namespace PubLibIS.DAL.UnitsOfWork
         private PeriodicalEditionRepository periodicalEditionRepository;
         private PublishingHouseRepository publishingHouseRepository;
         private PublishedBookRepository publishedBookRepository;
+        private AuthorInBookRepository authorInBookRepository;
 
 
         public IAuthorRepository Authors
@@ -29,6 +30,15 @@ namespace PubLibIS.DAL.UnitsOfWork
                 if (authorRepository == null)
                     authorRepository = new AuthorRepository(db);
                 return authorRepository;
+            }
+        }
+        public IAuthorInBookRepository AuthorsInBooks
+        {
+            get
+            {
+                if (authorInBookRepository == null)
+                    authorInBookRepository = new AuthorInBookRepository(db);
+                return authorInBookRepository;
             }
         }
 
@@ -96,15 +106,7 @@ namespace PubLibIS.DAL.UnitsOfWork
             db.SaveChanges();
         }
 
-        public void TurnOffProxy()
-        {
-            db.Configuration.ProxyCreationEnabled = false;
-        }
-        public void TurnOnProxy()
-        {
-            db.Configuration.ProxyCreationEnabled = true;
-        }
-
+       
         public virtual void Dispose(bool disposing)
         {
             if (!disposed)

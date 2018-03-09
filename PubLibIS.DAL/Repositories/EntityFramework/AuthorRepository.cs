@@ -39,7 +39,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public IEnumerable<Author> Get(IEnumerable<int> ids)
         {
-            return context.Authors.Where(a => ids.Contains(a.Id)).ToList().Cast<Author>();
+            return context.Authors.Where(a => ids.Contains(a.Id)).ToList();
         }
 
         public IEnumerable<Author> Get(int skip, int take)

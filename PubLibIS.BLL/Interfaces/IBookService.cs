@@ -3,7 +3,7 @@ using PubLibIS.ViewModels;
 
 namespace PubLibIS.BLL.Interfaces
 {
-    public interface IBookService
+    public interface IBookService: IJsonProcessor
     {
         int Create(BookViewModel book);
         int CreatePublication(PublishedBookViewModel pBook);

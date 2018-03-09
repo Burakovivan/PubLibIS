@@ -23,14 +23,14 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PeriodicalViewModel> GetPeriodicalViewModelList()
         {
-            var periodicals = db.Periodicals.Read();
+            var periodicals = db.Periodicals.Get();
             var ptvm = mapper.Map<PeriodicalType, PeriodicalTypeViewModel>(PeriodicalType.magazine);
             return mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals);
         }
 
         public PeriodicalViewModel GetPeriodicalViewModel(int id)
         {
-            var periodical = db.Periodicals.Read(id);
+            var periodical = db.Periodicals.Get(id);
             return mapper.Map<Periodical, PeriodicalViewModel>(periodical);
         }
 
@@ -57,7 +57,7 @@ namespace PubLibIS.BLL.Services
 
         public int GetNextEditionNumberByPeriodicalId(int periodicalId)
         {
-            var editions = db.PeriodicalEditions.ReadByPeriodicalId(periodicalId);
+            var editions = db.PeriodicalEditions.GetByPeriodicalId(periodicalId);
             return editions.Any()? editions.Select(x => x.ReleaseNumber).Max() + 1: 1;
         }
         
@@ -104,8 +104,18 @@ namespace PubLibIS.BLL.Services
 
         public PeriodicalEditionViewModel GetPeriodicalEditionViewModel(int id)
         {
-            var pe = db.PeriodicalEditions.Read(id);
+            var pe = db.PeriodicalEditions.Get(id);
             return mapper.Map<PeriodicalEdition, PeriodicalEditionViewModel>(pe);
+        }
+
+        public string GetJson(IEnumerable<int> idList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetJson(string IdList)
+        {
+            throw new NotImplementedException();
         }
     }
 }

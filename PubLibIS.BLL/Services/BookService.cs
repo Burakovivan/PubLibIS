@@ -6,6 +6,7 @@ using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
 using PubLibIS.DAL.Models;
+using Newtonsoft.Json;
 
 namespace PubLibIS.BLL.Services
 {
@@ -22,13 +23,13 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<BookViewModel> GetBookViewModelList()
         {
-            var books = db.Books.Read();
+            var books = db.Books.Get();
             return mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModel>>(books);
         }
 
         public BookViewModel Get(int id)
         {
-            var book = db.Books.Read(id);
+            var book = db.Books.Get(id);
             return mapper.Map<Book, BookViewModel>(book);
         }
 
@@ -65,7 +66,7 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PublishedBookViewModel> GetPublishedBookViewModelListByBook(int id)
         {
-            var publications = db.PublishedBooks.ReadByBookId(id);
+            var publications = db.PublishedBooks.GetByBookId(id);
             return mapper.Map<IEnumerable<PublishedBook>, IEnumerable<PublishedBookViewModel>>(publications);
         }
 
@@ -77,7 +78,7 @@ namespace PubLibIS.BLL.Services
 
         public PublishedBookViewModel GetPublication(int id)
         {
-            var publication = db.PublishedBooks.Read(id);
+            var publication = db.PublishedBooks.Get(id);
             return mapper.Map<PublishedBook, PublishedBookViewModel>(publication);
         }
 
@@ -86,6 +87,17 @@ namespace PubLibIS.BLL.Services
             var mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
             db.PublishedBooks.Update(mappedPublication);
             db.Save();
+        }
+        public string GetJson(IEnumerable<int> idList)
+        {
+            var bookList = db.Books.Get(idList);
+            var result = JsonConvert.SerializeObject(bookList, Formatting.Indented);
+            return result;
+        }
+
+        public void SetJson(string json)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

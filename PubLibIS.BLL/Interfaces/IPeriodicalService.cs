@@ -3,7 +3,7 @@ using PubLibIS.ViewModels;
 
 namespace PubLibIS.BLL.Interfaces
 {
-    public interface IPeriodicalService
+    public interface IPeriodicalService: IJsonProcessor
     {
         int CreatePeriodical(PeriodicalViewModel periodical);
         void CreatePeriodicalEdition(PeriodicalEditionViewModel edition);

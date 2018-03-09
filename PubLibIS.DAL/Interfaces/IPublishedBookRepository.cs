@@ -10,10 +10,10 @@ namespace PubLibIS.DAL.Interfaces
     public interface IPublishedBookRepository
     {
         int Create(PublishedBook pBook);
-        PublishedBook Read(int pBookId);
-        IEnumerable<PublishedBook> Read();
-        IEnumerable<PublishedBook> ReadByBookId(int bookId);
-        IEnumerable<PublishedBook> Read(int skip, int take);
+        PublishedBook Get(int pBookId);
+        IEnumerable<PublishedBook> Get();
+        IEnumerable<PublishedBook> GetByBookId(int bookId);
+        IEnumerable<PublishedBook> Get(int skip, int take);
         void Update(PublishedBook pBook);
         void Delete(int pBookId);
     }

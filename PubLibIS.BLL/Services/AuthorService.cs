@@ -7,6 +7,7 @@ using PubLibIS.DAL.Interfaces;
 using AutoMapper;
 using PubLibIS.DAL.Models;
 using Newtonsoft.Json;
+using PubLibIS.BLL.JsonModels;
 
 namespace PubLibIS.BLL.Services
 {
@@ -56,21 +57,61 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<int> GetAuthorIdListByBook(int id)
         {
-            return db.Books.Read(id).Authors.Select(x => x.Author.Id);
+            return db.Books.Get(id).Authors.Select(x => x.Author.Id);
         }
 
-        public string GetAuthorJson(IEnumerable<int> idList)
+        public string GetJson(IEnumerable<int> idList)
         {
-            db.TurnOffProxy();
-            var authorProxyList = db.Authors.Get(idList);
-            var result = JsonConvert.SerializeObject(authorProxyList, Formatting.Indented);
-            db.TurnOnProxy();
+            var serializer = new JsonSerializer { Culture = new System.Globalization.CultureInfo("ru-RU"), NullValueHandling = NullValueHandling.Ignore };
+            var authorList = db.Authors.Get(idList);
+            foreach (var author in authorList)
+            {
+                author.Books.ToList().ForEach(a => a.Author = null);
+                foreach (var book in author.Books.Select(x=>x.Book))
+                {
+                    book.Authors = null;
+                    book.PublishedBooks = db.PublishedBooks.GetByBookId(book.Id).ToList();
+                    foreach(var pBook in book.PublishedBooks)
+                    {
+                        pBook.Book = null;
+                        pBook.PublishingHouse.Books = null;
+                        pBook.PublishingHouse.Periodicals = null;
+                        pBook.PublishingHouse.Brochures = null;
+                    }
+                }
+            }
+            var result = JsonConvert.SerializeObject(new AuthorJsonAggregator{ Authors = authorList }, Formatting.Indented, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
             return result;
         }
 
-        public void SetAuthorJson(string json)
+        public void SetJson(string json)
         {
-            throw new System.NotImplementedException();
+            var deserRes = JsonConvert.DeserializeObject<AuthorJsonAggregator>(json);
+            foreach (var author in deserRes.Authors)
+            {
+                var books = author.Books;
+                author.Books = null;
+                int authorId = db.Authors.Create(author);
+              
+                foreach (var AuthorInBook in books)
+                {
+                    var published = AuthorInBook.Book.PublishedBooks;
+                    AuthorInBook.Book.PublishedBooks = null;
+                    int bookId = db.Books.Create(AuthorInBook.Book);
+                    AuthorInBook.Author = db.Authors.Get(authorId);
+                    AuthorInBook.Book = db.Books.Get(bookId);
+                    db.AuthorsInBooks.Create(AuthorInBook);
+
+                    foreach (var pBook in published)
+                    {
+                        pBook.Book = db.Books.Get(bookId);
+                        int PubHouseId = db.PublishingHouses.Create(pBook.PublishingHouse);
+                        pBook.PublishingHouse = db.PublishingHouses.Get(PubHouseId);
+                        db.PublishedBooks.Create(pBook);
+                    }
+                }
+            }
+            db.Save();
         }
     }
 }

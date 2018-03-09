@@ -15,8 +15,8 @@ namespace PubLibIS.DAL.Interfaces
         IPeriodicalEditionRepository PeriodicalEditions { get; }
         IPublishingHouseRepository PublishingHouses { get; }
         IPublishedBookRepository PublishedBooks { get; }
+        IAuthorInBookRepository AuthorsInBooks { get; }
+
         void Save();
-        void TurnOffProxy();
-        void TurnOnProxy();
     }
 }

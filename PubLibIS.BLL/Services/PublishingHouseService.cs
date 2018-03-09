@@ -25,13 +25,13 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PublishingHouseViewModel> GetPublishingHouseViewModelList()
         {
-            var phs = db.PublishingHouses.Read();
+            var phs = db.PublishingHouses.Get();
             return mapper.Map<IEnumerable<PublishingHouse>,IEnumerable<PublishingHouseViewModel>>(phs);
         }
 
         public PublishingHouseViewModel GetPublishingHouseViewModel(int id)
         {
-            var ph = db.PublishingHouses.Read(id);
+            var ph = db.PublishingHouses.Get(id);
             return mapper.Map<PublishingHouse, PublishingHouseViewModel>(ph);
         }
 
@@ -58,7 +58,17 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PublishingHouseViewModelSlim> GetPublishingHouseViewModelSlimList()
         {
-            return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModelSlim>>(db.PublishingHouses.Read());
+            return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModelSlim>>(db.PublishingHouses.Get());
+        }
+
+        public string GetJson(IEnumerable<int> idList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetJson(string IdList)
+        {
+            throw new NotImplementedException();
         }
     }
 }

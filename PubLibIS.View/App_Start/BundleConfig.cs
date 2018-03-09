@@ -31,6 +31,7 @@ namespace PubLibIS.View
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/chosen.css",
                       "~/Content/bootstrap.css",
+                      "~/Content/font-awesome.min.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-datepicker.min.css"));
         }

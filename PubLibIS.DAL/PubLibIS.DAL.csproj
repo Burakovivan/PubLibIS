@@ -83,6 +83,7 @@
     <Compile Include="Models\PublishedBook.cs" />
     <Compile Include="Models\PublishingHouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitsOfWork\JsonTempLibraryUnitOfWorkEntityFramework.cs" />
     <Compile Include="UnitsOfWork\LibraryUnitOfWorkEntityFramework.cs" />
   </ItemGroup>
   <ItemGroup>

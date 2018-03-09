@@ -25,32 +25,32 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int periodicalEditionId)
         {
-            var periodicalEdition = Read(periodicalEditionId);
+            var periodicalEdition = Get(periodicalEditionId);
             context.PeriodicalEditions.Remove(periodicalEdition);
         }
 
-        public PeriodicalEdition Read(int periodicalEditionId)
+        public PeriodicalEdition Get(int periodicalEditionId)
         {
             return context.PeriodicalEditions.Find(periodicalEditionId);
         }
 
-        public IEnumerable<PeriodicalEdition> Read()
+        public IEnumerable<PeriodicalEdition> Get()
         {
             return context.PeriodicalEditions.AsEnumerable();
         }
 
-        public IEnumerable<PeriodicalEdition> Read(int skip, int take)
+        public IEnumerable<PeriodicalEdition> Get(int skip, int take)
         {
             return context.PeriodicalEditions.Skip(skip).Take(take).AsEnumerable();
         }
-        public IEnumerable<PeriodicalEdition> ReadByPeriodicalId(int periodicalId)
+        public IEnumerable<PeriodicalEdition> GetByPeriodicalId(int periodicalId)
         {
             return context.PeriodicalEditions.Where(x => x.Periodical.Id == periodicalId).AsEnumerable();
         }
 
         public void Update(PeriodicalEdition periodicalEdition)
         {
-            var current = Read(periodicalEdition.Id);
+            var current = Get(periodicalEdition.Id);
             current.Periodical = context.Periodicals.Find(periodicalEdition.Periodical.Id);
             context.Entry(current).CurrentValues.SetValues(periodicalEdition);
         }

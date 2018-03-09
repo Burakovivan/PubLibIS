@@ -17,17 +17,20 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public int Create(Book book)
         {
-            var bookAuthors = book.Authors.Select(a => a.Id);
+            var bookAuthors = book.Authors?.Select(a => a.Id);
             book.Authors = null;
             context.Books.Add(book);
-            var authors = context.Authors.Where(x => bookAuthors.Contains(x.Id));
-            foreach (var author in authors)
+            if (bookAuthors != null)
             {
-                context.AuthorsInBooks.Add(new AuthorInBook
+                var authors = context.Authors.Where(x => bookAuthors.Contains(x.Id));
+                foreach (var author in authors)
                 {
-                    Author = author,
-                    Book = book
-                });
+                    context.AuthorsInBooks.Add(new AuthorInBook
+                    {
+                        Author = author,
+                        Book = book
+                    });
+                }
             }
 
             context.SaveChanges();
@@ -36,25 +39,25 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int bookId)
         {
-            var book = Read(bookId);
+            var book = Get(bookId);
             context.Books.Remove(book);
         }
 
-        public Book Read(int bookId)
+        public Book Get(int bookId)
         {
             return context.Books.Find(bookId);
         }
         public IEnumerable<Book> Find(Func<Book, bool> predicate)
-        { 
+        {
             return context.Books.Where(predicate).ToList();
         }
 
-        public IEnumerable<Book> Read()
+        public IEnumerable<Book> Get()
         {
             return context.Books.ToList();
         }
 
-        public IEnumerable<Book> Read(int skip, int take)
+        public IEnumerable<Book> Get(int skip, int take)
         {
             return context.Books.Skip(skip).Take(take).ToList();
         }
@@ -78,7 +81,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         }
         private void ResetAuthros(int id)
         {
-            var ainbToRemove = Read(id).Authors;
+            var ainbToRemove = Get(id).Authors;
             context.AuthorsInBooks.RemoveRange(ainbToRemove);
         }
 
@@ -90,6 +93,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public IEnumerable<T> SelectMany<T>(Func<Book, IEnumerable<T>> selector)
         {
             return context.Books.SelectMany(selector).ToList();
+        }
+
+        public IEnumerable<Book> Get(IEnumerable<int> idList)
+        {
+            return context.Books.Where(a => idList.Contains(a.Id)).ToList();
         }
     }
 }

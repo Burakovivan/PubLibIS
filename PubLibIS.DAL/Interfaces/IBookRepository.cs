@@ -7,9 +7,10 @@ namespace PubLibIS.DAL.Interfaces
     public interface IBookRepository
     {
         int Create(Book book);
-        Book Read(int bookId);
-        IEnumerable<Book> Read();
-        IEnumerable<Book> Read(int skip, int take);
+        Book Get(int bookId);
+        IEnumerable<Book> Get();
+        IEnumerable<Book> Get(int skip, int take);
+        IEnumerable<Book> Get(IEnumerable<int> idList);
         IEnumerable<T> Select<T>(Func<Book, T> selector);
         IEnumerable<T> SelectMany<T>(Func<Book, IEnumerable<T>> selector);
         IEnumerable<Book> Find(Func<Book, bool> predicate);

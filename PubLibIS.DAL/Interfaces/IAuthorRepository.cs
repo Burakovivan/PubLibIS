@@ -8,7 +8,7 @@ namespace PubLibIS.DAL.Interfaces
         int Create(Author auhtor);
         Author Get(int authorId);
         IEnumerable<Author> Get();
-        IEnumerable<Author> Get(IEnumerable<int> ids);
+        IEnumerable<Author> Get(IEnumerable<int> idList);
         IEnumerable<Author> Get(int skip, int take);
         void Update(Author author);
         void Delete(int authorId);

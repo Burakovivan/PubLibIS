@@ -25,28 +25,28 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int brochureId)
         {
-            var brochure = Read(brochureId);
+            var brochure = Get(brochureId);
             context.Brochures.Remove(brochure);
         }
 
-        public Brochure Read(int brochureId)
+        public Brochure Get(int brochureId)
         {
             return context.Brochures.Find(brochureId);
         }
 
-        public IEnumerable<Brochure> Read()
+        public IEnumerable<Brochure> Get()
         {
             return context.Brochures.ToList();
         }
 
-        public IEnumerable<Brochure> Read(int skip, int take)
+        public IEnumerable<Brochure> Get(int skip, int take)
         {
             return context.Brochures.Skip(skip).Take(take).ToList();
         }
 
         public void Update(Brochure brochure)
         {
-            var current = Read(brochure.Id);
+            var current = Get(brochure.Id);
             current.PublishingHouse = context.PublishingHouses.Find(brochure.PublishingHouse.Id);
             context.Entry(current).CurrentValues.SetValues(brochure);
         }

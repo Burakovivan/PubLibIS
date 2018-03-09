@@ -1,4 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
 using PubLibIS.BLL.Interfaces;
 using PubLibIS.ViewModels;
 
@@ -63,6 +68,32 @@ namespace PubLibIS.View.Controllers
             return RedirectToAction("Details", new { id });
         }
 
+        [HttpPost]
+        public ActionResult GetJson(IEnumerable<int> idList)
+        {
+            var json = service.GetJson(idList);
+            if (!Directory.Exists(Server.MapPath("~/Backups")))
+            {
+                Directory.CreateDirectory(Server.MapPath("~/Backups"));
+            }
+            var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
+            var filePath = Server.MapPath("~/Backups") + $"\\{fileName}";
+            System.IO.File.WriteAllText(filePath, json);
+            var plainTextBytes = Encoding.UTF8.GetBytes(filePath);
+            return new HttpStatusCodeResult(200);
 
+        }
+        public ActionResult SetJson(HttpPostedFileBase upload)
+        {
+            if (upload != null)
+            {
+
+                var reader = new StreamReader(upload.InputStream);
+                string json = reader.ReadToEnd();
+                service.SetJson(json);
+            }
+            return Redirect(Request.UrlReferrer.AbsolutePath);
+
+        }
     }
 }

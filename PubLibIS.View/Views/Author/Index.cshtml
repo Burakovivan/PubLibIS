@@ -6,11 +6,22 @@
 
 <h2>Authors</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+@Html.ActionLink("Create New", "Create")
+<hr />
+@using (Html.BeginForm("SetJson","Author", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="btn btn-primary" id="backup-button">get backup</div>
+    <div id="backup-ok" class="hidden fa fa-check fa-2x" style="color:green"></div>
+    <div id="backup-not-ok" class="hidden fa fa-times fa-2x" style="color:red"></div>
+    <div class="pull-right">
+        <input type="file" name="upload" />
+        <button type="submit" class="btn btn-primary" id="backup-button">restore backup</button>
+    </div>
+}
 <table class="table">
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th>
@@ -20,20 +31,58 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LifeTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.CheckBox("JsonImport", false, new { @class = "checkbox", json_data = item.Id.ToString() })</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LifeTime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+@section Scripts{
+    <script>
+
+        $(document).ready(() => {
+            $("#backup-button").click(() => {
+                var ids = [];
+                $("input:checkbox[name='JsonImport']").each((i,checkbox) => {
+                    if (checkbox.checked) {
+                        ids.push(checkbox.getAttribute("json-data"));
+                    }
+                });
+                if (ids.length > 0) {
+                    $.ajax({
+                        url:"@Url.Action("GetJson")",
+                        contentType: "application/json",
+                        data: JSON.stringify(ids),
+                        method: 'POST',
+                        success: (data) => {
+                            $("#backup-ok").removeClass("hidden");
+                            setTimeout(() => $("#backup-ok").addClass("hidden"), 2000)
+                            $("input:checkbox[name='JsonImport']").each((i, checkbox) => {
+                                checkbox.checked = false;
+                            });
+                        },
+                        error: (data) => {
+                            $("#backup-not-ok").removeClass("hidden");
+                            setTimeout(() => $("#backup-not-ok").addClass("hidden"),2000)
+                        },
+
+                    })
+                }
+
+            });
+        });
+    </script>
+}

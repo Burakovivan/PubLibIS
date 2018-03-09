@@ -23,28 +23,28 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int periodicalId)
         {
-            var periodical = Read(periodicalId);
+            var periodical = Get(periodicalId);
             context.Periodicals.Remove(periodical);
         }
 
-        public Periodical Read(int periodicalId)
+        public Periodical Get(int periodicalId)
         {
             return context.Periodicals.Find(periodicalId);
         }
 
-        public IEnumerable<Periodical> Read()
+        public IEnumerable<Periodical> Get()
         {
             return context.Periodicals.ToList();
         }
 
-        public IEnumerable<Periodical> Read(int skip, int take)
+        public IEnumerable<Periodical> Get(int skip, int take)
         {
             return context.Periodicals.Skip(skip).Take(take).AsEnumerable();
         }
 
         public void Update(Periodical periodical)
         {
-            var current = Read(periodical.Id);
+            var current = Get(periodical.Id);
             current.PublishingHouse = context.PublishingHouses.Find(periodical.PublishingHouse.Id);
             context.Entry(current).CurrentValues.SetValues(periodical);
         }

@@ -18,6 +18,7 @@ namespace PubLibIS.DAL.Models
 
         [DataType(DataType.DateTime)]
         public DateTime? DateOfBirth { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime? DateOfDeath { get; set; }
 

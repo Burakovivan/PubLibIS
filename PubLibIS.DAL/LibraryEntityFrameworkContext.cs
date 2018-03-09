@@ -5,11 +5,12 @@ namespace PubLibIS.DAL
 {
     public class LibraryEntityFrameworkContext : DbContext
     {
-        public LibraryEntityFrameworkContext(string connectionName = "ww") : base("LibConnection")
+        public LibraryEntityFrameworkContext(string connectionName) : base(connectionName)
         {
-            Database.SetInitializer(new LibraryInitializer());
+            if (connectionName == "LibConnection")
+                Database.SetInitializer(new LibraryInitializer());
         }
-        
+
         public DbSet<Author> Authors { get; set; }
         public DbSet<AuthorInBook> AuthorsInBooks { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -39,6 +40,11 @@ namespace PubLibIS.DAL
                .WithMany()
                .WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<PeriodicalEdition>()
+               .HasOptional(p => p.Periodical)
+               .WithMany()
+               .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<Brochure>()
                .HasOptional(p => p.PublishingHouse)
                .WithMany()
@@ -47,6 +53,6 @@ namespace PubLibIS.DAL
             base.OnModelCreating(modelBuilder);
         }
 
-      
+
     }
 }

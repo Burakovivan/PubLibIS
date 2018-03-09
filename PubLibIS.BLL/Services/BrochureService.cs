@@ -21,13 +21,13 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<BrochureViewModel> GetGetBrochureViewModelList()
         {
-            var brochures = db.Brochures.Read();
+            var brochures = db.Brochures.Get();
             return mapper.Map<IEnumerable<Brochure>, IEnumerable<BrochureViewModel>>(brochures);
         }
 
         public BrochureViewModel GetBrochureViewModel(int id)
         {
-            var brochure = db.Brochures.Read(id);
+            var brochure = db.Brochures.Get(id);
             return mapper.Map<Brochure, BrochureViewModel>(brochure);
         }
 
@@ -53,5 +53,14 @@ namespace PubLibIS.BLL.Services
             return newId;
         }
 
+        public string GetJson(IEnumerable<int> idList)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetJson(string IdList)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

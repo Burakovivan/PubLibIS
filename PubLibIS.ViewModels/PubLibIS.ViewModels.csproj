@@ -63,7 +63,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Article\ArticleViewModel.cs" />
     <Compile Include="PeriodicalEdition\PeriodicalEditionViewModel.cs" />
     <Compile Include="Util\Attributes\CustomDataDisplayFormat.cs" />
     <Compile Include="Author\AuthorViewModel.cs" />

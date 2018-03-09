@@ -3,7 +3,7 @@ using PubLibIS.ViewModels;
 
 namespace PubLibIS.BLL.Interfaces
 {
-    public interface IPublishingHouseService
+    public interface IPublishingHouseService: IJsonProcessor
     {
         int CreatePublishinHouse(PublishingHouseViewModel ph);
         void DeletePublishingHouse(int id);

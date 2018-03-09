@@ -3,7 +3,7 @@ using PubLibIS.ViewModels;
 
 namespace PubLibIS.BLL.Interfaces
 {
-    public interface IBrochureService
+    public interface IBrochureService: IJsonProcessor
     {
         int CreateBrochure(BrochureViewModel brochure);
         void DeleteBrochure(int id);

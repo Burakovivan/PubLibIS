@@ -24,21 +24,21 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int publishingHouseId)
         {
-            var publishingHouse = Read(publishingHouseId);
+            var publishingHouse = Get(publishingHouseId);
             context.PublishingHouses.Remove(publishingHouse);
         }
 
-        public PublishingHouse Read(int publishingHouseId)
+        public PublishingHouse Get(int publishingHouseId)
         {
             return context.PublishingHouses.Find(publishingHouseId);
         }
 
-        public IEnumerable<PublishingHouse> Read()
+        public IEnumerable<PublishingHouse> Get()
         {
             return context.PublishingHouses.AsEnumerable();
         }
 
-        public IEnumerable<PublishingHouse> Read(int skip, int take)
+        public IEnumerable<PublishingHouse> Get(int skip, int take)
         {
             return context.PublishingHouses.Skip(skip).Take(take);
         }
@@ -50,7 +50,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Update(PublishingHouse publishingHouse)
         {
-            var current = Read(publishingHouse.Id);
+            var current = Get(publishingHouse.Id);
             context.Entry(current).CurrentValues.SetValues(publishingHouse);
         }
     }

@@ -50,4 +50,5 @@ textarea {
 
 td#add-publication {
     cursor: pointer;
+    text-align: center;
 }

@@ -27,10 +27,8 @@ namespace PubLibIS.View
             var binder = new DateTimeModelBinder(CultureFormatsModule.GetCustomDateFormat());
             ModelBinders.Binders.Add(typeof(DateTime), binder);
             ModelBinders.Binders.Add(typeof(DateTime?), binder);
-            NinjectModule uowInj = new UnitOfWWorkInjectionModule("LibConnection");
-
-            var kernel = new StandardKernel(uowInj);
-            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+            DependencyResolverInjector.Inject();
+         
 
         }
     }
