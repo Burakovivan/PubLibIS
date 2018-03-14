@@ -1,9 +1,7 @@
-﻿using System;
+﻿using PubLibIS.ViewModels.Attributes;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace PubLibIS.ViewModels
@@ -20,7 +18,7 @@ namespace PubLibIS.ViewModels
         public IEnumerable<PublishedBookViewModel> Publications { get; set; }
 
         
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [CustomDataDisplayFormat]
         public DateTime? ReleaseDate { get; set; }
 
         public string AuthorsFormated

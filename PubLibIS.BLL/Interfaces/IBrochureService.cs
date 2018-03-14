@@ -8,7 +8,8 @@ namespace PubLibIS.BLL.Interfaces
         int CreateBrochure(BrochureViewModel brochure);
         void DeleteBrochure(int id);
         BrochureViewModel GetBrochureViewModel(int id);
-        IEnumerable<BrochureViewModel> GetGetBrochureViewModelList();
+        IEnumerable<BrochureViewModel> GetBrochureViewModelList();
+        BrochureCatalogViewModel GetBrochureCatalogViewModel(int skip, int take);
         void UpdateBrochure(BrochureViewModel brochure);
     }
 }

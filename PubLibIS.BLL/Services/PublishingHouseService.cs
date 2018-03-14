@@ -9,6 +9,8 @@ using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
 using PubLibIS.DAL.Models;
+using Newtonsoft.Json;
+using PubLibIS.BLL.JsonModels;
 
 namespace PubLibIS.BLL.Services
 {
@@ -26,7 +28,7 @@ namespace PubLibIS.BLL.Services
         public IEnumerable<PublishingHouseViewModel> GetPublishingHouseViewModelList()
         {
             var phs = db.PublishingHouses.Get();
-            return mapper.Map<IEnumerable<PublishingHouse>,IEnumerable<PublishingHouseViewModel>>(phs);
+            return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModel>>(phs);
         }
 
         public PublishingHouseViewModel GetPublishingHouseViewModel(int id)
@@ -63,12 +65,23 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            throw new NotImplementedException();
+            var PublishingHouseList = db.PublishingHouses.Get(idList).ToList();
+            var result = JsonConvert.SerializeObject(new PublishingHouseJsonAggregator { PublishingHouses = PublishingHouseList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            return result;
         }
 
-        public void SetJson(string IdList)
+        public void SetJson(string json)
         {
-            throw new NotImplementedException();
+            var deserRes = JsonConvert.DeserializeObject<PublishingHouseJsonAggregator>(json);
+
+            if (deserRes != null)
+            {
+                foreach (var зublishingHouse in deserRes.PublishingHouses)
+                {
+                    db.PublishingHouses.Create(зublishingHouse);
+                }
+                db.Save();
+            }
         }
     }
 }

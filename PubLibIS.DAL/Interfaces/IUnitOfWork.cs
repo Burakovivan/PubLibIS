@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PubLibIS.DAL.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,11 @@ namespace PubLibIS.DAL.Interfaces
         IPublishedBookRepository PublishedBooks { get; }
         IAuthorInBookRepository AuthorsInBooks { get; }
 
+        IUserProfileManager UserProfileManager { get; }
+        ApplicationUserManager UserManager { get; }
+        ApplicationRoleManager RoleManager { get; }
+
         void Save();
+        Task SaveAsync();
     }
 }

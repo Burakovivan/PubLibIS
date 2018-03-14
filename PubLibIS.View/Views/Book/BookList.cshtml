@@ -1,0 +1,32 @@
+﻿@model PubLibIS.ViewModels.BookCatalogViewModel
+
+<div id="book-list">
+    <div class="row">
+        <h1>Books</h1>
+    </div>
+    <div class="row">
+        @foreach (var book in Model.Books)
+        {
+            <div class="col-xs-3 ">
+                <a class="catalog-element" data-toggle="tooltip" title="@book.Capation" href="@Url.Action("Details", "Book", new { id = book.Id})">
+                    <h3 class="catalog-element-capation">@book.Capation</h3>
+                    <p>@Html.DisplayFor(modelItem => book.ReleaseDate)</p>
+                    <p>Publictaions:@book.CountOfPublication</p>
+                    <p>@book.Authors</p>
+                </a>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <input id="book-skip" value="@Model.Skip" hidden/>
+        <div  class="col-xs-4 text-center  @(Model.Skip > 0 ? "" : "invisible")"><span id="book-prev" class="fa fa-chevron-left  btn btn-primary"></span></div>
+      
+            <div class="col-xs-4 text-center @(Model.IsSeeMore?"":"invisible")"><a href="@Url.Action("Index","Book")"><div class="btn btn-primary">See more...</div></a></div>
+            <div class="col-xs-4 text-center @(Model.HasNextPage ? "" : "invisible") "><span  id="book-next"  class="fa fa-chevron-right  btn btn-primary"></span></div>
+       
+    </div>
+</div>
+<script>
+    $(document).ready(bookListReady);
+</script>
+

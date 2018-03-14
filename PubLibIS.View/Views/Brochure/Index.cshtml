@@ -4,13 +4,43 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Brochures</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.IsInRole("admin"))
+{ @Html.ActionLink("Create New", "Create")}
+<hr />
+<div class="btn btn-primary" id="backup-button">get backup</div>
+<div id="backup-ok" class="hidden fa fa-check fa-2x" style="color:green"></div>
+<div id="backup-not-ok" class="hidden fa fa-times fa-2x" style="color:red"></div>
+@if (User.IsInRole("admin"))
+{
+    <hr />
+    using (Html.BeginForm("SetJson", "Brochure", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="input-group pull-right">
+            <div class="input-group-btn" id="browse-file-btn">
+                <label id="backup-button" class="btn btn-primary">Browse...</label>
+            </div>
+            <input type="text" disabled id="browse-file-label" class="form-control">
+            <input style="display:none;" type="file" name="upload" />
+            <div class="input-group-btn" style="float:left;">
+                <button type="submit" class="btn btn-primary" id="backup-button">restore</button>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <br />
+    }
+}
+else
+{
+    <br />
+    <br />
+}
 <table class="table">
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Capation)
         </th>
@@ -26,33 +56,44 @@
         <th>
             @Html.DisplayNameFor(model => model.Circulation)
         </th>
-        <th></th>
+        @if (User.IsInRole("admin"))
+        {
+            <th></th>
+        }
     </tr>
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Capation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Volume)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReleaseDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PublishingHouse.ListBoxInfo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Circulation)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+        <tr>
+            <td>@Html.CheckBox("JsonImport", false, new { @class = "checkbox", json_data = item.Id.ToString() })</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Volume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishingHouse.ListBoxInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Circulation)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+
+                @if (User.IsInRole("admin"))
+                {
+                    @:| @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
+            </td>
+        </tr>
     }
 
 </table>
+@section Scripts{
+    <script id="json-handler" src="~/Scripts/JsonBackupHandler.js" urlToGetJson="@Url.Action("GetJson")"></script>
+}

@@ -43,6 +43,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.PublishingHouses.Skip(skip).Take(take);
         }
 
+        public IEnumerable<PublishingHouse> Get(IEnumerable<int> IdList)
+        {
+            return context.PublishingHouses.Where(ph => IdList.Contains(ph.Id));
+        }
+
         public IEnumerable<T> Select<T>(Func<PublishingHouse, T> predicate)
         {
             return context.PublishingHouses.Select(predicate);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PubLibIS.DAL.Models;
 using PubLibIS.ViewModels;
 
 namespace PubLibIS.BLL.Interfaces

@@ -57,7 +57,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int id)
         {
-            return context.Periodicals.Find(id).PeriodicalEditions.ToList();
+            return context.PeriodicalEditions.Where(pe=>pe.Periodical.Id == id).ToList();
         }
     }
 }

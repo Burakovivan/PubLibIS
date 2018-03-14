@@ -65,6 +65,14 @@ namespace PubLibIS.DAL
                 FoundationDate = new DateTime(1953, 01, 01)
             };
 
+            PublishingHouse ph3 = new PublishingHouse
+            {
+                Name = "Минздрав СССР",
+                Country = "СССР",
+                City = "Москва",
+                FoundationDate = new DateTime(1933, 01, 01)
+            };
+
 
             Book b1 = new Book
             {
@@ -151,7 +159,7 @@ namespace PubLibIS.DAL
                 Periodical = p1,
                 Circulation = 45000,
                 ReleaseNumber = 1,
-                 ReleaseDate = new DateTime(1924, 06, 16)
+                ReleaseDate = new DateTime(1924, 06, 16)
             };
             PeriodicalEdition pe2 = new PeriodicalEdition
             {
@@ -176,24 +184,64 @@ namespace PubLibIS.DAL
                 ReleaseDate = new DateTime(1962, 08, 13),
             };
 
+            Brochure br1 = new Brochure
+            {
+                Capation = "О вреде курения",
+                Circulation = 20000,
+                PublishingHouse = ph3,
+                ReleaseDate = new DateTime(1978, 02, 21),
+                Volume = 20
+            };
+
+            Brochure br2 = new Brochure
+            {
+                Capation = "О вреде алкоголя",
+                Circulation = 25000,
+                PublishingHouse = ph3,
+                ReleaseDate = new DateTime(1978, 02, 23),
+                Volume = 20
+            };
+
+            ApplicationUserRole ur1 = new ApplicationUserRole
+            {
+                Name = "admin",
+            };
+
+            ApplicationUserRole ur2 = new ApplicationUserRole
+            {
+                Name = "user",
+            };
+            
+
+            context.Roles.Add(ur1);
+            context.Roles.Add(ur2);
+
             context.Authors.Add(a1);
             context.Authors.Add(a2);
             context.Authors.Add(a3);
             context.Authors.Add(a4);
             context.PublishingHouses.Add(ph1);
             context.PublishingHouses.Add(ph2);
+            context.PublishingHouses.Add(ph3);
             context.AuthorsInBooks.Add(ainb1);
             context.AuthorsInBooks.Add(ainb2);
             context.AuthorsInBooks.Add(ainb3);
             context.PublishedBooks.Add(pb1);
             context.PublishedBooks.Add(pb2);
             context.PublishedBooks.Add(pb3);
+
+
             context.Periodicals.Add(p1);
             context.Periodicals.Add(p2);
+
+
             context.PeriodicalEditions.Add(pe1);
             context.PeriodicalEditions.Add(pe2);
             context.PeriodicalEditions.Add(pe3);
+            context.PeriodicalEditions.Add(pe4);
 
+            context.Brochures.Add(br1);
+            context.Brochures.Add(br2);
 
 
             context.SaveChanges();

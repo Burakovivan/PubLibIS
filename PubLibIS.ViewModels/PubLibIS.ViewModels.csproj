@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
@@ -63,7 +66,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Book\BookCatalogViewModel.cs" />
+    <Compile Include="Brochure\BrochureCatalogViewModel.cs" />
     <Compile Include="PeriodicalEdition\PeriodicalEditionViewModel.cs" />
+    <Compile Include="Periodical\PeriodicalCatalogViewModel.cs" />
+    <Compile Include="User\LoginModel.cs" />
+    <Compile Include="User\RegisterModel.cs" />
     <Compile Include="Util\Attributes\CustomDataDisplayFormat.cs" />
     <Compile Include="Author\AuthorViewModel.cs" />
     <Compile Include="Book\BookViewModel.cs" />

@@ -7,17 +7,37 @@
 <h2>Authors</h2>
 
 
-@Html.ActionLink("Create New", "Create")
+@if (User.IsInRole("admin"))
+{@Html.ActionLink("Create New", "Create")}
 <hr />
-@using (Html.BeginForm("SetJson","Author", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<div class="btn btn-primary" id="backup-button">get backup</div>
+<div id="backup-ok" class="hidden fa fa-check fa-2x" style="color:green"></div>
+<div id="backup-not-ok" class="hidden fa fa-times fa-2x" style="color:red"></div>
+@if (User.IsInRole("admin"))
 {
-    <div class="btn btn-primary" id="backup-button">get backup</div>
-    <div id="backup-ok" class="hidden fa fa-check fa-2x" style="color:green"></div>
-    <div id="backup-not-ok" class="hidden fa fa-times fa-2x" style="color:red"></div>
-    <div class="pull-right">
-        <input type="file" name="upload" />
-        <button type="submit" class="btn btn-primary" id="backup-button">restore backup</button>
-    </div>
+    <hr />
+    using (Html.BeginForm("SetJson", "Author", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="input-group pull-right">
+            <div class="input-group-btn" id="browse-file-btn">
+                <label id="backup-button" class="btn btn-primary">Browse...</label>
+            </div>
+            <input type="text" disabled id="browse-file-label" class="form-control">
+            <input style="display:none;" type="file" name="upload" />
+            <div class="input-group-btn" style="float:left;">
+                <button type="submit" class="btn btn-primary" id="backup-button">restore</button>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <br />
+    }
+}
+else
+{
+    <br />
+    <br />
 }
 <table class="table">
     <tr>
@@ -28,7 +48,10 @@
         <th>
             @Html.DisplayNameFor(model => model.LifeTime)
         </th>
-        <th></th>
+        @if (User.IsInRole("admin"))
+        {
+            <th></th>
+        }
     </tr>
 
     @foreach (var item in Model)
@@ -42,47 +65,18 @@
                 @Html.DisplayFor(modelItem => item.LifeTime)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+
+                @if (User.IsInRole("admin"))
+                {
+                    @:| @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
             </td>
         </tr>
     }
 
 </table>
 @section Scripts{
-    <script>
-
-        $(document).ready(() => {
-            $("#backup-button").click(() => {
-                var ids = [];
-                $("input:checkbox[name='JsonImport']").each((i,checkbox) => {
-                    if (checkbox.checked) {
-                        ids.push(checkbox.getAttribute("json-data"));
-                    }
-                });
-                if (ids.length > 0) {
-                    $.ajax({
-                        url:"@Url.Action("GetJson")",
-                        contentType: "application/json",
-                        data: JSON.stringify(ids),
-                        method: 'POST',
-                        success: (data) => {
-                            $("#backup-ok").removeClass("hidden");
-                            setTimeout(() => $("#backup-ok").addClass("hidden"), 2000)
-                            $("input:checkbox[name='JsonImport']").each((i, checkbox) => {
-                                checkbox.checked = false;
-                            });
-                        },
-                        error: (data) => {
-                            $("#backup-not-ok").removeClass("hidden");
-                            setTimeout(() => $("#backup-not-ok").addClass("hidden"),2000)
-                        },
-
-                    })
-                }
-
-            });
-        });
-    </script>
+    <script id="json-handler" src="~/Scripts/JsonBackupHandler.js" urlToGetJson="@Url.Action("GetJson")"></script>
 }

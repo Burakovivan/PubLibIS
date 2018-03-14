@@ -13,11 +13,17 @@
         <th class="col-xs-3">
             Volume
         </th>
-        <th class="col-xs-1 "></th>
+        @if (User.IsInRole("admin"))
+        {
+            <th class="col-xs-1 "></th>
+        }
     </tr>
-    <tr id="create-publication">
-        <td id="add-publication" colspan="4" class="bg-success col-xs-12"><span class="fa fa-plus text-center"></span></td>
-    </tr>
+    @if (User.IsInRole("admin"))
+    {
+        <tr id="create-publication">
+            <td id="add-publication" colspan="4" class="bg-success col-xs-12"><span class="fa fa-plus text-center"></span></td>
+        </tr>
+    }
     @foreach (var item in Model.Item2)
     {
         <tr id="pub_@item.Id" ondblclick="EditPublication(@item.Id)" class="publication-row">
@@ -30,10 +36,13 @@
             <td class="col-xs-3">
                 @Html.DisplayFor(modelItem => item.Volume)
             </td>
-            <td class="col-xs-1 controls">
-                <a href="#" class="edit" onclick="EditPublication(@item.Id)"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="#" class="remove" onclick="RemovePublication(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
-            </td>
+            @if (User.IsInRole("admin"))
+            {
+                <td class="col-xs-1 controls">
+                    <a href="#" class="edit" onclick="EditPublication(@item.Id)"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="#" class="remove" onclick="RemovePublication(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            }
         </tr>
     }
 </table>
@@ -58,7 +67,7 @@
     }
 
     function EditPublication(id) {
-       
+
         $('#pub_'+id).load('/Book/EditPublication/' + id);
      }
 </script>

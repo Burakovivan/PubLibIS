@@ -14,6 +14,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             this.context = context;
         }
 
+        public int Count()
+        {
+            return context.Brochures.Count();
+        }
+
         public int Create(Brochure brochure)
         {
             brochure.PublishingHouse = context.PublishingHouses.Find(brochure.PublishingHouse.Id);
@@ -42,6 +47,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public IEnumerable<Brochure> Get(int skip, int take)
         {
             return context.Brochures.Skip(skip).Take(take).ToList();
+        }
+
+        public IEnumerable<Brochure> Get(IEnumerable<int> idList)
+        {
+            return context.Brochures.Where(brochure => idList.Contains(brochure.Id)).ToList();
         }
 
         public void Update(Brochure brochure)

@@ -20,11 +20,7 @@ namespace PubLibIS.View.Controllers
             return View(model);
         }
 
-        public ActionResult SwitchConnection()
-        {
-            ConnectionStringResolver.SwitchConnection();
-            return Redirect(Request.UrlReferrer.AbsolutePath);
-        }
+      
 
         public ActionResult About()
         {

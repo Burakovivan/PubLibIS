@@ -64,54 +64,46 @@ namespace PubLibIS.BLL.Services
         {
             var serializer = new JsonSerializer { Culture = new System.Globalization.CultureInfo("ru-RU"), NullValueHandling = NullValueHandling.Ignore };
             var authorList = db.Authors.Get(idList);
+
             foreach (var author in authorList)
-            {
-                author.Books.ToList().ForEach(a => a.Author = null);
-                foreach (var book in author.Books.Select(x=>x.Book))
-                {
-                    book.Authors = null;
+                foreach (var book in author.Books.Select(x => x.Book))
                     book.PublishedBooks = db.PublishedBooks.GetByBookId(book.Id).ToList();
-                    foreach(var pBook in book.PublishedBooks)
-                    {
-                        pBook.Book = null;
-                        pBook.PublishingHouse.Books = null;
-                        pBook.PublishingHouse.Periodicals = null;
-                        pBook.PublishingHouse.Brochures = null;
-                    }
-                }
-            }
-            var result = JsonConvert.SerializeObject(new AuthorJsonAggregator{ Authors = authorList }, Formatting.Indented, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+
+            var result = JsonConvert.SerializeObject(new AuthorJsonAggregator { Authors = authorList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
 
         public void SetJson(string json)
         {
             var deserRes = JsonConvert.DeserializeObject<AuthorJsonAggregator>(json);
-            foreach (var author in deserRes.Authors)
+            if (deserRes != null)
             {
-                var books = author.Books;
-                author.Books = null;
-                int authorId = db.Authors.Create(author);
-              
-                foreach (var AuthorInBook in books)
+                foreach (var author in deserRes.Authors)
                 {
-                    var published = AuthorInBook.Book.PublishedBooks;
-                    AuthorInBook.Book.PublishedBooks = null;
-                    int bookId = db.Books.Create(AuthorInBook.Book);
-                    AuthorInBook.Author = db.Authors.Get(authorId);
-                    AuthorInBook.Book = db.Books.Get(bookId);
-                    db.AuthorsInBooks.Create(AuthorInBook);
+                    var books = author.Books;
+                    author.Books = null;
+                    int authorId = db.Authors.Create(author);
 
-                    foreach (var pBook in published)
+                    foreach (var AuthorInBook in books)
                     {
-                        pBook.Book = db.Books.Get(bookId);
-                        int PubHouseId = db.PublishingHouses.Create(pBook.PublishingHouse);
-                        pBook.PublishingHouse = db.PublishingHouses.Get(PubHouseId);
-                        db.PublishedBooks.Create(pBook);
+                        var published = AuthorInBook.Book.PublishedBooks;
+                        AuthorInBook.Book.PublishedBooks = null;
+                        int bookId = db.Books.Create(AuthorInBook.Book);
+                        AuthorInBook.Author = db.Authors.Get(authorId);
+                        AuthorInBook.Book = db.Books.Get(bookId);
+                        db.AuthorsInBooks.Create(AuthorInBook);
+
+                        foreach (var pBook in published)
+                        {
+                            pBook.Book = db.Books.Get(bookId);
+                            int PubHouseId = db.PublishingHouses.Create(pBook.PublishingHouse);
+                            pBook.PublishingHouse = db.PublishingHouses.Get(PubHouseId);
+                            db.PublishedBooks.Create(pBook);
+                        }
                     }
                 }
+                db.Save();
             }
-            db.Save();
         }
     }
 }

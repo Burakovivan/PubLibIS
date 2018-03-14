@@ -27,7 +27,7 @@ namespace PubLibIS.View
             var binder = new DateTimeModelBinder(CultureFormatsModule.GetCustomDateFormat());
             ModelBinders.Binders.Add(typeof(DateTime), binder);
             ModelBinders.Binders.Add(typeof(DateTime?), binder);
-            DependencyResolverInjector.Inject();
+            DependencyResolverSetter.Inject();
          
 
         }

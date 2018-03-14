@@ -13,11 +13,17 @@
         <th class="col-xs-3">
             Circulation
         </th>
-        <th class="col-xs-1 "></th>
+        @if (User.IsInRole("admin"))
+        {
+            <th class="col-xs-1 "></th>
+        }
     </tr>
-    <tr id="create-edition">
-        <td id="add-edition" colspan="4" class="label label-success col-xs-12"><span class="glyphicon glyphicon-plus-sign"></span></td>
-    </tr>
+    @if (User.IsInRole("admin"))
+    {
+        <tr id="create-edition">
+            <td id="add-edition" colspan="4" class="label label-success col-xs-12"><span class="glyphicon glyphicon-plus-sign"></span></td>
+        </tr>
+    }
     @foreach (var item in Model.Item2)
     {
         <tr id="per_@item.Id" ondblclick="EditPeriodicalEdition(@item.Id)" class="publication-row">
@@ -30,10 +36,13 @@
             <td class="col-xs-3">
                 @Html.DisplayFor(modelItem => item.Circulation)
             </td>
-            <td class="col-xs-1 controls">
-                <a href="#" class="edit" onclick="EditPeriodicalEdition(@item.Id)"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="#" class="remove" onclick="RemovePeriodicalEdition(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
-            </td>
+            @if (User.IsInRole("admin"))
+            {
+                <td class="col-xs-1 controls">
+                    <a href="#" class="edit" onclick="EditPeriodicalEdition(@item.Id)"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="#" class="remove" onclick="RemovePeriodicalEdition(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            }
         </tr>
     }
 </table>
@@ -57,7 +66,7 @@
     }
 
     function EditPeriodicalEdition(id) {
-       
+
         $('#per_'+id).load('/periodical/EditPeriodicalEdition/' + id);
      }
 </script>

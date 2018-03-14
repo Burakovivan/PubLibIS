@@ -1,4 +1,8 @@
-﻿using PubLibIS.DAL.Interfaces;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
+using PubLibIS.DAL.Identity;
+using PubLibIS.DAL.Interfaces;
+using PubLibIS.DAL.Models;
 using PubLibIS.DAL.Repositories.EntityFramework;
 
 namespace PubLibIS.DAL.UnitsOfWork
@@ -21,6 +25,9 @@ namespace PubLibIS.DAL.UnitsOfWork
         private PublishingHouseRepository publishingHouseRepository;
         private PublishedBookRepository publishedBookRepository;
         private AuthorInBookRepository authorInBookRepository;
+        private UserProfileManager userProfileManager;
+        private ApplicationRoleManager roleManager;
+        private ApplicationUserManager userManager;
 
 
         public IAuthorRepository Authors
@@ -101,12 +108,46 @@ namespace PubLibIS.DAL.UnitsOfWork
             }
         }
 
+        public IUserProfileManager UserProfileManager
+        {
+            get
+            {
+                if (userProfileManager == null)
+                    userProfileManager = new UserProfileManager(db);
+                return userProfileManager;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                if (userManager == null)
+                    userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+                return userManager;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                if (roleManager == null)
+                    roleManager = new ApplicationRoleManager(new RoleStore<ApplicationUserRole>(db));
+                return roleManager;
+            }
+        }
+
         public void Save()
         {
             db.SaveChanges();
         }
 
-       
+        public async Task SaveAsync()
+        {
+           await db.SaveChangesAsync();
+        }
+
         public virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -124,5 +165,20 @@ namespace PubLibIS.DAL.UnitsOfWork
             Dispose(true);
             System.GC.SuppressFinalize(this);
         }
+
+        public void TrucnateAllTables()
+        {
+            db.Authors.RemoveRange(db.Authors);
+            db.PublishedBooks.RemoveRange(db.PublishedBooks);
+            db.Books.RemoveRange(db.Books);
+            db.Brochures.RemoveRange(db.Brochures);
+            db.Periodicals.RemoveRange(db.Periodicals);
+            db.PeriodicalEditions.RemoveRange(db.PeriodicalEditions);
+            db.PublishingHouses.RemoveRange(db.PublishingHouses);
+            db.PublishedBooks.RemoveRange(db.PublishedBooks);
+            db.SaveChanges();
+        }
+
+        
     }
 }

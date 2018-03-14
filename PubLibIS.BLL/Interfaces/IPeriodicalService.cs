@@ -17,5 +17,6 @@ namespace PubLibIS.BLL.Interfaces
         void DeletePeriodical(int id);
         void DeletePeriodicalEdition(int id);
         IEnumerable<PeriodicalTypeViewModel> GetPeriodicalTypeViewModelList();
+        PeriodicalCatalogViewModel GetPeriodicalCatalogViewModel(int skip, int take);
     }
 }

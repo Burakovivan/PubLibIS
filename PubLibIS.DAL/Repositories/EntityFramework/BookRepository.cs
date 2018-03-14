@@ -59,7 +59,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public IEnumerable<Book> Get(int skip, int take)
         {
-            return context.Books.Skip(skip).Take(take).ToList();
+            return context.Books.OrderBy(book=>book.Id).Skip(skip).Take(take).ToList();
         }
 
         public void Update(Book book)
@@ -98,6 +98,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public IEnumerable<Book> Get(IEnumerable<int> idList)
         {
             return context.Books.Where(a => idList.Contains(a.Id)).ToList();
+        }
+
+        public int Count()
+        {
+            return context.Books.Count();
         }
     }
 }

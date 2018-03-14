@@ -22,6 +22,19 @@ namespace PubLibIS.BLL.MappingProfiles
                     bookVM => bookVM.Authors,
                     opt => opt.MapFrom(book => book.Authors.Select(x => x.Author)));
 
+            CreateMap<Book, BookViewModelSlim>()
+               .ForMember(
+                   bookVM => bookVM.ReleaseDate,
+                       opt => opt.MapFrom(book => book.PublishedBooks.Any() ? book.PublishedBooks.Select(x => x.DateOfPublication).Min() : null))
+              .ForMember(
+                   bookVM => bookVM.Authors,
+                       opt => opt.MapFrom(book => string.Join(", ", book.Authors.Select(ainb => $"{ainb.Author.SecondName}" +
+                    (string.IsNullOrEmpty(ainb.Author.FirstName) ? " " : $" {ainb.Author.FirstName.TrimStart()[0]}.") +
+                    (string.IsNullOrEmpty(ainb.Author.Patronymic) ? " " : $" {ainb.Author.Patronymic.TrimStart()[0]}.")))))
+               .ForMember(
+                   bookVM => bookVM.CountOfPublication,
+                   opt => opt.MapFrom(book => book.PublishedBooks.Count));
+
             CreateMap<PublishedBook, PublishedBookViewModel>()
                 .ForMember(
                     pBook => pBook.Book,

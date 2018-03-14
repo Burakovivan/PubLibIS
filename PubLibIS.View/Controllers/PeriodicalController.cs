@@ -13,6 +13,7 @@ using PubLibIS.BLL.Interfaces;
 
 namespace PubLibIS.View.Controllers
 {
+    [Authorize(Order = 2, Roles = "admin, user")]
     public class PeriodicalController : Controller
     {
         private IPeriodicalService service;
@@ -34,6 +35,13 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
+        public ActionResult PeriodicalList(int skip = 0, int take = 4)
+        {
+            var model = service.GetPeriodicalCatalogViewModel(skip, take);
+            return PartialView(model);
+        }
+
+        [HttpGet]
         public ActionResult Details(int id)
         {
             var model = service.GetPeriodicalViewModel(id);
@@ -42,28 +50,19 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult Edit(int id)
         {
             var model = service.GetPeriodicalViewModel(id);
-
             model.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(model.PublishingHouse?.Id);
             model.PeriodicalTypeSelectList = periodicalHelper.GetPeriodicalTypeViewModelSelectList(model.Type?.Id);
-
             return View(model);
         }
 
         [HttpPost]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult Edit(PeriodicalViewModel periodical)
         {
-
-            //MemoryStream memstream = new MemoryStream();
-            //Request.InputStream.CopyTo(memstream);
-            //memstream.Position = 0;
-            //string text;
-            //using (StreamReader reader = new StreamReader(memstream))
-            //{
-            //    text = reader.ReadToEnd();
-            //}
             if (!ModelState.IsValid)
             {
                 periodical.PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(periodical.PublishingHouse?.Id);
@@ -74,6 +73,7 @@ namespace PubLibIS.View.Controllers
             return RedirectToAction("Details", new { id = periodical.Id });
         }
 
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult Delete(int id)
         {
             service.DeletePeriodical(id);
@@ -81,6 +81,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult Create()
         {
             var model = new PeriodicalViewModel
@@ -88,12 +89,11 @@ namespace PubLibIS.View.Controllers
                 PublishingHouseSelectList = publishingHouseHelper.GetPublishingHouseSelectList(),
                 PeriodicalTypeSelectList = periodicalHelper.GetPeriodicalTypeViewModelSelectList()
             };
-
             return View(model);
         }
 
-
         [HttpPost]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult Create(PeriodicalViewModel periodical)
         {
             if (!ModelState.IsValid)
@@ -108,6 +108,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult CreatePeriodicalEdition(int id)
         {
             var edition = new PeriodicalEditionViewModel
@@ -120,6 +121,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpPost]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult CreatePeriodicalEdition(PeriodicalEditionViewModel edition)
         {
             if (!ModelState.IsValid)
@@ -134,7 +136,7 @@ namespace PubLibIS.View.Controllers
         {
             var editions = service.GetPeriodicalEditionViewModelListByPeriodicalId(id);
             var model = new Tuple<int, IEnumerable<PeriodicalEditionViewModel>>(id, editions);
-            return PartialView( model);
+            return PartialView(model);
         }
 
         public void RemovePeriodicalEdition(int id)
@@ -143,6 +145,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpGet]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult EditPeriodicalEdition(int id)
         {
             var periodical = service.GetPeriodicalEditionViewModel(id);
@@ -150,6 +153,7 @@ namespace PubLibIS.View.Controllers
         }
 
         [HttpPost]
+        [Authorize(Order = 1, Roles = "admin")]
         public ActionResult EditPeriodicalEdition(PeriodicalEditionViewModel edition)
         {
             if (!ModelState.IsValid)
@@ -158,6 +162,34 @@ namespace PubLibIS.View.Controllers
             }
             service.UpdatePeriodicalEdition(edition);
             return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public ActionResult GetJson(IEnumerable<int> idList)
+        {
+            var json = service.GetJson(idList);
+            if (!Directory.Exists(Server.MapPath("~/Backups/Periodical")))
+            {
+                Directory.CreateDirectory(Server.MapPath("~/Backups/Periodical"));
+            }
+            var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
+            var filePath = Server.MapPath("~/Backups/Periodical") + $"\\{fileName}";
+            System.IO.File.WriteAllText(filePath, json);
+            var plainTextBytes = Encoding.UTF8.GetBytes(filePath);
+            return new HttpStatusCodeResult(200);
+        }
+
+        [Authorize(Order = 1, Roles = "admin")]
+        public ActionResult SetJson(HttpPostedFileBase upload)
+        {
+            if (upload != null)
+            {
+                var reader = new StreamReader(upload.InputStream);
+                string json = reader.ReadToEnd();
+                service.SetJson(json);
+            }
+            return Redirect(Request.UrlReferrer.AbsolutePath);
+
         }
 
     }

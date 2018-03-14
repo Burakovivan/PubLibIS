@@ -14,6 +14,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             this.context = context;
         }
 
+        public int Count()
+        {
+            return context.Periodicals.Count();
+        }
+
         public int Create(Periodical periodical)
         {
             context.Periodicals.Add(periodical);
@@ -40,6 +45,11 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public IEnumerable<Periodical> Get(int skip, int take)
         {
             return context.Periodicals.Skip(skip).Take(take).AsEnumerable();
+        }
+
+        public IEnumerable<Periodical> Get(IEnumerable<int> idList)
+        {
+            return context.Periodicals.Where(periodical => idList.Contains(periodical.Id)).ToList();
         }
 
         public void Update(Periodical periodical)

@@ -1,0 +1,32 @@
+﻿@model PubLibIS.ViewModels.BrochureCatalogViewModel
+
+<div id="brochure-list">
+    <div class="row">
+        <h1>Brochures</h1>
+    </div>
+    <div class="row">
+        @foreach (var brochure in Model.Brochures)
+        {
+            <div class="col-xs-3 ">
+                <a class="catalog-element" data-toggle="tooltip" title="@brochure.Capation" href="@Url.Action("Details", "brochure", new { id = brochure.Id})">
+                    <h3 class="catalog-element-capation">@brochure.Capation</h3>
+                    <p>@Html.DisplayFor(modelItem => brochure.ReleaseDate)</p>
+                    <p>@brochure.Volume pages</p>
+                    <p>@brochure.Circulation pcs.</p>
+                </a>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <input id="brochure-skip" value="@Model.Skip" hidden/>
+        <div  class="col-xs-4 text-center  @(Model.Skip > 0 ? "" : "invisible")"><span id="brochure-prev" class="fa fa-chevron-left  btn btn-primary"></span></div>
+      
+            <div class="col-xs-4 text-center @(Model.IsSeeMore?"":"invisible")"><a href="@Url.Action("Index","brochure")"><div class="btn btn-primary">See more...</div></a></div>
+            <div class="col-xs-4 text-center @(Model.HasNextPage ? "" : "invisible") "><span  id="brochure-next"  class="fa fa-chevron-right  btn btn-primary"></span></div>
+       
+    </div>
+</div>
+<script>
+    $(document).ready(brochureListReady);
+</script>
+

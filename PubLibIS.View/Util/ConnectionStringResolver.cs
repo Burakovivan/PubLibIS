@@ -29,7 +29,7 @@ namespace PubLibIS.View.Util
         public static void SwitchConnection()
         {
             CurrentConnectionString = SwitchTo;
-            DependencyResolverInjector.Inject();
+            DependencyResolverSetter.Inject();
         }
     }
 }

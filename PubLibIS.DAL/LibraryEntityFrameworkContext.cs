@@ -1,9 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using PubLibIS.DAL.Models;
 
 namespace PubLibIS.DAL
 {
-    public class LibraryEntityFrameworkContext : DbContext
+    public class LibraryEntityFrameworkContext : IdentityDbContext<ApplicationUser>
     {
         public LibraryEntityFrameworkContext(string connectionName) : base(connectionName)
         {
@@ -19,39 +21,38 @@ namespace PubLibIS.DAL
         public DbSet<PeriodicalEdition> PeriodicalEditions { get; set; }
         public DbSet<PublishingHouse> PublishingHouses { get; set; }
         public DbSet<PublishedBook> PublishedBooks { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Properties<System.DateTime>().Configure(c => c.HasColumnType("datetime2"));
 
             modelBuilder.Entity<PublishedBook>()
-                .HasOptional(pb => pb.Book)
-                .WithMany()
-                .WillCascadeOnDelete(true);
+                .HasRequired(pb => pb.Book)
+                .WithMany(pb => pb.PublishedBooks);
 
             modelBuilder.Entity<PublishedBook>()
-                .HasOptional(pb => pb.PublishingHouse)
-                .WithMany()
-                .WillCascadeOnDelete(true);
+                .HasOptional(p => p.PublishingHouse)
+                .WithMany(p => p.Books);
 
 
             modelBuilder.Entity<Periodical>()
                .HasOptional(p => p.PublishingHouse)
-               .WithMany()
-               .WillCascadeOnDelete(true);
+               .WithMany(p => p.Periodicals);
 
             modelBuilder.Entity<PeriodicalEdition>()
-               .HasOptional(p => p.Periodical)
-               .WithMany()
-               .WillCascadeOnDelete(true);
+               .HasRequired(p => p.Periodical)
+               .WithMany(p => p.PeriodicalEditions);
 
             modelBuilder.Entity<Brochure>()
                .HasOptional(p => p.PublishingHouse)
-               .WithMany()
-               .WillCascadeOnDelete(true);
+               .WithMany(b=>b.Brochures);
+
+
 
             base.OnModelCreating(modelBuilder);
         }
+
 
 
     }

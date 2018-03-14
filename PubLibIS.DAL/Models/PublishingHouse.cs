@@ -7,7 +7,7 @@ namespace PubLibIS.DAL.Models
     {
         public PublishingHouse()
         {
-            Books = new List<Book>();
+            Books = new List<PublishedBook>();
             Periodicals = new List<Periodical>();
             Brochures = new List<Brochure>();
         }
@@ -20,7 +20,7 @@ namespace PubLibIS.DAL.Models
         public string PostalCode { get; set; }
         public DateTime FoundationDate { get; set; }
 
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<PublishedBook> Books { get; set; }
         public virtual ICollection<Periodical> Periodicals { get; set; }
         public virtual ICollection<Brochure> Brochures { get; set; }
     }

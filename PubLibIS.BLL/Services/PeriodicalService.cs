@@ -7,6 +7,8 @@ using PubLibIS.DAL.Interfaces;
 using AutoMapper;
 using PubLibIS.DAL.Models;
 using System;
+using Newtonsoft.Json;
+using PubLibIS.BLL.JsonModels;
 
 namespace PubLibIS.BLL.Services
 {
@@ -110,12 +112,46 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            throw new NotImplementedException();
+            var PeriodicalList = db.Periodicals.Get(idList).ToList();
+            PeriodicalList.ForEach(periodical => periodical.PeriodicalEditions = db.PeriodicalEditions.GetPeriodicalEditionByPeriodicalId(periodical.Id).ToList());
+            var result = JsonConvert.SerializeObject(new PeriodicalJsonAggregator { Periodicals = PeriodicalList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            return result;
         }
 
-        public void SetJson(string IdList)
+        public void SetJson(string json)
         {
-            throw new NotImplementedException();
+            var deserRes = JsonConvert.DeserializeObject<PeriodicalJsonAggregator>(json);
+
+            if (deserRes != null)
+            {
+                foreach (var periodical in deserRes.Periodicals)
+                {
+                    db.PublishingHouses.Create(periodical.PublishingHouse);
+                    var edtions = periodical.PeriodicalEditions;
+                    periodical.PeriodicalEditions = null;
+                    db.Periodicals.Create(periodical);
+                    foreach (var pe in edtions)
+                    {
+                        pe.Periodical = periodical;
+                        db.PeriodicalEditions.Create(pe);
+                    }
+                }
+                db.Save();
+            }
+        }
+
+        public PeriodicalCatalogViewModel GetPeriodicalCatalogViewModel(int skip, int take)
+        {
+            var periodicals = db.Periodicals.Get().OrderBy(b => b.Id).Skip(skip).Take(take);
+
+            var result = new PeriodicalCatalogViewModel
+            {
+                Periodicals = mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals),
+                Skip = skip,
+                IsSeeMore = periodicals.Count() < db.Periodicals.Count(),
+                HasNextPage = db.Periodicals.Count() > skip + take
+            };
+            return result;
         }
     }
 }

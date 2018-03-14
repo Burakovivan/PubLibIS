@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PubLibIS.ViewModels.Attributes;
+using System;
 
 namespace PubLibIS.ViewModels
 {
@@ -10,7 +7,9 @@ namespace PubLibIS.ViewModels
     {
         public int Id { get; set; }
         public string Capation { get; set; }
-        public string AuthorId { get; set; }
-        public string AuthorFullName { get; set; }
+        public string Authors { get; set; }
+        public int CountOfPublication { get; set; }
+        [CustomDataDisplayFormat]
+        public DateTime ReleaseDate { get; set; }
     }
 }
