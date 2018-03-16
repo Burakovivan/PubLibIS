@@ -40,6 +40,7 @@ namespace PubLibIS.View.Models.BindingModels
                 ISSN = issn,
                 Foundation = foundation,
                 IsPublished = isPub,
+                PublishingHouse_Id = phId,
                 PublishingHouse = new PublishingHouseViewModel { Id = phId },
                 Type = new PeriodicalTypeViewModel { Id = type },
             };

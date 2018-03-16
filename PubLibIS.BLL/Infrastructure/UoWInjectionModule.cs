@@ -20,6 +20,7 @@ namespace PubLibIS.BLL.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWork>().To<LibraryUnitOfWorkEntityFramework>()
+            //Bind<IUnitOfWork>().To<LibraryUnitOfWorkDapper>()
                 .WithConstructorArgument(connectionName);
             Bind<IMapper>().ToConstant(MappingProfile.InitializeAutoMapper().CreateMapper());
         }

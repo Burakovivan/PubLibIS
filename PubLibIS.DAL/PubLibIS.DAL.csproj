@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -45,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
@@ -60,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DapperConnectionFactory.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IAuthorInBookRepository.cs" />
@@ -76,6 +81,14 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationUserRole.cs" />
     <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Repositories\Dapper\AuthorInBookRepository.cs" />
+    <Compile Include="Repositories\Dapper\AuthorRepository.cs" />
+    <Compile Include="Repositories\Dapper\BookRepository.cs" />
+    <Compile Include="Repositories\Dapper\BrochureRepository.cs" />
+    <Compile Include="Repositories\Dapper\PeriodicalEditionRepository.cs" />
+    <Compile Include="Repositories\Dapper\PeriodicalRepository.cs" />
+    <Compile Include="Repositories\Dapper\PublishedBookRepository.cs" />
+    <Compile Include="Repositories\Dapper\PublishingHouseRepository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorInBookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorRepository.cs" />
     <Compile Include="Repositories\EntityFramework\BookRepository.cs" />
@@ -96,6 +109,7 @@
     <Compile Include="Models\PublishingHouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EntityFramework\UserProfileManager.cs" />
+    <Compile Include="UnitsOfWork\LibraryUnitOfWorkDapper.cs" />
     <Compile Include="UnitsOfWork\LibraryUnitOfWorkEntityFramework.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -59,7 +59,7 @@ namespace PubLibIS.BLL.Services
 
         public int GetNextEditionNumberByPeriodicalId(int periodicalId)
         {
-            var editions = db.PeriodicalEditions.GetByPeriodicalId(periodicalId);
+            var editions = db.PeriodicalEditions.GetPeriodicalEditionByPeriodicalId(periodicalId);
             return editions.Any()? editions.Select(x => x.ReleaseNumber).Max() + 1: 1;
         }
         
@@ -142,8 +142,9 @@ namespace PubLibIS.BLL.Services
 
         public PeriodicalCatalogViewModel GetPeriodicalCatalogViewModel(int skip, int take)
         {
-            var periodicals = db.Periodicals.Get().OrderBy(b => b.Id).Skip(skip).Take(take);
+            var periodicals = db.Periodicals.Get(skip, take).ToList();
 
+           
             var result = new PeriodicalCatalogViewModel
             {
                 Periodicals = mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals),

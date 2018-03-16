@@ -43,10 +43,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         {
             return context.PeriodicalEditions.Skip(skip).Take(take).AsEnumerable();
         }
-        public IEnumerable<PeriodicalEdition> GetByPeriodicalId(int periodicalId)
-        {
-            return context.PeriodicalEditions.Where(x => x.Periodical.Id == periodicalId).AsEnumerable();
-        }
+    
 
         public void Update(PeriodicalEdition periodicalEdition)
         {

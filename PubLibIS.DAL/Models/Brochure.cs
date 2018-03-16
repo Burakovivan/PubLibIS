@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
@@ -9,8 +10,9 @@ namespace PubLibIS.DAL.Models
         public int Volume { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int Circulation { get; set; }//тираж
+        public int? PublishingHouse_Id { get; set; }
 
-
+        [ForeignKey("PublishingHouse_Id")]
         public virtual PublishingHouse PublishingHouse { get; set; }
     }
 }

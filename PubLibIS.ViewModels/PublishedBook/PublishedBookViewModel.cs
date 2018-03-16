@@ -16,6 +16,8 @@ namespace PubLibIS.ViewModels
         [Required(AllowEmptyStrings = true)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfPublication { get; set; }
+        public int? Book_Id { get; set; }
+        public int? PublishingHouse_Id { get; set; }
 
         public BookViewModel Book { get; set; }
         public PublishingHouseViewModel PublishingHouse { get; set; }

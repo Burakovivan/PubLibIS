@@ -47,10 +47,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         {
             return context.Books.Find(bookId);
         }
-        public IEnumerable<Book> Find(Func<Book, bool> predicate)
-        {
-            return context.Books.Where(predicate).ToList();
-        }
+    
 
         public IEnumerable<Book> Get()
         {

@@ -67,7 +67,7 @@ namespace PubLibIS.BLL.Services
 
             foreach (var author in authorList)
                 foreach (var book in author.Books.Select(x => x.Book))
-                    book.PublishedBooks = db.PublishedBooks.GetByBookId(book.Id).ToList();
+                    book.PublishedBooks = db.PublishedBooks.GetPublishedBookByBookId(book.Id).ToList();
 
             var result = JsonConvert.SerializeObject(new AuthorJsonAggregator { Authors = authorList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;

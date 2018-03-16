@@ -4,7 +4,7 @@
 
 <td>
     @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.Book.Id)
+    @Html.HiddenFor(model => model.Book_Id)
     @Html.DropDownListFor(model => model.PublishingHouse.Id, Model.PublishingHouseSelectList, new { @class = "form-control update-val" })
     @Html.ValidationMessageFor(model => model.PublishingHouse.Id, "", new { @class = "text-danger" })
 </td>
@@ -49,7 +49,7 @@
 
                 }
                 else {
-                    $.get("@Url.Action("PublicationList", new { id = Model.Book.Id }) #publication-list", function (data) {
+                    $.get("@Url.Action("PublicationList", new { id = Model.Book_Id }) #publication-list", function (data) {
                         $("#publication-list").replaceWith(data);
                     });
                 }

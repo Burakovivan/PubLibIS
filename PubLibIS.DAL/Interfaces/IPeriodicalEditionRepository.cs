@@ -10,7 +10,6 @@ namespace PubLibIS.DAL.Interfaces
         PeriodicalEdition Get(int periodicalEditionId);
         IEnumerable<PeriodicalEdition> Get();
         IEnumerable<PeriodicalEdition> Get(int skip, int take);
-        IEnumerable<PeriodicalEdition> GetByPeriodicalId(int periodicalId);
         void Update(PeriodicalEdition periodicalEdition);
         void Delete(int periodicalEditionId);
         IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int id);

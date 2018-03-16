@@ -29,8 +29,10 @@ namespace PubLibIS.View.Models.BindingModels
             {
                 Id = Id.HasValue? Id.Value:0,
                 Book = new BookViewModel { Id = BookId },
+                Book_Id = BookId,
                 DateOfPublication = DateOfP,
                 PublishingHouse = new PublishingHouseViewModel { Id = PHId },
+                PublishingHouse_Id = PHId,
                 Volume = Volume
             };
 

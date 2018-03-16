@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
@@ -16,7 +17,9 @@ namespace PubLibIS.DAL.Models
         public string Name { get; set; }
         public DateTime Foundation { get; set; }
         public bool IsPublished { get; set; }
+        public int? PublishingHouse_Id { get; set; }
 
+        [ForeignKey("PublishingHouse_Id")]
         public virtual PublishingHouse PublishingHouse { get; set; }
         public virtual ICollection<PeriodicalEdition> PeriodicalEditions { get; set; }
     }

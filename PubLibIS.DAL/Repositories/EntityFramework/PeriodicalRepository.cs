@@ -44,7 +44,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public IEnumerable<Periodical> Get(int skip, int take)
         {
-            return context.Periodicals.Skip(skip).Take(take).AsEnumerable();
+            return context.Periodicals.OrderBy(p=>p.Id).Skip(skip).Take(take).AsEnumerable();
         }
 
         public IEnumerable<Periodical> Get(IEnumerable<int> idList)

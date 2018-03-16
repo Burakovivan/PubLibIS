@@ -88,7 +88,7 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PublishedBookViewModel> GetPublishedBookViewModelListByBook(int id)
         {
-            var publications = db.PublishedBooks.GetByBookId(id);
+            var publications = db.PublishedBooks.GetPublishedBookByBookId(id);
             return mapper.Map<IEnumerable<PublishedBook>, IEnumerable<PublishedBookViewModel>>(publications);
         }
 
@@ -115,7 +115,7 @@ namespace PubLibIS.BLL.Services
         public string GetJson(IEnumerable<int> idList)
         {
             var BookList = db.Books.Get(idList).ToList();
-            BookList.ForEach(book => book.PublishedBooks = db.PublishedBooks.GetByBookId(book.Id).ToList());
+            BookList.ForEach(book => book.PublishedBooks = db.PublishedBooks.GetPublishedBookByBookId(book.Id).ToList());
             var result = JsonConvert.SerializeObject(new BookJsonAggregator { Books = BookList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }

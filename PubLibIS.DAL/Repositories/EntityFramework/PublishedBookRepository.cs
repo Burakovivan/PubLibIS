@@ -35,7 +35,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.PublishedBooks.Find(pBookId);
         }
 
-        public IEnumerable<PublishedBook> GetByBookId(int bookId)
+        public IEnumerable<PublishedBook> GetPublishedBookByBookId(int bookId)
         {
             return context.PublishedBooks.Where(pb => pb.Book.Id == bookId).OrderByDescending(x=>x.Id).ToList();
         }

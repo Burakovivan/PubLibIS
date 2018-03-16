@@ -16,7 +16,7 @@
 
 </div>
 @section Scripts{
-    <script>
+<script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
@@ -37,5 +37,39 @@
             });
 
         }
-    </script>
+
+         function brochureListReady() {
+
+             $("#brochure-next").click(() => {
+
+                $.get("@Url.Action("brochureList", "brochure")?skip=" + (parseInt($("#brochure-skip").val()) + 1) + " #brochure-list", function (data) {
+                    $("#brochure-list").replaceWith(data);
+                        });
+            });
+
+            $("#brochure-prev").click(() => {
+                $.get("@Url.Action("brochureList", "brochure")?skip=" + (parseInt($("#brochure-skip").val()) - 1) + " #brochure-list", function (data) {
+                    $("#brochure-list").replaceWith(data);
+                        });
+            });
+
+    }
+
+     function periodicalListReady() {
+
+         $("#periodical-next").click(() => {
+
+             $.get("@Url.Action("periodicalList", "periodical")?skip=" + (parseInt($("#periodical-skip").val()) + 1) + " #periodical-list", function (data) {
+                 $("#periodical-list").replaceWith(data);
+                        });
+            });
+
+         $("#periodical-prev").click(() => {
+             $.get("@Url.Action("periodicalList", "periodical")?skip=" + (parseInt($("#periodical-skip").val()) - 1) + " #periodical-list", function (data) {
+                 $("#periodical-list").replaceWith(data);
+                        });
+            });
+
+        }
+</script>
 }
