@@ -1,0 +1,61 @@
+﻿
+<h4>Published books of</h4>
+<h2>{{book.capation}}</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Volume</th>
+            <th>Date of publication</th>
+            <th>Publishing house</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-template [ngIf]="loaded" [ngIfElse]="loading">
+            <tr *ngFor="let item of publishedBookList">
+                <ng-template [ngIf]="publishedBook?.id != item.id " [ngIfElse]="editP">
+                    <td>{{item.volume}}</td>
+                    <td>{{item.dateOfPublication}}</td>
+                    <td>{{item.publishingHouse?.shortInfo}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" (click)="editPublishedBook(item)"><span class="glyphicon glyphicon-edit"></span></button>
+                        <button class="btn btn-sm btn-danger" (click)="deletePublishedBook(item)"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </ng-template>
+
+            </tr>
+        </ng-template>
+        <tr>
+            <ng-template [ngIf]="publishedBook?.id != -1" [ngIfElse]="editP">
+                <td colspan="4" class="create-new-item-row" (click)="createPublishedBook()"> <span class="glyphicon glyphicon-plus"></span> </td>
+            </ng-template>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #editP>
+    <td>
+        <input type="text" [(ngModel)]="publishedBook.volume" class="form-control" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="publishedBook.dateOfPublication" class="form-control" />
+    </td>
+    <td>
+        <select [(ngModel)]="publishedBook.publishingHouse_Id" ng-model="publishedBook.publishingHouse_Id" class="form-control">
+            <option selected="{{item.selected?'selected':''}}" *ngFor="let item of publishigHouseSelectList.items" value="{{item.value}}">{{item.text}}</option>
+        </select>
+    </td>
+
+    <td>
+        <div (click)="savePublishedBook()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
+        <div (click)="cancelPublishedBook()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
+    </td>
+</ng-template>
+
+<ng-template #loading>
+    <tr>
+        <td colspan="6" class="text-center">
+            <span class="glyphicon glyphicon-refresh gly-spin"></span>
+        </td>
+    </tr>
+</ng-template>

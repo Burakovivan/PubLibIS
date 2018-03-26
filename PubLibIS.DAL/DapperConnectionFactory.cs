@@ -10,9 +10,15 @@ namespace PubLibIS.DAL
 
         public string Schema { get; private set; }
 
-        public DapperConnectionFactory(string connectionName, string schema = "dbo")
+        public DapperConnectionFactory(string connectionNameOrConnectionString, string schema = "dbo")
         {
-            this.connectionString = ConfigurationManager.ConnectionStrings[connectionName].ConnectionString; ;
+            try
+            {
+                this.connectionString = ConfigurationManager.ConnectionStrings[connectionNameOrConnectionString].ConnectionString;
+            }
+            catch {
+                connectionString = connectionNameOrConnectionString;
+            }
             this.Schema = schema;
         }
         public IDbConnection GetConnectionInstance()

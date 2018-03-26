@@ -2,18 +2,13 @@
 using Ninject.Modules;
 using PubLibIS.DAL.Interfaces;
 using PubLibIS.DAL.UnitsOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PubLibIS.BLL.Infrastructure
 {
-    public class UnitOfWWorkInjectionModule : NinjectModule
+    public class UnitOfWorkInjectionModule : NinjectModule
     {
         private string connectionName;
-        public UnitOfWWorkInjectionModule(string connectionName)
+        public UnitOfWorkInjectionModule(string connectionName)
         {
             this.connectionName = connectionName;
         }

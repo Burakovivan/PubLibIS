@@ -20,7 +20,10 @@ namespace PubLibIS.BLL.MappingProfiles
                         opt => opt.MapFrom(book => book.PublishedBooks.Any() ? book.PublishedBooks.Select(x => x.DateOfPublication).Min() : null))
                 .ForMember(
                     bookVM => bookVM.Authors,
-                    opt => opt.MapFrom(book => book.Authors.Select(x => x.Author)));
+                    opt => opt.MapFrom(book => book.Authors.Select(x => x.Author)))
+                .ForMember(
+                    bookVM => bookVM.Publications,
+                    opt => opt.MapFrom(book => book.PublishedBooks));
 
             CreateMap<Book, BookViewModelSlim>()
                .ForMember(
@@ -43,7 +46,10 @@ namespace PubLibIS.BLL.MappingProfiles
             CreateMap<PublishedBookViewModel, PublishedBook>()
                 .ForMember(
                     pBookVM => pBookVM.Book,
-                    opt => opt.MapFrom(pBook => pBook.Book));
+                    opt => opt.MapFrom(pBook => pBook.Book))
+                      .ForMember(
+                    pBookVM => pBookVM.Book_Id,
+                    opt => opt.MapFrom(pBook => pBook.Book_Id));
 
             CreateMap<AuthorViewModel, AuthorInBook>()
                 .ForMember(

@@ -16,5 +16,6 @@ namespace PubLibIS.ViewModels
 
         public PublishingHouseViewModel PublishingHouse { get; set; }
         public SelectList PublishingHouseSelectList { get; set; }
+        public int? PublishingHouse_Id { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model PubLibIS.ViewModels.PublishedBookViewModel
+
+
+
+<td>
+    @Html.HiddenFor(model => model.Book_Id)
+    @Html.DropDownListFor(model => model.PublishingHouse_Id, Model.PublishingHouseSelectList, new { @class = "form-control " })
+    @Html.ValidationMessageFor(model => model.PublishingHouse_Id, "", new { @class = "text-danger" })
+</td>
+<td>
+    @Html.EditorFor(model => model.DateOfPublication, new { htmlAttributes = new { @class = "form-control input-sm", type = "text" } })
+    @Html.ValidationMessageFor(model => model.DateOfPublication, "", new { @class = "text-danger" })
+</td>
+<td>
+    @Html.EditorFor(model => model.Volume, new { htmlAttributes = new { @class = "form-control input-sm" } })
+    @Html.ValidationMessageFor(model => model.Volume, "", new { @class = "text-danger" })
+</td>
+<td>
+    <div id="submit-publication" class="btn btn-default btn-sm  controls"><span class="fa fa-plus"></span></div>
+</td>
+
+<script>
+    $(document).ready(
+        () => {
+            $('#PublishingHouse_Id').chosen();
+            setDatePickerTo("DateOfPublication");
+
+            $('#submit-publication').ready($('#submit-publication').click(function (e) {
+                e.preventDefault();
+                var publication = {
+                    Book_Id: $("#Book_Id").val(),
+                    PublishingHouse_Id: $("#PublishingHouse_Id").val(),
+                    DateOfPublication: $("#DateOfPublication").val(),
+                    Volume: $("#Volume").val()
+                };
+                $.ajax({
+                    url: '/book/CreatePublication',
+                    dataType: "json",
+                    data: publication,
+                    type: 'POST',
+                    cache: false,
+                    complete: function () {
+                        $.get("@Url.Action("PublicationList", new { id = Model.Book.Id }) #publication-list", function (data) {
+                            $("#publication-list").replaceWith(data);
+                        });
+                        //$('#publication-list').load('@Url.Action("PublicationList", new { id = Model.Book.Id })');
+                    }
+                });
+            })
+            );
+        });
+</script>
+
+
+
+
+

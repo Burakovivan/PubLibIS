@@ -35,7 +35,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             int newId = 0;
             using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
-                newId = db.QuerySingleOrDefault<int>($"INSERT INTO [{schema}].[PublishedBooks] VALUES " +
+                newId = db.QuerySingleOrDefault<int>($"INSERT INTO [{schema}].[PublishedBooks] (Volume, DateOfPublication, Book_id, PublishingHouse_id) VALUES  " +
                     $"(@Volume, @DateOfPublication, @Book_id, @PublishingHouse_id); SELECT CAST(SCOPE_IDENTITY() as int)", PublishedBook);
             }
             return newId;
@@ -55,6 +55,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 PublishedBook = db.QuerySingleOrDefault<PublishedBook>($"SELECT * FROM [{schema}].[PublishedBooks] WHERE Id = @id", new { id = PublishedBookId });
+
                 LoadNavigationProperties(PublishedBook, db);
             }
             return PublishedBook;
@@ -66,6 +67,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 PublishedBooks = db.Query<PublishedBook>($"SELECT * FROM [{schema}].[PublishedBooks] ORDER BY Id");
+                LoadNavigationProperties(PublishedBooks, db);
             }
             return PublishedBooks;
         }
@@ -114,7 +116,10 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public void LoadNavigationProperties(PublishedBook b, IDbConnection db)
         {
-            b.PublishingHouse = db.QuerySingleOrDefault<PublishingHouse>($"SELECT * FROM [{schema}].[PublishingHouses] WHERE Id = @id  ORDER BY Id", new { id = b.PublishingHouse_Id });
+            if (b != null)
+            {
+                b.PublishingHouse = db.QuerySingleOrDefault<PublishingHouse>($"SELECT * FROM [{schema}].[PublishingHouses] WHERE Id = @id  ORDER BY Id", new { id = b.PublishingHouse_Id });
+            }
         }
 
         public void LoadNavigationProperties(IEnumerable<PublishedBook> periodicals, IDbConnection db)

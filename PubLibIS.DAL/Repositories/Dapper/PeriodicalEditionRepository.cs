@@ -106,7 +106,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 db.Query($"UPDATE [{schema}].[PeriodicalEditions] SET " +
-                    $"ReleaseNumber = @ReleaseNumber, ReleaseDate = @ReleaseDate, Ciculation = @Ciculation, Periodical_Id = @Periodical_Id" +
+                    $"ReleaseNumber = @ReleaseNumber, ReleaseDate = @ReleaseDate, Circulation = @Circulation, Periodical_Id = @Periodical_Id " +
                     $"WHERE Id = @Id", PeriodicalEdition);
             }
         }

@@ -16,6 +16,6 @@ namespace PubLibIS.ViewModels
         public DateTime ReleaseDate { get; set; }
         public int Circulation { get; set; }//тираж
 
-        public int PeriodicalId { get; set; }
+        public int Periodical_Id { get; set; }
     }
 }

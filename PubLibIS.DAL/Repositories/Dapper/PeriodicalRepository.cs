@@ -67,6 +67,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 Periodicals = db.Query<Periodical>($"SELECT * FROM [{schema}].[Periodicals] ORDER BY Id");
+                LoadNavigationProperties(Periodicals, db);
             }
             return Periodicals;
         }
@@ -77,6 +78,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 Periodicals = db.Query<Periodical>($"SELECT * FROM [{schema}].[Periodicals] WHERE Id IN @idList  ORDER BY Id", new { idList });
+                LoadNavigationProperties(Periodicals, db);
             }
             return Periodicals;
         }

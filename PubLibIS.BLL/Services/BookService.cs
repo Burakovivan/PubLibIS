@@ -49,7 +49,7 @@ namespace PubLibIS.BLL.Services
             return result;
         }
 
-        public BookViewModel Get(int id)
+        public BookViewModel GetBookViewModel(int id)
         {
             var book = db.Books.Get(id);
             return mapper.Map<Book, BookViewModel>(book);
@@ -70,7 +70,7 @@ namespace PubLibIS.BLL.Services
             db.Save();
         }
 
-        public int Create(BookViewModel book)
+        public int CreateBook(BookViewModel book)
         {
             var mappedBook = mapper.Map<BookViewModel, Book>(book);
             var newId = db.Books.Create(mappedBook);

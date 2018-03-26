@@ -50,7 +50,7 @@ namespace PubLibIS.BLL.Services
             db.Save();
         }
 
-        public int CreatePublishinHouse(PublishingHouseViewModel ph)
+        public int CreatePublishingHouse(PublishingHouseViewModel ph)
         {
             var mappedph = mapper.Map<PublishingHouseViewModel, PublishingHouse>(ph);
             var newId = db.PublishingHouses.Create(mappedph);

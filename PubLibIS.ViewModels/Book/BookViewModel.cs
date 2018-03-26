@@ -16,8 +16,8 @@ namespace PubLibIS.ViewModels
         public IEnumerable<AuthorViewModel> Authors { get; set; }
         public MultiSelectList AuthorsSelectList { get; set; }
         public IEnumerable<PublishedBookViewModel> Publications { get; set; }
+        public int PublicationsCount => Publications == null?0:Publications.Count();
 
-        
         [CustomDataDisplayFormat]
         public DateTime? ReleaseDate { get; set; }
 
@@ -25,7 +25,7 @@ namespace PubLibIS.ViewModels
         {
             get
             {
-                return string.Join(", ", Authors.Select(x => x.FullName).ToArray());
+                return Authors != null? string.Join(", ", Authors.Select(x => x.FullName).ToArray()):"";
             }
         }
     }

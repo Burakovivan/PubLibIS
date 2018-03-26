@@ -33,12 +33,14 @@ namespace PubLibIS.DAL
 
             modelBuilder.Entity<PublishedBook>()
                 .HasOptional(p => p.PublishingHouse)
-                .WithMany(p => p.Books);
+                .WithMany(p => p.Books)
+                .WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<Periodical>()
                .HasOptional(p => p.PublishingHouse)
-               .WithMany(p => p.Periodicals);
+               .WithMany(p => p.Periodicals)
+               .HasForeignKey(p => p.PublishingHouse_Id);
 
             modelBuilder.Entity<PeriodicalEdition>()
                .HasRequired(p => p.Periodical)
@@ -46,9 +48,10 @@ namespace PubLibIS.DAL
 
             modelBuilder.Entity<Brochure>()
                .HasOptional(p => p.PublishingHouse)
-               .WithMany(b=>b.Brochures);
+               .WithMany(b => b.Brochures)
+               .HasForeignKey(b => b.PublishingHouse_Id);
 
-
+            
 
             base.OnModelCreating(modelBuilder);
         }

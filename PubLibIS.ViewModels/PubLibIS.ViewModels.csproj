@@ -70,6 +70,7 @@
     <Compile Include="Brochure\BrochureCatalogViewModel.cs" />
     <Compile Include="PeriodicalEdition\PeriodicalEditionViewModel.cs" />
     <Compile Include="Periodical\PeriodicalCatalogViewModel.cs" />
+    <Compile Include="SelectList.cs" />
     <Compile Include="User\LoginModel.cs" />
     <Compile Include="User\RegisterModel.cs" />
     <Compile Include="Util\Attributes\CustomDataDisplayFormat.cs" />

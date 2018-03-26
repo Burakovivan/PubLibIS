@@ -44,6 +44,21 @@ namespace PubLibIS.BLL.Services
 
         public void UpdatePeriodical(PeriodicalViewModel periodical)
         {
+            if (periodical.PublishingHouse_Id == 0)
+            {
+                periodical.PublishingHouse_Id = (int)periodical.PublishingHouse?.Id;
+            }
+            else
+            {
+                if (periodical.PublishingHouse == null)
+                {
+                    periodical.PublishingHouse = new PublishingHouseViewModel { Id = periodical.PublishingHouse_Id };
+                }
+                else
+                {
+                    periodical.PublishingHouse.Id = periodical.PublishingHouse_Id;
+                }
+            }
             var mappedPeriodical = mapper.Map<PeriodicalViewModel, Periodical>(periodical);
             db.Periodicals.Update(mappedPeriodical);
             db.Save();
@@ -60,10 +75,10 @@ namespace PubLibIS.BLL.Services
         public int GetNextEditionNumberByPeriodicalId(int periodicalId)
         {
             var editions = db.PeriodicalEditions.GetPeriodicalEditionByPeriodicalId(periodicalId);
-            return editions.Any()? editions.Select(x => x.ReleaseNumber).Max() + 1: 1;
+            return editions.Any() ? editions.Select(x => x.ReleaseNumber).Max() + 1 : 1;
         }
-        
-             
+
+
 
         public IEnumerable<PeriodicalEditionViewModel> GetPeriodicalEditionViewModelListByPeriodicalId(int periodicalId)
         {
@@ -79,11 +94,12 @@ namespace PubLibIS.BLL.Services
             db.Save();
         }
 
-        public void CreatePeriodicalEdition(PeriodicalEditionViewModel edition)
+        public int CreatePeriodicalEdition(PeriodicalEditionViewModel edition)
         {
             var mappedEdition = mapper.Map<PeriodicalEditionViewModel, PeriodicalEdition>(edition);
             var newId = db.PeriodicalEditions.Create(mappedEdition);
             db.Save();
+            return newId;
         }
 
         public void DeletePeriodicalEdition(int id)
@@ -95,10 +111,10 @@ namespace PubLibIS.BLL.Services
         public IEnumerable<PeriodicalTypeViewModel> GetPeriodicalTypeViewModelList()
         {
             var typesList = new List<PeriodicalTypeViewModel>();
-            foreach(var name in Enum.GetNames(typeof(PeriodicalType)))
+            foreach (var name in Enum.GetNames(typeof(PeriodicalType)))
             {
                 if (Enum.TryParse(name, true, out PeriodicalType pt))
-                    typesList.Add(new PeriodicalTypeViewModel {Id = (int)pt, Name = name });
+                    typesList.Add(new PeriodicalTypeViewModel { Id = (int)pt, Name = name });
             }
             return typesList;
 
@@ -144,7 +160,7 @@ namespace PubLibIS.BLL.Services
         {
             var periodicals = db.Periodicals.Get(skip, take).ToList();
 
-           
+
             var result = new PeriodicalCatalogViewModel
             {
                 Periodicals = mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals),

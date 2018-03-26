@@ -23,7 +23,7 @@ namespace PubLibIS.ViewModels
             }
         }
 
-        public string ListBoxInfo
+        public string ShortInfo
         {
             get
             {

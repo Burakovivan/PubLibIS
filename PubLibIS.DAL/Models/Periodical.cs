@@ -19,7 +19,6 @@ namespace PubLibIS.DAL.Models
         public bool IsPublished { get; set; }
         public int? PublishingHouse_Id { get; set; }
 
-        [ForeignKey("PublishingHouse_Id")]
         public virtual PublishingHouse PublishingHouse { get; set; }
         public virtual ICollection<PeriodicalEdition> PeriodicalEditions { get; set; }
     }

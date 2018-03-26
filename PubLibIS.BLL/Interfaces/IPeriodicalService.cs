@@ -6,7 +6,7 @@ namespace PubLibIS.BLL.Interfaces
     public interface IPeriodicalService: IJsonProcessor
     {
         int CreatePeriodical(PeriodicalViewModel periodical);
-        void CreatePeriodicalEdition(PeriodicalEditionViewModel edition);
+        int CreatePeriodicalEdition(PeriodicalEditionViewModel edition);
         PeriodicalViewModel GetPeriodicalViewModel(int id);
         PeriodicalEditionViewModel GetPeriodicalEditionViewModel(int id);
         IEnumerable<PeriodicalViewModel> GetPeriodicalViewModelList();

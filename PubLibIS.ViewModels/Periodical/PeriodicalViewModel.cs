@@ -18,6 +18,7 @@ namespace PubLibIS.ViewModels
         [CustomDataDisplayFormat]
         public DateTime Foundation { get; set; }
         public bool IsPublished { get; set; }
+        public int PublicationsCount => PeriodicalEditions == null ? 0 : PeriodicalEditions.Count();
         public int PublishingHouse_Id { get; set; }
         public PublishingHouseViewModel PublishingHouse { get; set; }
         public IEnumerable<PeriodicalEditionViewModel> PeriodicalEditions { get; set; }

@@ -40,6 +40,9 @@ namespace PubLibIS.BLL.MappingProfiles
                 .ForMember(
                     pvm => pvm.PublishingHouse,
                     opt => opt.MapFrom(p => p.PublishingHouse))
+                    .ForMember(
+                    pvm => pvm.PublishingHouse_Id,
+                    opt => opt.MapFrom(p => p.PublishingHouse_Id))
                     ;
 
             CreateMap<PeriodicalType, PeriodicalTypeViewModel>()
@@ -57,14 +60,27 @@ namespace PubLibIS.BLL.MappingProfiles
             //    opt => opt.MapFrom(pt => Enum.GetName(typeof(PeriodicalType), pt)));
 
 
-            CreateMap<PeriodicalViewModel, Periodical>();
+            CreateMap<PeriodicalViewModel, Periodical>()
+                .ForMember(
+                    pvm => pvm.PublishingHouse_Id,
+                    opt => opt.MapFrom(p => p.PublishingHouse_Id))
+                   ;
 
+            CreateMap<PeriodicalEdition, PeriodicalEditionViewModel>()
+                  .ForMember(
+                    pevw => pevw.Periodical_Id,
+                    opt => opt.MapFrom(pe => pe.Periodical_Id)
+                    )
+                  ;
 
-            CreateMap<PeriodicalEdition, PeriodicalEditionViewModel>();
             CreateMap<PeriodicalEditionViewModel, PeriodicalEdition>()
                 .ForMember(
                     pe => pe.Periodical,
-                    opt => opt.MapFrom(pevm => new Periodical { Id = pevm.PeriodicalId })
+                    opt => opt.MapFrom(pevm => new Periodical { Id = pevm.Periodical_Id })
+                    )
+                     .ForMember(
+                    pe => pe.Periodical_Id,
+                    opt => opt.MapFrom(pevm => pevm.Periodical_Id)
                     )
                   ;
         }

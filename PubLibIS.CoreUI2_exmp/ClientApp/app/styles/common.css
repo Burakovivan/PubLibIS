@@ -1,0 +1,27 @@
+﻿.create-new-item-row {
+    column-span: all;
+    background-color: green;
+    text-align: center;
+}
+
+.gly-spin {
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+    font-size: 50px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.row-controls {
+    min-width: 90px;
+}

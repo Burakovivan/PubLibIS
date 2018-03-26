@@ -5,12 +5,12 @@ namespace PubLibIS.BLL.Interfaces
 {
     public interface IBookService : IJsonProcessor
     {
-        int Create(BookViewModel book);
+        int CreateBook(BookViewModel book);
         int CreatePublication(PublishedBookViewModel pBook);
         IEnumerable<BookViewModel> GetBookViewModelList();
         IEnumerable<BookViewModelSlim> GetBookViewModelListSlim();
         BookCatalogViewModel GetBookCatalogViewModel(int skip, int take);
-        BookViewModel Get(int id);
+        BookViewModel GetBookViewModel(int id);
         PublishedBookViewModel GetPublication(int id);
         IEnumerable<PublishedBookViewModel> GetPublishedBookViewModelListByBook(int id);
         void UpdateBook(BookViewModel book);

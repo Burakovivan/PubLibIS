@@ -14,6 +14,15 @@ namespace PubLibIS.DAL
 
         protected override void Seed(LibraryEntityFrameworkContext context)
         {
+            context.Database.ExecuteSqlCommand("ALTER TABLE Brochures DROP CONSTRAINT [FK_dbo.Brochures_dbo.PublishingHouses_PublishingHouse_Id]");
+            context.Database.ExecuteSqlCommand("ALTER TABLE Brochures ADD CONSTRAINT [FK_dbo.Brochures_dbo.PublishingHouses_PublishingHouse_Id] FOREIGN KEY ([PublishingHouse_Id]) REFERENCES [dbo].[PublishingHouses] ([Id]) ON DELETE SET NULL");
+
+            context.Database.ExecuteSqlCommand("ALTER TABLE Periodicals DROP CONSTRAINT [FK_dbo.Periodicals_dbo.PublishingHouses_PublishingHouse_Id]");
+            context.Database.ExecuteSqlCommand("ALTER TABLE Periodicals ADD CONSTRAINT [FK_dbo.Periodicals_dbo.PublishingHouses_PublishingHouse_Id] FOREIGN KEY ([PublishingHouse_Id]) REFERENCES [dbo].[PublishingHouses] ([Id]) ON DELETE SET NULL");
+
+            context.Database.ExecuteSqlCommand("ALTER TABLE PublishedBooks DROP CONSTRAINT [FK_dbo.PublishedBooks_dbo.PublishingHouses_PublishingHouse_Id]");
+            context.Database.ExecuteSqlCommand("ALTER TABLE PublishedBooks ADD CONSTRAINT [FK_dbo.PublishedBooks_dbo.PublishingHouses_PublishingHouse_Id] FOREIGN KEY ([PublishingHouse_Id]) REFERENCES [dbo].[PublishingHouses] ([Id]) ON DELETE SET NULL");
+
             Author a1 = new Author
             {
                 FirstName = "Александр",

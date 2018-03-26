@@ -1,0 +1,75 @@
+<button class="btn btn-sm btn-primary" (click)="getJson()">Get backup</button>
+<button class="btn btn-sm btn-primary" (click)="setJson()">Restore backup</button>
+<input type="file" (change)="setFile($event.target.files)" />
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Capation</th>
+      <th>Release date</th>
+      <th>Volume</th>
+      <th>Circulation</th>
+      <th>Publication house</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template [ngIf]="loaded" [ngIfElse]="loading">
+      <tr *ngFor="let item of brochureList">
+        <ng-template [ngIf]="brochure?.id != item.id" [ngIfElse]="edit">
+          <th><input type="checkbox" name="backup" id="{{item.id}}" /></th>
+          <td>{{item.capation}}</td>
+          <td>{{item.releaseDate}}</td>
+          <td>{{item.volume}}</td>
+          <td>{{item.circulation}}</td>
+          <td>{{item.publishingHouse?.shortInfo}}</td>
+          <td class="row-controls">
+            <button class="btn btn-sm btn-primary" (click)="editItem(item)"><span class="glyphicon glyphicon-edit"></span></button>
+            <button class="btn btn-sm btn-danger" (click)="delete(item)"><span class="glyphicon glyphicon-remove"></span></button>
+          </td>
+        </ng-template>
+      </tr>
+    </ng-template>
+    <tr>
+      <ng-template [ngIf]="publishingHouse?.id != -1" [ngIfElse]="edit">
+        <td colspan="8" class="create-new-item-row" (click)="create()"> <span class="glyphicon glyphicon-plus"></span> </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #loading>
+  <tr>
+    <td colspan="8" class="text-center">
+      <span class="glyphicon glyphicon-refresh gly-spin"></span>
+    </td>
+  </tr>
+</ng-template>
+
+<!--шаблон для редактирования-->
+<ng-template #edit>
+  <td></td>
+  <td>
+    <input type="text" [(ngModel)]="brochure.capation" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="brochure.releaseDate" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="brochure.volume" class="form-control" />
+  </td>
+  <td>
+
+    <input type="text" [(ngModel)]="brochure.circulation" class="form-control" />
+  </td>
+  <td>
+    <select [(ngModel)]="brochure.publishingHouse_Id" ng-model="brochure.publishingHouse_Id" class="form-control">
+      <option selected="{{item.selected?'selected':''}}" *ngFor="let item of publishigHouseSelectList.items" value="{{item.value}}">{{item.text}}</option>
+    </select>
+  </td>
+
+  <td class="row-controls">
+    <div (click)="save()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
+    <div (click)="cancel()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
+  </td>
+</ng-template>

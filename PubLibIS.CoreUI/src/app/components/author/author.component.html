@@ -1,0 +1,102 @@
+<button class="btn btn-sm btn-primary" (click)="getJson()">Get backup</button>
+<button class="btn btn-sm btn-primary" (click)="setJson()">Restore backup</button>
+<input type="file" (change)="setFile($event.target.files)"  />
+<table class="table table-striped">
+
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Surname</th>
+      <th>Patronymic</th>
+      <th>Date of birth</th>
+      <th>Date of death</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template [ngIf]="loaded" [ngIfElse]="loading">
+      <tr *ngFor="let item of authors">
+        <ng-template [ngIf]="author?.id != item.id" [ngIfElse]="edit">
+          <th><input type="checkbox" name="backup" id="{{item.id}}" /></th>
+          <td>{{item.firstName}}</td>
+          <td>{{item.secondName}}</td>
+          <td>{{item.patronymic}}</td>
+          <td>{{item.dateOfBirth}}</td>
+          <td>{{item.dateOfDeath}}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="editAuthor(item)"><span class="glyphicon glyphicon-edit"></span></button>
+            <button class="btn btn-sm btn-danger" (click)="delete(item)"><span class="glyphicon glyphicon-remove"></span></button>
+
+          </td>
+        </ng-template>
+
+      </tr>
+    </ng-template>
+    <tr>
+      <ng-template [ngIf]="author?.id != -1" [ngIfElse]="edit">
+        <td colspan="6" class="create-new-item-row" (click)="createAuthor()"> <span class="glyphicon glyphicon-plus"></span> </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #loading>
+  <tr>
+    <td colspan="6" class="text-center">
+      <span class="glyphicon glyphicon-refresh gly-spin"></span>
+    </td>
+  </tr>
+</ng-template>
+
+<!--шаблон для редактирования-->
+<ng-template #edit>
+  <td></td>
+  <td>
+    <input type="text" [(ngModel)]="author.firstName" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="author.secondName" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="author.patronymic" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="author.dateOfBirth" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="author.dateOfDeath" class="form-control" />
+  </td>
+  <td>
+    <div (click)="save()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
+    <div (click)="cancel()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
+  </td>
+</ng-template>
+
+<!--шаблон для добавления-->
+<ng-template #create>
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" [(ngModel)]="author.firstName" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Surname</label>
+    <input type="text" [(ngModel)]="author.secondName" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Patronymic</label>
+    <input type="text" [(ngModel)]="author.patronymic" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Date of birth</label>
+    <input type="text" [(ngModel)]="author.dateOfBirth" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Date of death</label>
+    <input type="text" [(ngModel)]="author.dateOfDeath" class="form-control" />
+  </div>
+  <div>
+    <input type="button" value="Save" (click)="save()" class="btn btn-success" />
+    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+  </div>
+</ng-template>

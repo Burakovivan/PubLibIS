@@ -125,10 +125,10 @@ namespace PubLibIS.DAL.Repositories.Dapper
             }
         }
 
-        private void LoadNavigationProperties(IEnumerable<Book> periodicals, IDbConnection db)
+        private void LoadNavigationProperties(IEnumerable<Book> books, IDbConnection db)
         {
-            periodicals = periodicals.ToList();
-            ((List<Book>)periodicals).ForEach(p => LoadNavigationProperties(p, db));
+            books = books.ToList();
+            ((List<Book>)books).ForEach(p => LoadNavigationProperties(p, db));
         }
 
         private void ResetAuthors(Book b, IDbConnection db)

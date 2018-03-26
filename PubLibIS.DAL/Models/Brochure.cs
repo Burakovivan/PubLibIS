@@ -11,8 +11,7 @@ namespace PubLibIS.DAL.Models
         public DateTime ReleaseDate { get; set; }
         public int Circulation { get; set; }//тираж
         public int? PublishingHouse_Id { get; set; }
-
-        [ForeignKey("PublishingHouse_Id")]
+        
         public virtual PublishingHouse PublishingHouse { get; set; }
     }
 }

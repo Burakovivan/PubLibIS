@@ -6,7 +6,7 @@ namespace PubLibIS.BLL.Interfaces
 {
     public interface IPublishingHouseService: IJsonProcessor
     {
-        int CreatePublishinHouse(PublishingHouseViewModel ph);
+        int CreatePublishingHouse(PublishingHouseViewModel ph);
         void DeletePublishingHouse(int id);
         PublishingHouseViewModel GetPublishingHouseViewModel(int id);
         IEnumerable<PublishingHouseViewModel> GetPublishingHouseViewModelList();

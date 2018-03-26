@@ -1,0 +1,67 @@
+﻿<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ISBN</th>
+            <th>Capation</th>
+            <th>Additional data</th>
+            <th>Release Date</th>
+            <th>Authors</th>
+            <th>Publication</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-template [ngIf]="loaded" [ngIfElse]="loading">
+            <tr *ngFor="let item of books">
+                <ng-template [ngIf]="book?.id != item.id" [ngIfElse]="editB">
+                    <td>{{item.isbn}}</td>
+                    <td>{{item.capation}}</td>
+                    <td>{{item.additionalData}}</td>
+                    <td>{{item.releaseDate}}</td>
+                    <td>{{item.authorsFormated}}</td>
+                    <td><a href="book/publication/{{item.id}}">{{item.publicationsCount}}</a></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" (click)="editBook(item)"><span class="glyphicon glyphicon-edit"></span></button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteBook(item)"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </ng-template>
+
+            </tr>
+        </ng-template>
+        <tr>
+            <ng-template [ngIf]="book?.id != -1" [ngIfElse]="editB">
+                <td colspan="7" class="create-new-item-row" (click)="createBook()"> <span class="glyphicon glyphicon-plus"></span> </td>
+            </ng-template>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #editB>
+    <td>
+        <input type="text" [(ngModel)]="book.isbn" class="form-control" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="book.capation" class="form-control" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="book.additionalData" class="form-control" />
+    </td>
+    <td>
+        <input type="text" readonly [(ngModel)]="book.releaseDate" class="form-control" />
+    </td>
+    <td>
+        <input type="text" readonly [(ngModel)]="book.authorsFormated" class="form-control" />
+    </td>
+    <td>
+        <div (click)="saveBook()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
+        <div (click)="cancelBook()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
+    </td>
+</ng-template>
+
+<ng-template #loading>
+    <tr>
+        <td colspan="6" class="text-center">
+            <span class="glyphicon glyphicon-refresh gly-spin"></span>
+        </td>
+    </tr>
+</ng-template>
