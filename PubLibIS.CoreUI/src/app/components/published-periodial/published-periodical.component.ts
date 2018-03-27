@@ -30,7 +30,7 @@ export class PublishedPeriodicalComponent implements OnInit {
 
     loadList() {
       this.loaded = false;
-      this.dataService.getPublicationList(this.periodical_id).subscribe(PublishedPeriodicals => this.publishedPeriodicalList = PublishedPeriodicals);
+      this.dataService.getPublicationList(this.periodical_id).subscribe((PublishedPeriodicals: PublishedPeriodical[]) => this.publishedPeriodicalList = PublishedPeriodicals);
         this.loaded = true;
     }
 

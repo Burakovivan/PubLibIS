@@ -24,7 +24,7 @@ export class PublishingHouseComponent implements OnInit {
 
     loadList() {
         this.loaded = false;
-        this.dataService.getPublishingHouseList().subscribe(PublishingHouses => this.publishingHouseList = PublishingHouses);
+      this.dataService.getPublishingHouseList().subscribe((PublishingHouses: PublishingHouse[]) => this.publishingHouseList = PublishingHouses);
         this.loaded = true;
     }
 

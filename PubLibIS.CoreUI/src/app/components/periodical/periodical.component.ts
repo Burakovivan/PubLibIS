@@ -27,8 +27,8 @@ export class PeriodicalComponent implements OnInit {
     }
 
     loadList() {
-        this.loaded = false;
-        this.dataService.getPeriodicalList().subscribe(Periodicals => this.periodicalList = Periodicals);
+      this.loaded = false;
+      this.dataService.getPeriodicalList().subscribe((Periodicals: Periodical[])=> this.periodicalList = Periodicals);
         this.loaded = true;
     }
 
@@ -45,9 +45,9 @@ export class PeriodicalComponent implements OnInit {
     }
 
     editItem(a: Periodical) {
-        this.periodical = a;
-        this.dataService.getPublishingHouseSelectList(this.periodical.id as number).subscribe(phList => this.publishigHouseSelectList = phList);
-        this.dataService.getTypeSelectList(this.periodical.id as number).subscribe(typeList => this.typeSelectList = typeList);
+      this.periodical = a;
+      this.dataService.getPublishingHouseSelectList(this.periodical.id as number).subscribe((phList: SelectList) => this.publishigHouseSelectList = phList);
+      this.dataService.getTypeSelectList(this.periodical.id as number).subscribe((typeList :SelectList)=> this.typeSelectList = typeList);
     }
 
     cancel() {

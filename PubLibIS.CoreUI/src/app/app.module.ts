@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from "@angular/router"
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -14,6 +15,12 @@ import { PublishedBookComponent } from './components/published-book/published-bo
 import { PublishingHouseComponent } from './components/publishing-house/publishing-house.component';
 import { PublishedPeriodicalComponent } from './components/published-periodial/published-periodical.component';
 import { PublishedPeriodical } from './models/publishedPeriodical';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './services/auth/token.interceptor';
+import { AuthService } from './services/auth/auth.service';
+import { AuthComponent } from './components/auth/auth.component';
+import { JwtInterceptor } from './services/auth/jwt.interceptor';
+import { AccountComponent } from './components/account/account.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent, data: { title: "Home" } },
@@ -24,6 +31,7 @@ const appRoutes: Routes = [
   { path: 'periodical', component: PeriodicalComponent, data: { title: "Periodicals" } },
   { path: 'periodical/publication/:id', component: PublishedPeriodicalComponent, data: { title: "Periodical publications" } },
   { path: 'ph', component: PublishingHouseComponent, data: { title: "Publishing houses" } },
+  { path: 'account', component: AuthComponent, data: { title: "Account" } },
   {
     path: '',
     redirectTo: 'home',
@@ -36,6 +44,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     NavMenuComponent,
+    AccountComponent,
 
     HomeComponent,
     AuthorComponent,
@@ -45,19 +54,33 @@ const appRoutes: Routes = [
     PublishedBookComponent,
     PeriodicalComponent,
     PublishedPeriodicalComponent,
-    PublishingHouseComponent
+    PublishingHouseComponent,
+    AuthComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     )
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+    multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Book } from '../models/book';
 import 'rxjs/add/operator/map';
 import { PublishedBook } from '../models/publishedBook';
@@ -10,22 +10,22 @@ export class BookService {
     private url = "/api/book";
     private publicationUrl = "/api/publishedBook";
 
-    constructor(private http: Http) {
+  constructor(private http: HttpClient) {
         
 
     }
     getBook(id: number) {
         this.url = window.location.origin + this.url;
-        return this.http.get(this.url + '/' + id).map(res => res.json());
+        return this.http.get(this.url + '/' + id);
     }
 
     getBookList() {
-        return this.http.get(this.url).map(res => res.json());
+        return this.http.get(this.url);
     }
 
 
     createBook(book: Book) {
-        return this.http.post(this.url, book).map(res => res.json());
+        return this.http.post(this.url, book);
     }
 
     updateBook(book: Book) {
@@ -37,15 +37,15 @@ export class BookService {
     }
 
     getPublicationList(id:number) {
-        return this.http.get(this.publicationUrl+'/'+id).map(res => res.json());
+        return this.http.get(this.publicationUrl+'/'+id);
     }
     getPublishingHouseSelectList(id: number) {
-        return this.http.get(this.publicationUrl + '/phlist/' + id).map(res => res.json());
+        return this.http.get(this.publicationUrl + '/phlist/' + id);
     }
 
     createPublication(book: PublishedBook) {
         book.id = 0;
-        return this.http.post(this.publicationUrl, book).map(res => res.json());
+        return this.http.post(this.publicationUrl, book);
     }
 
     updatePublication(book: PublishedBook) {
@@ -62,9 +62,8 @@ export class BookService {
   }
   setJson(json: string) {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     var postObj = { json: json };
-    this.http.post(this.url + '/setjson', postObj, options).subscribe(() => { });
+    this.http.post(this.url + '/setjson', postObj, { headers: headers }).subscribe(() => { });
   }
 }

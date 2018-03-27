@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Periodical } from '../models/periodical';
 import { PeriodicalType } from '../models/periodicalType';
 import 'rxjs/add/operator/map';
@@ -11,20 +11,20 @@ export class PeriodicalService {
   private url = "/api/periodical";
   private publicationUrl = "/api/publishedperiodical"
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   getPeriodicalList() {
-    return this.http.get(this.url).map(res => res.json());
+    return this.http.get(this.url);
   }
 
   getPeriodical(id: number) {
-    return this.http.get(this.url + '/' + id).map(res => res.json());
+    return this.http.get(this.url + '/' + id);
   }
 
   createPeriodical(periodical: Periodical) {
     periodical.id = 0;
-    return this.http.post(this.url, periodical).map(res => res.json());
+    return this.http.post(this.url, periodical);
   }
 
   updatePeriodical(periodical: Periodical) {
@@ -36,20 +36,20 @@ export class PeriodicalService {
   }
 
   getPublishingHouseSelectList(id: number) {
-    return this.http.get(this.url + '/phlist/' + id).map(res => res.json());
+    return this.http.get(this.url + '/phlist/' + id);
   }
 
   getTypeSelectList(id: number) {
-    return this.http.get(this.url + '/typelist/' + id).map(res => res.json());
+    return this.http.get(this.url + '/typelist/' + id);
   }
 
   getPublicationList(id: number) {
-    return this.http.get(this.publicationUrl + '/' + id).map(res => res.json());
+    return this.http.get(this.publicationUrl + '/' + id);
   }
 
   createPublication(pp: PublishedPeriodical) {
     pp.id = 0;
-    return this.http.post(this.publicationUrl, pp).map(res => res.json());
+    return this.http.post(this.publicationUrl, pp);
   }
 
   updatePublication(pp: PublishedPeriodical) {
@@ -66,9 +66,8 @@ export class PeriodicalService {
   }
   setJson(json: string) {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     var postObj = { json: json };
-    this.http.post(this.url + '/setjson', postObj, options).subscribe(() => { });
+    this.http.post(this.url + '/setjson', postObj, { headers: headers }).subscribe(() => { });
   }
 }

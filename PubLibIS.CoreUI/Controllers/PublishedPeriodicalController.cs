@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace PubLibIS.CoreUI.Controllers
 {
-  // [Authorize(Roles = "admin, user")]
+  [Authorize(Roles = "admin, user")]
   [Route("api/[controller]")]
   public class PublishedPeriodicalController : Controller
   {
@@ -34,14 +34,14 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     [HttpPut]
-    //  [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public PeriodicalEditionViewModel Edit([FromBody]PeriodicalEditionViewModel periodicalEdition)
     {
       service.UpdatePeriodicalEdition(periodicalEdition);
       return service.GetPeriodicalEditionViewModel(periodicalEdition.Id);
     }
 
-    // [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -51,7 +51,7 @@ namespace PubLibIS.CoreUI.Controllers
 
 
     [HttpPost]
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public PeriodicalEditionViewModel Create([FromBody]PeriodicalEditionViewModel periodicalEdition)
     {
 
@@ -80,7 +80,7 @@ namespace PubLibIS.CoreUI.Controllers
       public string json { get; set; }
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {

@@ -24,7 +24,7 @@ export class AuthorComponent implements OnInit {
   // получаем данные через сервис
   loadAuthors() {
     this.loaded = false;
-    this.dataService.getAuthorList().subscribe(authors => this.authors = authors);
+    this.dataService.getAuthorList().subscribe((authorList: Author[]) => this.authors = authorList);
     this.loaded = true;
   }
   // сохранение данных
@@ -36,7 +36,7 @@ export class AuthorComponent implements OnInit {
     }
     if (this.author.id == null || this.author.id == -1) {
       let newAuthor: Author = new Author();
-      this.dataService.createAuthor(this.author).subscribe(author => newAuthor = author)
+      this.dataService.createAuthor(this.author).subscribe((author: Author) => newAuthor = author)
       this.authors.push(newAuthor);
     } else {
       this.dataService.updateAuthor(this.author).subscribe(data =>

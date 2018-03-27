@@ -11,84 +11,84 @@ using System.Linq;
 
 namespace PubLibIS.CoreUI.Controllers
 {
-   // [Authorize(Roles = "admin, user")]
-    [Route("api/[controller]")]
-    public class PeriodicalController : Controller
+  [Authorize(Roles = "admin, user")]
+  [Route("api/[controller]")]
+  public class PeriodicalController : Controller
+  {
+    private IPeriodicalService service;
+    private IPublishingHouseService phService;
+    private IHostingEnvironment hostingEnvironment;
+
+    public PeriodicalController(IPeriodicalService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
     {
-        private IPeriodicalService service;
-        private IPublishingHouseService phService;
-        private IHostingEnvironment hostingEnvironment;
+      this.service = service;
+      this.phService = phService;
+      this.hostingEnvironment = hostingEnvironment;
+    }
 
-        public PeriodicalController(IPeriodicalService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
-        {
-            this.service = service;
-            this.phService = phService;
-            this.hostingEnvironment = hostingEnvironment;
-        }
+    // GET: Periodical
+    [HttpGet]
+    public IEnumerable<PeriodicalViewModel> Get()
+    {
+      return service.GetPeriodicalViewModelList();
+    }
 
-        // GET: Periodical
-        [HttpGet]
-        public IEnumerable<PeriodicalViewModel> Get()
-        {
-            return service.GetPeriodicalViewModelList();
-        }
+    [HttpGet("phlist/{id}")]
+    public SelectList GetPublishingHouseSelectList(int id)
+    {
+      var phId = service.GetPeriodicalViewModel(id).PublishingHouse_Id;
+      var selectList = new SelectList();
+      selectList.Items = new List<SelectListItem>();
+      phService.GetPublishingHouseViewModelSlimList().ToList()
+          .ForEach(ph =>
+          selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
+      return selectList;
+    }
 
-        [HttpGet("phlist/{id}")]
-        public SelectList GetPublishingHouseSelectList(int id)
-        {
-            var phId = service.GetPeriodicalViewModel(id).PublishingHouse_Id;
-            var selectList = new SelectList();
-            selectList.Items = new List<SelectListItem>();
-            phService.GetPublishingHouseViewModelSlimList().ToList()
-                .ForEach(ph =>
-                selectList.Items.Add(new SelectListItem {Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
-            return selectList;
-        }
+    [HttpGet("typelist/{id}")]
+    public SelectList GetPeriodicalTypeSelectList(int id)
+    {
+      var phId = service.GetPeriodicalViewModel(id).Type.Id;
 
-        [HttpGet("typelist/{id}")]
-        public SelectList GetPeriodicalTypeSelectList(int id)
-        {
-            var phId = service.GetPeriodicalViewModel(id).Type.Id;
-            
-            var selectList = new SelectList();
-            selectList.Items = new List<SelectListItem>();
-            service.GetPeriodicalTypeViewModelList().ToList()
-                .ForEach(ph =>
-                selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Name, Selected = ph.Id == phId }));
-            return selectList;
-        }
+      var selectList = new SelectList();
+      selectList.Items = new List<SelectListItem>();
+      service.GetPeriodicalTypeViewModelList().ToList()
+          .ForEach(ph =>
+          selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Name, Selected = ph.Id == phId }));
+      return selectList;
+    }
 
-        [HttpGet("{id}")]
-        public PeriodicalViewModel Details(int id)
-        {
-            return service.GetPeriodicalViewModel(id);
-        }
+    [HttpGet("{id}")]
+    public PeriodicalViewModel Details(int id)
+    {
+      return service.GetPeriodicalViewModel(id);
+    }
 
-        [HttpPut]
-      //  [Authorize(Roles = "admin")]
-        public PeriodicalViewModel Edit([FromBody]PeriodicalViewModel Periodical)
-        {
-            service.UpdatePeriodical(Periodical);
-            return service.GetPeriodicalViewModel(Periodical.Id);
-        }
+    [HttpPut]
+    [Authorize(Roles = "admin")]
+    public PeriodicalViewModel Edit([FromBody]PeriodicalViewModel Periodical)
+    {
+      service.UpdatePeriodical(Periodical);
+      return service.GetPeriodicalViewModel(Periodical.Id);
+    }
 
-       // [Authorize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            service.DeletePeriodical(id);
-            return Ok(id);
-        }
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+      service.DeletePeriodical(id);
+      return Ok(id);
+    }
 
-     
-        [HttpPost]
-        //[Authorize(Roles = "admin")]
-        public PeriodicalViewModel Create([FromBody]PeriodicalViewModel Periodical)
-        {
-            
-            var id = service.CreatePeriodical(Periodical);
-            return service.GetPeriodicalViewModel(id);
-        }
+
+    [HttpPost]
+    [Authorize(Roles = "admin")]
+    public PeriodicalViewModel Create([FromBody]PeriodicalViewModel Periodical)
+    {
+
+      var id = service.CreatePeriodical(Periodical);
+      return service.GetPeriodicalViewModel(id);
+    }
 
     [HttpPost("getJson")]
     public ActionResult GetJson([FromBody]IEnumerable<int> idList)
@@ -112,7 +112,7 @@ namespace PubLibIS.CoreUI.Controllers
       public string json { get; set; }
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
@@ -125,8 +125,8 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     private string MapLocalPath(string virtualPath)
-        {
-            return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
-        }
+    {
+      return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
     }
+  }
 }

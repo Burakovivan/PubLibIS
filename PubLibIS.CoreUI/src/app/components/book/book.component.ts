@@ -26,8 +26,8 @@ export class BookComponent implements OnInit {
     }
     // получаем данные через сервис
     loadBooks() {
-        this.loaded = false;
-        this.dataService.getBookList().subscribe(books => this.books = books);
+      this.loaded = false;
+      this.dataService.getBookList().subscribe((books: Book[]) => this.books = books);
         this.loaded = true;
     }
 

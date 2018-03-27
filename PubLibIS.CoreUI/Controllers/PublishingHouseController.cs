@@ -10,57 +10,57 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace PubLibIS.CoreUI.Controllers
 {
-   // [PublishingHouseize(Roles = "admin, user")]
-    [Route("api/[controller]")]
-    public class PublishingHouseController : Controller
+  [Authorize(Roles = "admin, user")]
+  [Route("api/[controller]")]
+  public class PublishingHouseController : Controller
+  {
+    private IPublishingHouseService service;
+    private IHostingEnvironment hostingEnvironment;
+
+    public PublishingHouseController(IPublishingHouseService service, IHostingEnvironment hostingEnvironment)
     {
-        private IPublishingHouseService service;
-        private IHostingEnvironment hostingEnvironment;
+      this.service = service;
+      this.hostingEnvironment = hostingEnvironment;
+    }
 
-        public PublishingHouseController(IPublishingHouseService service, IHostingEnvironment hostingEnvironment)
-        {
-            this.service = service;
-            this.hostingEnvironment = hostingEnvironment;
-        }
+    // GET: PublishingHouse
+    [HttpGet]
+    public IEnumerable<PublishingHouseViewModel> Get()
+    {
+      return service.GetPublishingHouseViewModelList();
+    }
 
-        // GET: PublishingHouse
-        [HttpGet]
-        public IEnumerable<PublishingHouseViewModel> Get()
-        {
-            return service.GetPublishingHouseViewModelList();
-        }
+    [HttpGet("{id}")]
+    public PublishingHouseViewModel Details(int id)
+    {
+      return service.GetPublishingHouseViewModel(id);
+    }
 
-        [HttpGet("{id}")]
-        public PublishingHouseViewModel Details(int id)
-        {
-            return service.GetPublishingHouseViewModel(id);
-        }
+    [HttpPut]
+    [Authorize(Roles = "admin")]
+    public PublishingHouseViewModel Edit([FromBody]PublishingHouseViewModel PublishingHouse)
+    {
+      service.UpdatePublishingHouse(PublishingHouse);
+      return service.GetPublishingHouseViewModel(PublishingHouse.Id);
+    }
 
-        [HttpPut]
-      //  [PublishingHouseize(Roles = "admin")]
-        public PublishingHouseViewModel Edit([FromBody]PublishingHouseViewModel PublishingHouse)
-        {
-            service.UpdatePublishingHouse(PublishingHouse);
-            return service.GetPublishingHouseViewModel(PublishingHouse.Id);
-        }
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+      service.DeletePublishingHouse(id);
+      return Ok(id);
+    }
 
-       // [PublishingHouseize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            service.DeletePublishingHouse(id);
-            return Ok(id);
-        }
 
-     
-        [HttpPost]
-        //[PublishingHouseize(Roles = "admin")]
-        public PublishingHouseViewModel Create([FromBody]PublishingHouseViewModel PublishingHouse)
-        {
-        
-            var id = service.CreatePublishingHouse(PublishingHouse);
-            return service.GetPublishingHouseViewModel(id);
-        }
+    [HttpPost]
+    [Authorize(Roles = "admin")]
+    public PublishingHouseViewModel Create([FromBody]PublishingHouseViewModel PublishingHouse)
+    {
+
+      var id = service.CreatePublishingHouse(PublishingHouse);
+      return service.GetPublishingHouseViewModel(id);
+    }
     [HttpPost("getJson")]
     public ActionResult GetJson([FromBody]IEnumerable<int> idList)
     {
@@ -83,7 +83,7 @@ namespace PubLibIS.CoreUI.Controllers
       public string json { get; set; }
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
@@ -96,8 +96,8 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     private string MapLocalPath(string virtualPath)
-        {
-            return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
-        }
+    {
+      return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
     }
+  }
 }

@@ -1,0 +1,14 @@
+<div class="acoount-container">
+  <ng-template [ngIf]="email!=null" [ngIfElse]="new">
+    <div>
+      <span>Hello, {{email}}!</span>
+      <button class="pull-right btn btn-primary btn-xs" (click)="signOut()"><span class="glyphicon glyphicon-log-out"></span></button>
+    </div>
+  </ng-template>
+  <ng-template #new>
+    <div>
+      <span>Hello, Anonymus!</span>
+      <a [routerLink]="['/account']" class="pull-right btn btn-primary btn-sm"><span class="glyphicon glyphicon-log-in"></span></a>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,47 @@
+
+<div class="row">
+
+  <div class="col-sm-6 col-lg-offset-1 col-lg-4">
+    <h1>Login</h1>
+    <span class="error-message"></span>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="userLogin.email" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="userLogin.password" class="form-control" />
+    </div>
+    <button (click)="SignIn()" class="btn btn-primary pull-right">Sign in</button>
+  </div>
+
+  <div class="col-sm-6 col-lg-offset-2 col-lg-4">
+    <h1>Register</h1>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="userRegister.email" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="userRegister.password" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Confirm password</label>
+      <input type="password" [(ngModel)]="userRegister.confirmPassword" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" [(ngModel)]="userRegister.name" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" [(ngModel)]="userRegister.address" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Admin</label>
+      <input type="checkbox" [(ngModel)]="userRegister.admin" />
+    </div>
+    <button (click)="SignUp()" class="btn btn-primary pull-right">Sign up</button>
+  </div>
+
+</div>

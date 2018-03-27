@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Author } from '../models/author';
 import 'rxjs/add/operator/map';
 
@@ -8,11 +8,11 @@ export class AuthorService {
 
 
   private url = "/api/author";
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   getAuthorList() {
-    return this.http.get(this.url).map(res => res.json());
+    return this.http.get(this.url);
   }
 
   getAuthor(id: number) {
@@ -23,7 +23,7 @@ export class AuthorService {
 
   createAuthor(author: Author) {
     author.id = 0;
-    return this.http.post(this.url, author).map(res => res.json());
+    return this.http.post(this.url, author);
   }
 
   updateAuthor(author: Author) {
@@ -41,10 +41,9 @@ export class AuthorService {
   }
   setJson(json: string) {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     var postObj = { json: json };
-    this.http.post(this.url + '/setjson', postObj, options).subscribe(() => { });
+    this.http.post(this.url + '/setjson', postObj, { headers: headers}).subscribe(() => { });
   }
 
 }

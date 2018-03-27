@@ -11,73 +11,73 @@ using System.Linq;
 
 namespace PubLibIS.CoreUI.Controllers
 {
-   // [Authorize(Roles = "admin, user")]
-    [Route("api/[controller]")]
-    public class BrochureController : Controller
+  [Authorize(Roles = "admin, user")]
+  [Route("api/[controller]")]
+  public class BrochureController : Controller
+  {
+    private IBrochureService service;
+    private IPublishingHouseService phService;
+    private IHostingEnvironment hostingEnvironment;
+
+    public BrochureController(IBrochureService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
     {
-        private IBrochureService service;
-        private IPublishingHouseService phService;
-        private IHostingEnvironment hostingEnvironment;
+      this.service = service;
+      this.phService = phService;
+      this.hostingEnvironment = hostingEnvironment;
+    }
 
-        public BrochureController(IBrochureService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
-        {
-            this.service = service;
-            this.phService = phService;
-            this.hostingEnvironment = hostingEnvironment;
-        }
+    // GET: Brochure
+    [HttpGet]
+    public IEnumerable<BrochureViewModel> Get()
+    {
+      return service.GetBrochureViewModelList();
+    }
+    [HttpGet("phlist/{id}")]
+    public SelectList GetPublishingHouseSelectList(int id)
+    {
+      var phId = service.GetBrochureViewModel(id).PublishingHouse_Id;
+      var selectList = new SelectList();
+      selectList.Items = new List<SelectListItem>();
+      phService.GetPublishingHouseViewModelSlimList().ToList()
+          .ForEach(ph =>
+          selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
+      return selectList;
+    }
 
-        // GET: Brochure
-        [HttpGet]
-        public IEnumerable<BrochureViewModel> Get()
-        {
-            return service.GetBrochureViewModelList();
-        }
-        [HttpGet("phlist/{id}")]
-        public SelectList GetPublishingHouseSelectList(int id)
-        {
-            var phId = service.GetBrochureViewModel(id).PublishingHouse_Id;
-            var selectList = new SelectList();
-            selectList.Items = new List<SelectListItem>();
-            phService.GetPublishingHouseViewModelSlimList().ToList()
-                .ForEach(ph =>
-                selectList.Items.Add(new SelectListItem {Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
-            return selectList;
-        }
+    [HttpGet("{id}")]
+    public BrochureViewModel Details(int id)
+    {
+      return service.GetBrochureViewModel(id);
+    }
 
-        [HttpGet("{id}")]
-        public BrochureViewModel Details(int id)
-        {
-            return service.GetBrochureViewModel(id);
-        }
+    [HttpPut]
+    [Authorize(Roles = "admin")]
+    public BrochureViewModel Edit([FromBody]BrochureViewModel Brochure)
+    {
+      service.UpdateBrochure(Brochure);
+      return service.GetBrochureViewModel(Brochure.Id);
+    }
 
-        [HttpPut]
-      //  [Authorize(Roles = "admin")]
-        public BrochureViewModel Edit([FromBody]BrochureViewModel Brochure)
-        {
-            service.UpdateBrochure(Brochure);
-            return service.GetBrochureViewModel(Brochure.Id);
-        }
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+      service.DeleteBrochure(id);
+      return Ok(id);
+    }
 
-       // [Authorize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            service.DeleteBrochure(id);
-            return Ok(id);
-        }
 
-     
-        [HttpPost]
-        //[Authorize(Roles = "admin")]
-        public BrochureViewModel Create([FromBody]BrochureViewModel Brochure)
-        {
-            if(Brochure.ReleaseDate == DateTime.MinValue)
-            {
-                return null;
-            }
-            var id = service.CreateBrochure(Brochure);
-            return service.GetBrochureViewModel(id);
-        }
+    [HttpPost]
+    [Authorize(Roles = "admin")]
+    public BrochureViewModel Create([FromBody]BrochureViewModel Brochure)
+    {
+      if (Brochure.ReleaseDate == DateTime.MinValue)
+      {
+        return null;
+      }
+      var id = service.CreateBrochure(Brochure);
+      return service.GetBrochureViewModel(id);
+    }
 
     [HttpPost("getJson")]
     public ActionResult GetJson([FromBody]IEnumerable<int> idList)
@@ -101,7 +101,7 @@ namespace PubLibIS.CoreUI.Controllers
       public string json { get; set; }
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
@@ -114,8 +114,8 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     private string MapLocalPath(string virtualPath)
-        {
-            return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
-        }
+    {
+      return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
     }
+  }
 }

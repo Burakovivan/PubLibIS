@@ -27,8 +27,8 @@ export class BrochureComponent implements OnInit {
     }
 
     loadList() {
-        this.loaded = false;
-        this.dataService.getBrochureList().subscribe(Brochures => this.brochureList = Brochures);
+      this.loaded = false;
+      this.dataService.getBrochureList().subscribe((Brochures: Brochure[]) => this.brochureList = Brochures);
         this.loaded = true;
     }
 
@@ -45,8 +45,8 @@ export class BrochureComponent implements OnInit {
     }
 
     editItem(a: Brochure) {
-        this.brochure = a;
-        this.dataService.getPublishingHouseSelectList(this.brochure.id as number).subscribe(phs => this.publishigHouseSelectList = phs);
+      this.brochure = a;
+      this.dataService.getPublishingHouseSelectList(this.brochure.id as number).subscribe((phs: SelectList) => this.publishigHouseSelectList = phs);
          
     }
 

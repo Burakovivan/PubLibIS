@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\app\components\account\style.css" />
+    <None Remove="src\app\models\login.ts" />
     <None Remove="src\app\models\publishedPeriodical.ts" />
-    <None Remove="src\app\services\account.service.ts" />
+    <None Remove="src\app\models\register.ts" />
+    <None Remove="src\app\services\auth.service.ts" />
+    <None Remove="src\app\services\auth\jwt.interceptor.ts" />
+    <None Remove="src\app\services\auth\token.interceptor.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,13 +23,18 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.4" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Owin" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
@@ -35,8 +45,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="src\app\components\account\style.css" />
+    <TypeScriptCompile Include="src\app\models\login.ts" />
     <TypeScriptCompile Include="src\app\models\publishedPeriodical.ts" />
-    <TypeScriptCompile Include="src\app\services\account.service.ts" />
+    <TypeScriptCompile Include="src\app\models\register.ts" />
+    <TypeScriptCompile Include="src\app\services\auth\auth.service.ts" />
+    <TypeScriptCompile Include="src\app\services\auth\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="src\app\services\auth\token.interceptor.ts" />
   </ItemGroup>
 
 </Project>

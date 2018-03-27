@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace PubLibIS.CoreUI.Controllers
 {
-  // [Authorize(Roles = "admin, user")]
+  [Authorize(Roles = "admin, user")]
   [Route("api/[controller]")]
   public class AuthorController : Controller
   {
@@ -37,14 +37,14 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     [HttpPut]
-    //  [Authorize(Roles = "admin")]
+     [Authorize(Roles = "admin")]
     public AuthorViewModel Edit([FromBody]AuthorViewModel author)
     {
       service.UpdateAuthor(author);
       return service.GetAuthorViewModel(author.Id);
     }
 
-    // [Authorize(Roles = "admin")]
+     [Authorize(Roles = "admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -54,7 +54,7 @@ namespace PubLibIS.CoreUI.Controllers
 
 
     [HttpPost]
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public AuthorViewModel Create([FromBody]AuthorViewModel author)
     {
       if (author.DateOfBirth == DateTime.MinValue)
@@ -87,7 +87,7 @@ namespace PubLibIS.CoreUI.Controllers
       public string json { get; set; }
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {

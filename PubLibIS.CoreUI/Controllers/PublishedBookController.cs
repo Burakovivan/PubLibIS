@@ -11,65 +11,66 @@ using System.Linq;
 
 namespace PubLibIS.CoreUI.Controllers
 {
-    // [Authorize(Roles = "admin, user")]
-    [Route("api/[controller]")]
-    public class PublishedBookController : Controller
+  [Authorize(Roles = "admin, user")]
+  [Route("api/[controller]")]
+  public class PublishedBookController : Controller
+  {
+    private IBookService service;
+    private IPublishingHouseService phService;
+    private IHostingEnvironment hostingEnvironment;
+
+    public PublishedBookController(IBookService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
     {
-        private IBookService service;
-        private IPublishingHouseService phService;
-        private IHostingEnvironment hostingEnvironment;
+      this.service = service;
+      this.phService = phService;
+      this.hostingEnvironment = hostingEnvironment;
+    }
 
-        public PublishedBookController(IBookService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
-        {
-            this.service = service;
-            this.phService = phService;
-            this.hostingEnvironment = hostingEnvironment;
-        }
+    // GET: PublishedBook
+    [HttpGet("{id}")]
+    public IEnumerable<PublishedBookViewModel> Get(int id)
+    {
+      return service.GetPublishedBookViewModelListByBook(id);
+    }
 
-        // GET: PublishedBook
-        [HttpGet("{id}")]
-        public IEnumerable<PublishedBookViewModel> Get(int id)
-        {
-            return service.GetPublishedBookViewModelListByBook(id);
-        }
+    [HttpGet("phlist/{id}")]
+    public SelectList GetPublishingHouseSelectList(int id)
+    {
+      var phId = service.GetPublication(id)?.PublishingHouse_Id;
+      var selectList = new SelectList();
+      selectList.Items = new List<SelectListItem>();
+      phService.GetPublishingHouseViewModelSlimList().ToList()
+          .ForEach(ph =>
+          selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
+      return selectList;
+    }
 
-        [HttpGet("phlist/{id}")]
-        public SelectList GetPublishingHouseSelectList(int id)
-        {
-            var phId = service.GetPublication(id)?.PublishingHouse_Id;
-            var selectList = new SelectList();
-            selectList.Items = new List<SelectListItem>();
-            phService.GetPublishingHouseViewModelSlimList().ToList()
-                .ForEach(ph =>
-                selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
-            return selectList;
-        }
+    [HttpPut]
+    [Authorize(Roles = "admin")]
+    public PublishedBookViewModel Edit([FromBody]PublishedBookViewModel publishedBook)
+    {
+      service.UpdatePublication(publishedBook);
+      return service.GetPublication(publishedBook.Id);
+    }
 
-        [HttpPut]
-      //  [Authorize(Roles = "admin")]
-        public PublishedBookViewModel Edit([FromBody]PublishedBookViewModel publishedBook)
-        {
-            service.UpdatePublication(publishedBook);
-            return service.GetPublication(publishedBook.Id);
-        }
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+      service.DeletePublication(id);
+      return Ok(id);
+    }
 
-       // [Authorize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            service.DeletePublication(id);
-            return Ok(id);
-        }
 
-     
-        [HttpPost]
-        //[Authorize(Roles = "admin")]
-        public PublishedBookViewModel Create([FromBody]PublishedBookViewModel publishedBook)
-        {
-            
-            var id = service.CreatePublication(publishedBook);
-            return service.GetPublication(id);
-        }
+    [HttpPost]
+    [Authorize(Roles = "admin")]
+    public PublishedBookViewModel Create([FromBody]PublishedBookViewModel publishedBook)
+    {
+
+      var id = service.CreatePublication(publishedBook);
+      return service.GetPublication(id);
+    }
+
     [HttpPost("getJson")]
     public ActionResult GetJson([FromBody]IEnumerable<int> idList)
     {
@@ -92,7 +93,7 @@ namespace PubLibIS.CoreUI.Controllers
       public string json { get; set; }
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
@@ -105,8 +106,8 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     private string MapLocalPath(string virtualPath)
-        {
-            return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
-        }
+    {
+      return Path.Combine(hostingEnvironment.ContentRootPath + virtualPath);
     }
+  }
 }

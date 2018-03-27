@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Brochure } from '../models/brochure';
 import 'rxjs/add/operator/map';
 
@@ -8,11 +8,11 @@ export class BrochureService {
 
     private url = "/api/brochure";
 
-    constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     }
 
     getBrochureList() {
-        return this.http.get(this.url).map(res => res.json());
+        return this.http.get(this.url);
     }
 
     getBrochure(id: number) {
@@ -22,11 +22,11 @@ export class BrochureService {
     }
 
     getPublishingHouseSelectList(id:number) {
-        return this.http.get(this.url + '/phlist/' + id).map(res => res.json());
+        return this.http.get(this.url + '/phlist/' + id);
     }
     createBrochure(Brochure: Brochure) {
         Brochure.id = 0;
-        return this.http.post(this.url, Brochure).map(res => res.json());
+        return this.http.post(this.url, Brochure);
     }
 
     updateBrochure(Brochure: Brochure) {
@@ -43,9 +43,8 @@ export class BrochureService {
   }
   setJson(json: string) {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     var postObj = { json: json };
-    this.http.post(this.url + '/setjson', postObj, options).subscribe(() => { });
+    this.http.post(this.url + '/setjson', postObj, { headers: headers }).subscribe(() => { });
   }
 }
