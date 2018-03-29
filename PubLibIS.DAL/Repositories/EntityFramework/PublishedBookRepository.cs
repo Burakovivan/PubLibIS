@@ -40,12 +40,12 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.PublishedBooks.Where(pb => pb.Book.Id == bookId).OrderByDescending(x=>x.Id).ToList();
         }
 
-        public IEnumerable<PublishedBook> Get()
+        public IEnumerable<PublishedBook> GetList()
         {
             return context.PublishedBooks.AsEnumerable();
         }
 
-        public IEnumerable<PublishedBook> Get(int skip, int take)
+        public IEnumerable<PublishedBook> GetList(int skip, int take)
         {
             return context.PublishedBooks.Skip(skip).Take(take).AsEnumerable();
         }

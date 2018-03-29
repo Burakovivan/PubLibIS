@@ -8,9 +8,8 @@ namespace PubLibIS.DAL
     {
         private string connectionString;
 
-        public string Schema { get; private set; }
 
-        public DapperConnectionFactory(string connectionNameOrConnectionString, string schema = "dbo")
+        public DapperConnectionFactory(string connectionNameOrConnectionString)
         {
             try
             {
@@ -19,8 +18,8 @@ namespace PubLibIS.DAL
             catch {
                 connectionString = connectionNameOrConnectionString;
             }
-            this.Schema = schema;
         }
+
         public IDbConnection GetConnectionInstance()
         {
             return new SqlConnection(connectionString);

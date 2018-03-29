@@ -27,7 +27,7 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PublishingHouseViewModel> GetPublishingHouseViewModelList()
         {
-            var phs = db.PublishingHouses.Get();
+            var phs = db.PublishingHouses.GetList();
             return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModel>>(phs);
         }
 
@@ -60,12 +60,12 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PublishingHouseViewModelSlim> GetPublishingHouseViewModelSlimList()
         {
-            return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModelSlim>>(db.PublishingHouses.Get());
+            return mapper.Map<IEnumerable<PublishingHouse>, IEnumerable<PublishingHouseViewModelSlim>>(db.PublishingHouses.GetList());
         }
 
         public string GetJson(IEnumerable<int> idList)
         {
-            var PublishingHouseList = db.PublishingHouses.Get(idList).ToList();
+            var PublishingHouseList = db.PublishingHouses.GetList(idList).ToList();
             var result = JsonConvert.SerializeObject(new PublishingHouseJsonAggregator { PublishingHouses = PublishingHouseList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
@@ -74,14 +74,15 @@ namespace PubLibIS.BLL.Services
         {
             var deserRes = JsonConvert.DeserializeObject<PublishingHouseJsonAggregator>(json);
 
-            if (deserRes != null)
+            if(deserRes == null)
             {
-                foreach (var зublishingHouse in deserRes.PublishingHouses)
-                {
-                    db.PublishingHouses.Create(зublishingHouse);
-                }
-                db.Save();
+                return;
             }
+            foreach(var зublishingHouse in deserRes.PublishingHouses)
+            {
+                db.PublishingHouses.Create(зublishingHouse);
+            }
+            db.Save();
         }
     }
 }

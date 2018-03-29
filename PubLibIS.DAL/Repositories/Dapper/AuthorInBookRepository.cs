@@ -4,118 +4,47 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using System.Data;
+using DapperExtensions;
+using System.Linq.Expressions;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
-    public class AuthorInBookRepository : IAuthorInBookRepository
+    public class AuthorInBookRepository : Repository<AuthorInBook>, IAuthorInBookRepository
     {
-        private DapperConnectionFactory dapperConnectionFactory;
-        private string schema;
 
         public AuthorInBookRepository(DapperConnectionFactory dapperConnectionFactory)
-        {
-            this.dapperConnectionFactory = dapperConnectionFactory;
-            this.schema = dapperConnectionFactory.Schema;
-        }
-
-        public int Create(AuthorInBook AuthorInBook)
-        {
-            int newId = 0;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                newId = db.QuerySingleOrDefault<int>($"INSERT INTO [{schema}].[AuthorInBooks] VALUES " +
-                    $"(@Author_Id, @Book_Id); SELECT CAST(SCOPE_IDENTITY() as int)", AuthorInBook);
-            }
-            return newId;
-        }
-
-        public void Delete(int AuthorInBookId)
-        {
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                db.Query($"DELETE FROM [{schema}].[AuthorInBooks] WHERE Id = @id", new { id = AuthorInBookId });
-            }
-        }
-
-        public AuthorInBook Get(int AuthorInBookId)
-        {
-            AuthorInBook AuthorInBook = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                AuthorInBook = db.QuerySingleOrDefault<AuthorInBook>($"SELECT * FROM [{schema}].[AuthorInBooks] WHERE Id = @id", new { id = AuthorInBookId });
-            }
-            return AuthorInBook;
-        }
-
-        public IEnumerable<AuthorInBook> Get()
-        {
-            IEnumerable<AuthorInBook> AuthorInBooks = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                AuthorInBooks = db.Query<AuthorInBook>($"SELECT * FROM [{schema}].[AuthorInBooks] ORDER BY Id");
-            }
-            return AuthorInBooks;
-        }
-
-        public IEnumerable<AuthorInBook> Get(int skip, int take)
-        {
-            IEnumerable<AuthorInBook> AuthorInBooks = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-
-                AuthorInBooks = db.Query<AuthorInBook>($"SELECT TOP(@take) * FROM(SELECT * FROM [{schema}].[AuthorInBooks] ORDER BY Id OFFSET @skip ROWS) as a", new { skip, take });
-            }
-            return AuthorInBooks;
-        }
+        : base(dapperConnectionFactory) { }
 
         public IEnumerable<AuthorInBook> GetByAuthorId(int authorId)
         {
-            IEnumerable<AuthorInBook> AuthorInBooks = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                AuthorInBooks = db.Query<AuthorInBook>($"SELECT * FROM [{schema}].[AuthorInBooks]  WHERE Author_Id = @authorId ORDER BY Id", new { authorId });
-            }
-            return AuthorInBooks;
+            IFieldPredicate predicate = Predicates.Field<AuthorInBook>(a => a.Author_Id, Operator.Ge, authorId);
+            return GetList(predicate);
         }
 
-        public IEnumerable<AuthorInBook> GetByAuthorId(IEnumerable<int> idList)
+        public IEnumerable<AuthorInBook> GetByAuthorIdList(IEnumerable<int> idList)
         {
-            IEnumerable<AuthorInBook> AuthorInBooks = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                AuthorInBooks = db.Query<AuthorInBook>($"SELECT * FROM [{schema}].[AuthorInBooks] WHERE Author_Id IN @idList  ORDER BY Id", new { idList });
-            }
-            return AuthorInBooks;
+            IFieldPredicate[] fieldPredicateList =
+                    idList.Select(id =>
+                    Predicates.Field<AuthorInBook>(a => a.Author_Id, Operator.Eq, id))
+                    .ToArray();
+            IPredicateGroup predicate = Predicates.Group(GroupOperator.Or, fieldPredicateList);
+            return GetList(predicate);
         }
 
         public IEnumerable<AuthorInBook> GetByBookId(int bookId)
         {
-            IEnumerable<AuthorInBook> AuthorInBooks = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                AuthorInBooks = db.Query<AuthorInBook>($"SELECT * FROM [{schema}].[AuthorInBooks]  WHERE Book_Id = @bookId ORDER BY Id", new { bookId });
-            }
-            return AuthorInBooks;
+            IFieldPredicate predicate = Predicates.Field<AuthorInBook>(a => a.Book_Id, Operator.Ge, bookId);
+            return GetList(predicate);
         }
 
-        public IEnumerable<AuthorInBook> GetByBookId(IEnumerable<int> idList)
+        public IEnumerable<AuthorInBook> GetByBookIdList(IEnumerable<int> idList)
         {
-            IEnumerable<AuthorInBook> AuthorInBooks = null;
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                AuthorInBooks = db.Query<AuthorInBook>($"SELECT * FROM [{schema}].[AuthorInBooks] WHERE Book_Id IN @idList  ORDER BY Id", new { idList });
-            }
-            return AuthorInBooks;
-        }
-
-        public void Update(AuthorInBook AuthorInBook)
-        {
-            using (IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                db.Query($"UPDATE [{schema}].[AuthorInBooks] SET " +
-                    $"FirstName = @FirstName, SecondName = @SecondName,Patronymic = @Patronymic,DateOfBirth = @DateOfBirth,DateOfDeath = @DateOfDeath " +
-                    $"WHERE Id = @Id", AuthorInBook);
-            }
+            IFieldPredicate[] fieldPredicateList =
+                    idList.Select(id =>
+                    Predicates.Field<AuthorInBook>(a => a.Book_Id, Operator.Eq, id))
+                    .ToArray();
+            IPredicateGroup predicate = Predicates.Group(GroupOperator.Or, fieldPredicateList);
+            return GetList(predicate);
         }
     }
 }

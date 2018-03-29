@@ -9,6 +9,7 @@ using PubLibIS.DAL.Models;
 using System;
 using Newtonsoft.Json;
 using PubLibIS.BLL.JsonModels;
+using PubLibIS.DAL.Enums;
 
 namespace PubLibIS.BLL.Services
 {
@@ -25,7 +26,7 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PeriodicalViewModel> GetPeriodicalViewModelList()
         {
-            var periodicals = db.Periodicals.Get();
+            var periodicals = db.Periodicals.GetList();
             var ptvm = mapper.Map<PeriodicalType, PeriodicalTypeViewModel>(PeriodicalType.magazine);
             return mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals);
         }
@@ -113,8 +114,10 @@ namespace PubLibIS.BLL.Services
             var typesList = new List<PeriodicalTypeViewModel>();
             foreach (var name in Enum.GetNames(typeof(PeriodicalType)))
             {
-                if (Enum.TryParse(name, true, out PeriodicalType pt))
+                if(Enum.TryParse(name, true, out PeriodicalType pt))
+                {
                     typesList.Add(new PeriodicalTypeViewModel { Id = (int)pt, Name = name });
+                }
             }
             return typesList;
 
@@ -128,7 +131,7 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            var PeriodicalList = db.Periodicals.Get(idList).ToList();
+            var PeriodicalList = db.Periodicals.GetList(idList).ToList();
             PeriodicalList.ForEach(periodical => periodical.PeriodicalEditions = db.PeriodicalEditions.GetPeriodicalEditionByPeriodicalId(periodical.Id).ToList());
             var result = JsonConvert.SerializeObject(new PeriodicalJsonAggregator { Periodicals = PeriodicalList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
@@ -138,8 +141,10 @@ namespace PubLibIS.BLL.Services
         {
             var deserRes = JsonConvert.DeserializeObject<PeriodicalJsonAggregator>(json);
 
-            if (deserRes != null)
+            if(deserRes == null)
             {
+                return;
+            }
                 foreach (var periodical in deserRes.Periodicals)
                 {
                     db.PublishingHouses.Create(periodical.PublishingHouse);
@@ -153,12 +158,11 @@ namespace PubLibIS.BLL.Services
                     }
                 }
                 db.Save();
-            }
         }
 
         public PeriodicalCatalogViewModel GetPeriodicalCatalogViewModel(int skip, int take)
         {
-            var periodicals = db.Periodicals.Get(skip, take).ToList();
+            var periodicals = db.Periodicals.GetList(skip, take).ToList();
 
 
             var result = new PeriodicalCatalogViewModel

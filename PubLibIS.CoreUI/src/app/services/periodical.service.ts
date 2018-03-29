@@ -17,7 +17,9 @@ export class PeriodicalService {
   getPeriodicalList() {
     return this.http.get(this.url);
   }
-
+  getCatalog(skip: number = null, take: number = null) {
+    return this.http.get(this.url + '/getcatalog/?skip=' + skip + "&take=" + take);
+  }
   getPeriodical(id: number) {
     return this.http.get(this.url + '/' + id);
   }

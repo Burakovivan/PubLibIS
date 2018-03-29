@@ -11,9 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.DAL", "PubLibIS.DA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.ViewModels", "PubLibIS.ViewModels\PubLibIS.ViewModels.csproj", "{AC8A9FF0-2B2B-4C14-AC58-068CDA0A7C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{6C308EEA-4ACF-41BD-89D0-B3F6D3A8223F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubLibIS.CoreUI", "PubLibIS.CoreUI\PubLibIS.CoreUI.csproj", "{7BDF2D7C-D81B-4C16-9826-045761C63BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PubLibIS.CoreUI", "PubLibIS.CoreUI\PubLibIS.CoreUI.csproj", "{7BDF2D7C-D81B-4C16-9826-045761C63BA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{AC8A9FF0-2B2B-4C14-AC58-068CDA0A7C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC8A9FF0-2B2B-4C14-AC58-068CDA0A7C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC8A9FF0-2B2B-4C14-AC58-068CDA0A7C8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C308EEA-4ACF-41BD-89D0-B3F6D3A8223F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C308EEA-4ACF-41BD-89D0-B3F6D3A8223F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C308EEA-4ACF-41BD-89D0-B3F6D3A8223F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C308EEA-4ACF-41BD-89D0-B3F6D3A8223F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BDF2D7C-D81B-4C16-9826-045761C63BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BDF2D7C-D81B-4C16-9826-045761C63BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BDF2D7C-D81B-4C16-9826-045761C63BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU

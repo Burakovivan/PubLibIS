@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace PubLibIS.CoreUI.ServiceExtensions
     {
         public static void AddBLLDI(this IServiceCollection service)
         {
-            service.AddSingleton<IAuthorService, AuthorService>();
+            service.AddSingleton<AuthorService>();
             service.AddSingleton<IBookService, BookService>();
             service.AddSingleton<IPublishingHouseService, PublishingHouseService>();
             service.AddSingleton<IBrochureService, BrochureService>();

@@ -1,4 +1,4 @@
-﻿namespace PubLibIS.DAL.Models
+﻿namespace PubLibIS.DAL.Enums
 {
     public enum PeriodicalType
     {

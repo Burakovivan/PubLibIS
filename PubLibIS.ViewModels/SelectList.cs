@@ -9,6 +9,10 @@ namespace PubLibIS.ViewModels
     public class SelectList
     {
         public List<SelectListItem> Items { get; set; }
+        public SelectList()
+        {
+            Items = new List<SelectListItem>();
+        }
     }
 
     public class SelectListItem

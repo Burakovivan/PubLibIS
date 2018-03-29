@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import decode from 'jwt-decode';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import * as $ from "jquery";
 
 import { LoginModel } from '../../models/login';
 import { RegisterModel } from '../../models/register';
@@ -14,7 +15,7 @@ export class AuthService {
   }
 
   public getToken(): string {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
   public isAuthenticated(): boolean {
     // get the token
@@ -22,23 +23,25 @@ export class AuthService {
     return decode.tokenNotExpired(null, token);
   }
 
-  public SignIn(loginModel: LoginModel) {
+  public SignIn(loginModel: LoginModel, errorElement : string) {
     var error = ""
-    return  [this.http.post("api/signin", loginModel).subscribe((data: { token: string }) => {
+    this.http.post("api/signin", loginModel).subscribe((data: { token: string }) => {
       if (data.token != null || data.token != "") {
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('email', loginModel.email);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', loginModel.email);
+        window.location.pathname = "/home";
       }
-    }, (err: { error?: string }) => error = err.error),error];
+    }, (resp: { error?: { message?: string } }) => { $(errorElement).text(resp.error.message) });
   }
 
-  public SignUp(registerModel: RegisterModel) {
+  public SignUp(registerModel: RegisterModel, errorElement:string) {
     this.http.post("api/signup", registerModel).subscribe((data: { token: string }) => {
       if (data.token != null || data.token != "") {
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('email', registerModel.email);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', registerModel.email);
+        window.location.pathname = "/home";
       }
-    }, err => console.log(err));
+    }, (resp: { error?: { message?: string } }) => { $(errorElement).text(resp.error.message) });
   }
 
   public IsInRole(needed_role: string) {
@@ -49,11 +52,11 @@ export class AuthService {
     }
   }
   public GetUserName() {
-    return sessionStorage.getItem("email");
+    return localStorage.getItem("email");
   }
   public SignOut() {
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
 
   }
 

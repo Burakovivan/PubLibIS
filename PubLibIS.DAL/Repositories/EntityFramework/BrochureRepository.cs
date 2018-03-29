@@ -39,17 +39,17 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.Brochures.Find(brochureId);
         }
 
-        public IEnumerable<Brochure> Get()
+        public IEnumerable<Brochure> GetList()
         {
             return context.Brochures.ToList();
         }
 
-        public IEnumerable<Brochure> Get(int skip, int take)
+        public IEnumerable<Brochure> GetList(int skip, int take)
         {
             return context.Brochures.Skip(skip).Take(take).ToList();
         }
 
-        public IEnumerable<Brochure> Get(IEnumerable<int> idList)
+        public IEnumerable<Brochure> GetList(IEnumerable<int> idList)
         {
             return context.Brochures.Where(brochure => idList.Contains(brochure.Id)).ToList();
         }

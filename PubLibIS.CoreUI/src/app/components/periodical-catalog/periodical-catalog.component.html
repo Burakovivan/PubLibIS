@@ -1,0 +1,28 @@
+<div id="periodical-list">
+  <div class="row">
+    <h1>Periodicals</h1>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 " *ngFor="let periodical of periodicalCatalog.periodicals">
+      <a class="catalog-element" href="/periodical/publication/{{periodical.id}}">
+        <h3 class="catalog-element-capation">{{periodical.name}}</h3>
+        <p>{{periodical.type.name}}</p>
+        <p>{{periodical.foundation}}</p>
+        <p>Publictaions:{{periodical.publicationsCount}}</p>
+        <p>{{periodical.publishingHouse.shortInfo}}</p>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div [ngClass]="periodicalCatalog.skip > 0 ? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="prevPage()">
+      <span id="periodical-prev" class="glyphicon glyphicon-chevron-left  btn btn-primary"></span>
+    </div>
+    <div [ngClass]="periodicalCatalog.isSeeMore? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'">
+      <a href="/periodical"><div class="btn btn-primary">See more...</div></a>
+    </div>
+    <div [ngClass]="periodicalCatalog.hasNextPage? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="nextPage()">
+      <span id="periodical-next" class="glyphicon glyphicon-chevron-right btn btn-primary"></span>
+    </div>
+  </div>
+</div>
+

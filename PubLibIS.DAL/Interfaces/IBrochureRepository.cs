@@ -8,9 +8,9 @@ namespace PubLibIS.DAL.Interfaces
         int Create(Brochure book);
         Brochure Get(int bookId);
         int Count();
-        IEnumerable<Brochure> Get();
-        IEnumerable<Brochure> Get(IEnumerable<int> idList);
-        IEnumerable<Brochure> Get(int skip, int take);
+        IEnumerable<Brochure> GetList();
+        IEnumerable<Brochure> GetList(IEnumerable<int> idList);
+        IEnumerable<Brochure> GetList(int skip, int take);
         void Update(Brochure book);
         void Delete(int bookId);
     }

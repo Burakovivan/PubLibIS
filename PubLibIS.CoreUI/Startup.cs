@@ -42,7 +42,7 @@ namespace PubLibIS.CoreUI
          };
        });
 
-      string connectionString = Configuration.GetConnectionString("LibConnection");
+      var connectionString = Configuration.GetConnectionString("LibConnection");
       services.AddMvc().AddJsonOptions(opt =>
       {
         opt.SerializerSettings.DateFormatString = ViewModels.Util.CultureFormatsModule.GetCustomDateFormat();

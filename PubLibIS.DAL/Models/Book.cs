@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    public class Book
+    [Table("Books", Schema = "dbo")]
+    public class Book : BaseEntity
     {
-        public int Id { get; set; }
         public string ISBN { get; set; }
         public string Capation { get; set; }
         public string AdditionalData { get; set; }

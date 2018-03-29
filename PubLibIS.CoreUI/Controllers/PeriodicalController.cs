@@ -33,12 +33,25 @@ namespace PubLibIS.CoreUI.Controllers
       return service.GetPeriodicalViewModelList();
     }
 
+    [AllowAnonymous]
+    [HttpGet("getcatalog")]
+    public PeriodicalCatalogViewModel GetCatalog([FromQuery]int? skip, [FromQuery]int? take)
+    {
+      take = take ?? 0;
+      if (!skip.HasValue)
+      {
+        return service.GetPeriodicalCatalogViewModel(0, take.Value);
+      }
+
+      return service.GetPeriodicalCatalogViewModel(skip.Value, take.Value);
+
+    }
+
     [HttpGet("phlist/{id}")]
     public SelectList GetPublishingHouseSelectList(int id)
     {
-      var phId = service.GetPeriodicalViewModel(id).PublishingHouse_Id;
+      int phId = id <= 0 ? 0 : service.GetPeriodicalViewModel(id).PublishingHouse_Id;
       var selectList = new SelectList();
-      selectList.Items = new List<SelectListItem>();
       phService.GetPublishingHouseViewModelSlimList().ToList()
           .ForEach(ph =>
           selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
@@ -48,13 +61,13 @@ namespace PubLibIS.CoreUI.Controllers
     [HttpGet("typelist/{id}")]
     public SelectList GetPeriodicalTypeSelectList(int id)
     {
-      var phId = service.GetPeriodicalViewModel(id).Type.Id;
+      int typeId = id<=0? 0: service.GetPeriodicalViewModel(id).Type.Id;
 
       var selectList = new SelectList();
-      selectList.Items = new List<SelectListItem>();
+
       service.GetPeriodicalTypeViewModelList().ToList()
-          .ForEach(ph =>
-          selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Name, Selected = ph.Id == phId }));
+          .ForEach(type =>
+          selectList.Items.Add(new SelectListItem { Value = type.Id, Text = type.Name, Selected = type.Id == typeId }));
       return selectList;
     }
 
@@ -83,11 +96,14 @@ namespace PubLibIS.CoreUI.Controllers
 
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public PeriodicalViewModel Create([FromBody]PeriodicalViewModel Periodical)
+    public IActionResult Create([FromBody]PeriodicalViewModel Periodical)
     {
-
-      var id = service.CreatePeriodical(Periodical);
-      return service.GetPeriodicalViewModel(id);
+      if (Periodical.Foundation <= new DateTime(1970, 1, 1))
+      {
+        return BadRequest(new { message = "Release date might be greater than passed" });
+      }
+      int id = service.CreatePeriodical(Periodical);
+      return Json(service.GetPeriodicalViewModel(id));
     }
 
     [HttpPost("getJson")]
@@ -102,25 +118,24 @@ namespace PubLibIS.CoreUI.Controllers
       var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
       var filePath = path + $"\\{fileName}";
       System.IO.File.WriteAllText(filePath, json);
-      var plainTextBytes = Encoding.UTF8.GetBytes(filePath);
       return Ok();
 
     }
 
     public class Temp
     {
-      public string json { get; set; }
+      public string Json { get; set; }
     }
 
     [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
-      if (json == null || json.json == null)
+      if (json?.Json == null)
       {
         return NoContent();
       }
-      service.SetJson(json.json);
+      service.SetJson(json.Json);
       return Ok();
     }
 

@@ -23,32 +23,31 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public void Delete(int ainbId)
         {
-            var ainb = Get(ainbId);
+            AuthorInBook ainb = Get(ainbId);
             context.AuthorsInBooks.Remove(ainb);
         }
 
-       
 
-        public IEnumerable<AuthorInBook> Get()
+        public IEnumerable<AuthorInBook> GetList()
         {
             return context.AuthorsInBooks.AsEnumerable();
         }
 
-        public IEnumerable<AuthorInBook> Get(int skip, int take)
+        public IEnumerable<AuthorInBook> GetList(int skip, int take)
         {
             return context.AuthorsInBooks.Skip(skip).Take(take).AsEnumerable();
         }
 
         public void Update(AuthorInBook ainb)
         {
-            var current = context.AuthorsInBooks.Find(ainb.Id);
+            AuthorInBook current = context.AuthorsInBooks.Find(ainb.Id);
             context.Entry(current).CurrentValues.SetValues(ainb);
         }
         public IEnumerable<AuthorInBook> GetByBookId(int bookId)
         {
             return context.Books.Find(bookId).Authors.ToList();
         }
-        public IEnumerable<AuthorInBook> GetByBookId(IEnumerable<int> idList)
+        public IEnumerable<AuthorInBook> GetByBookIdList(IEnumerable<int> idList)
         {
             throw new System.NotImplementedException();
         }
@@ -58,7 +57,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.Authors.Find(authorId).Books;
         }
 
-        public IEnumerable<AuthorInBook> GetByAuthorId(IEnumerable<int> idList)
+        public IEnumerable<AuthorInBook> GetByAuthorIdList(IEnumerable<int> idList)
         {
             return context.AuthorsInBooks.Where(x => idList.Contains(x.Author.Id)).ToList();
         }

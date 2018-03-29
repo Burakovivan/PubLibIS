@@ -35,12 +35,9 @@ export class AuthorComponent implements OnInit {
       return;
     }
     if (this.author.id == null || this.author.id == -1) {
-      let newAuthor: Author = new Author();
-      this.dataService.createAuthor(this.author).subscribe((author: Author) => newAuthor = author)
-      this.authors.push(newAuthor);
+      this.dataService.createAuthor(this.author).subscribe((author: Author) => this.authors.push(author));
     } else {
-      this.dataService.updateAuthor(this.author).subscribe(data =>
-        this.loadAuthors());
+      this.dataService.updateAuthor(this.author).subscribe(data => this.loadAuthors(), err => this.loadAuthors());
     }
     this.cancel();
   }

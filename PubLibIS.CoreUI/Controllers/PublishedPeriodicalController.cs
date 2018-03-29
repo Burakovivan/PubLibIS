@@ -55,7 +55,7 @@ namespace PubLibIS.CoreUI.Controllers
     public PeriodicalEditionViewModel Create([FromBody]PeriodicalEditionViewModel periodicalEdition)
     {
 
-      var id = service.CreatePeriodicalEdition(periodicalEdition);
+      int id = service.CreatePeriodicalEdition(periodicalEdition);
       return service.GetPeriodicalEditionViewModel(id);
     }
     [HttpPost("getJson")]
@@ -70,25 +70,24 @@ namespace PubLibIS.CoreUI.Controllers
       var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
       var filePath = path + $"\\{fileName}";
       System.IO.File.WriteAllText(filePath, json);
-      var plainTextBytes = Encoding.UTF8.GetBytes(filePath);
       return Ok();
 
     }
 
     public class Temp
     {
-      public string json { get; set; }
+      public string Json { get; set; }
     }
 
     [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
-      if (json == null || json.json == null)
+      if (json?.Json == null)
       {
         return NoContent();
       }
-      service.SetJson(json.json);
+      service.SetJson(json.Json);
       return Ok();
     }
 

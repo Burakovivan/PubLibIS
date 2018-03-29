@@ -34,12 +34,12 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.PeriodicalEditions.Find(periodicalEditionId);
         }
 
-        public IEnumerable<PeriodicalEdition> Get()
+        public IEnumerable<PeriodicalEdition> GetList()
         {
             return context.PeriodicalEditions.AsEnumerable();
         }
 
-        public IEnumerable<PeriodicalEdition> Get(int skip, int take)
+        public IEnumerable<PeriodicalEdition> GetList(int skip, int take)
         {
             return context.PeriodicalEditions.Skip(skip).Take(take).AsEnumerable();
         }

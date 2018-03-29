@@ -1,0 +1,27 @@
+<div id="brochure-list">
+  <div class="row">
+    <h1>Brochures</h1>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 " *ngFor="let brochure of brochureCatalog.brochures">
+      <a class="catalog-element" href="/brochure">
+        <h3 class="catalog-element-capation">{{brochure.capation}}</h3>
+        <p>{{brochure.releaseDate}}</p>
+        <p>{{brochure.volem}} pages</p>
+        <p>{{brochure.circulation}} pcs.</p>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div [ngClass]="brochureCatalog.skip > 0 ? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="prevPage()">
+      <span id="brochure-prev" class="glyphicon glyphicon-chevron-left  btn btn-primary"></span>
+    </div>
+    <div [ngClass]="brochureCatalog.isSeeMore? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'">
+      <a href="/brochure"><div class="btn btn-primary">See more...</div></a>
+    </div>
+    <div [ngClass]="brochureCatalog.hasNextPage? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="nextPage()">
+      <span id="brochure-next" class="glyphicon glyphicon-chevron-right btn btn-primary"></span>
+    </div>
+  </div>
+</div>
+

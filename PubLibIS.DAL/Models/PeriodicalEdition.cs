@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    public class PeriodicalEdition
+    [Table("PeriodicalEditions", Schema = "dbo")]
+    public class PeriodicalEdition : BaseEntity
     {
-
-        public int Id { get; set; }
+    
         public int ReleaseNumber { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int Circulation { get; set; }//тираж

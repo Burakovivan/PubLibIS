@@ -125,7 +125,7 @@ namespace PubLibIS.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var book = service.GetBookViewModel(pBook.Book.Id);
+                BookViewModel book = service.GetBookViewModel(pBook.Book.Id);
             }
             var id = service.CreatePublication(pBook);
         }

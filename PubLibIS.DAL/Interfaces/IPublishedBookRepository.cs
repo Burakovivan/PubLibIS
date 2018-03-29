@@ -11,9 +11,9 @@ namespace PubLibIS.DAL.Interfaces
     {
         int Create(PublishedBook pBook);
         PublishedBook Get(int pBookId);
-        IEnumerable<PublishedBook> Get();
+        IEnumerable<PublishedBook> GetList();
         IEnumerable<PublishedBook> GetPublishedBookByBookId(int bookId);
-        IEnumerable<PublishedBook> Get(int skip, int take);
+        IEnumerable<PublishedBook> GetList(int skip, int take);
         void Update(PublishedBook pBook);
         void Delete(int pBookId);
     }

@@ -37,17 +37,17 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.Periodicals.Find(periodicalId);
         }
 
-        public IEnumerable<Periodical> Get()
+        public IEnumerable<Periodical> GetList()
         {
             return context.Periodicals.ToList();
         }
 
-        public IEnumerable<Periodical> Get(int skip, int take)
+        public IEnumerable<Periodical> GetList(int skip, int take)
         {
             return context.Periodicals.OrderBy(p=>p.Id).Skip(skip).Take(take).AsEnumerable();
         }
 
-        public IEnumerable<Periodical> Get(IEnumerable<int> idList)
+        public IEnumerable<Periodical> GetList(IEnumerable<int> idList)
         {
             return context.Periodicals.Where(periodical => idList.Contains(periodical.Id)).ToList();
         }

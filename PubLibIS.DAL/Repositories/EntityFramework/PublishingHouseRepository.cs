@@ -33,17 +33,17 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.PublishingHouses.Find(publishingHouseId);
         }
 
-        public IEnumerable<PublishingHouse> Get()
+        public IEnumerable<PublishingHouse> GetList()
         {
             return context.PublishingHouses.AsEnumerable();
         }
 
-        public IEnumerable<PublishingHouse> Get(int skip, int take)
+        public IEnumerable<PublishingHouse> GetList(int skip, int take)
         {
             return context.PublishingHouses.Skip(skip).Take(take);
         }
 
-        public IEnumerable<PublishingHouse> Get(IEnumerable<int> IdList)
+        public IEnumerable<PublishingHouse> GetList(IEnumerable<int> IdList)
         {
             return context.PublishingHouses.Where(ph => IdList.Contains(ph.Id));
         }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    public class PublishingHouse
+    [Table("PublishingHouses", Schema = "dbo")]
+    public class PublishingHouse : BaseEntity
     {
         public PublishingHouse()
         {
@@ -11,7 +13,7 @@ namespace PubLibIS.DAL.Models
             Periodicals = new List<Periodical>();
             Brochures = new List<Brochure>();
         }
-        public int Id { get; set; }
+
         public string Name { get; set; }
         public string Country { get; set; }
         public string City { get; set; }

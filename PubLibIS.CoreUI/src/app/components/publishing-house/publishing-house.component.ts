@@ -30,12 +30,10 @@ export class PublishingHouseComponent implements OnInit {
 
     save() {
         if (this.publishingHouse.id == null || this.publishingHouse.id == -1) {
-            let newPublishingHouse: PublishingHouse = new PublishingHouse();
-            this.dataService.createPublishingHouse(this.publishingHouse).subscribe(PublishingHouse => newPublishingHouse = PublishingHouse)
-            this.publishingHouseList.push(newPublishingHouse);
+          this.dataService.createPublishingHouse(this.publishingHouse).subscribe((publishingHouse: PublishingHouse) => this.publishingHouseList.push(publishingHouse))
         } else {
             this.dataService.updatePublishingHouse(this.publishingHouse).subscribe(data =>
-                this.loadList());
+              this.loadList(), err => this.loadList());
         }
         this.cancel();
     }

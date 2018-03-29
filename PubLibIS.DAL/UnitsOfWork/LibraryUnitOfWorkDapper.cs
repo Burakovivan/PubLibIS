@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DapperExtensions.Mapper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PubLibIS.DAL.Identity;
 using PubLibIS.DAL.Interfaces;
@@ -17,6 +18,7 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             db = new LibraryEntityFrameworkContext(connectionName);
             dapperConnectionFactory = new DapperConnectionFactory(connectionName);
+            DapperExtensions.DapperExtensions.DefaultMapper = typeof(PluralizedAutoClassMapper<>);
         }
 
         private AuthorRepository authorRepository;
@@ -36,8 +38,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (authorRepository == null)
+                if(authorRepository == null)
+                {
                     authorRepository = new AuthorRepository(dapperConnectionFactory);
+                }
                 return authorRepository;
             }
         }
@@ -45,8 +49,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (authorInBookRepository == null)
+                if(authorInBookRepository == null)
+                {
                     authorInBookRepository = new AuthorInBookRepository(dapperConnectionFactory);
+                }
                 return authorInBookRepository;
             }
         }
@@ -55,8 +61,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (bookRepository == null)
+                if(bookRepository == null)
+                {
                     bookRepository = new BookRepository(dapperConnectionFactory);
+                }
                 return bookRepository;
             }
         }
@@ -65,8 +73,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (brochureRepository == null)
+                if(brochureRepository == null)
+                {
                     brochureRepository = new BrochureRepository(dapperConnectionFactory);
+                }
                 return brochureRepository;
             }
         }
@@ -75,8 +85,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (periodicalRepository == null)
+                if(periodicalRepository == null)
+                {
                     periodicalRepository = new PeriodicalRepository(dapperConnectionFactory);
+                }
                 return periodicalRepository;
             }
         }
@@ -85,8 +97,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (periodicalEditionRepository == null)
+                if(periodicalEditionRepository == null)
+                {
                     periodicalEditionRepository = new PeriodicalEditionRepository(dapperConnectionFactory);
+                }
                 return periodicalEditionRepository;
             }
         }
@@ -95,8 +109,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (publishedBookRepository == null)
+                if(publishedBookRepository == null)
+                {
                     publishedBookRepository = new PublishedBookRepository(dapperConnectionFactory);
+                }
                 return publishedBookRepository;
             }
         }
@@ -104,8 +120,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (publishingHouseRepository == null)
+                if(publishingHouseRepository == null)
+                {
                     publishingHouseRepository = new PublishingHouseRepository(dapperConnectionFactory);
+                }
                 return publishingHouseRepository;
             }
         }
@@ -115,8 +133,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (userProfileManager == null)
+                if(userProfileManager == null)
+                {
                     userProfileManager = new Repositories.EntityFramework.UserProfileManager(db);
+                }
                 return userProfileManager;
             }
         }
@@ -125,8 +145,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (userManager == null)
+                if(userManager == null)
+                {
                     userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+                }
                 return userManager;
             }
         }
@@ -135,8 +157,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (roleManager == null)
+                if(roleManager == null)
+                {
                     roleManager = new ApplicationRoleManager(new RoleStore<ApplicationUserRole>(db));
+                }
                 return roleManager;
             }
         }
@@ -153,9 +177,9 @@ namespace PubLibIS.DAL.UnitsOfWork
 
         public virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if(!disposed)
             {
-                if (disposing)
+                if(disposing)
                 {
                     db.Dispose();
                 }

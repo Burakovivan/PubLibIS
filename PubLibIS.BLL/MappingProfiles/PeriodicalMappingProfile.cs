@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PubLibIS.DAL.Enums;
 using PubLibIS.DAL.Models;
 using PubLibIS.ViewModels;
 using System;

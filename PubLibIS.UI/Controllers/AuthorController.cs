@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -67,7 +68,7 @@ namespace PubLibIS.UI.Controllers
         [Authorize(Order = 1, Roles = "admin")]
         public ActionResult Create(AuthorViewModel author)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return View(author);
             }
@@ -79,7 +80,7 @@ namespace PubLibIS.UI.Controllers
         public ActionResult GetJson(IEnumerable<int> idList)
         {
             var json = service.GetJson(idList);
-            if (!Directory.Exists(Server.MapPath("~/Backups/Author")))
+            if(!Directory.Exists(Server.MapPath("~/Backups/Author")))
             {
                 Directory.CreateDirectory(Server.MapPath("~/Backups/Author"));
             }
@@ -94,13 +95,14 @@ namespace PubLibIS.UI.Controllers
         [Authorize(Order = 1, Roles = "admin")]
         public ActionResult SetJson(HttpPostedFileBase upload)
         {
-            if (upload != null)
+            if(upload == null)
             {
-
-                var reader = new StreamReader(upload.InputStream);
-                string json = reader.ReadToEnd();
-                service.SetJson(json);
+                return new  HttpStatusCodeResult(HttpStatusCode.NoContent);
             }
+
+            var reader = new StreamReader(upload.InputStream);
+            string json = reader.ReadToEnd();
+            service.SetJson(json);
             return Redirect(Request.UrlReferrer.AbsolutePath);
         }
     }

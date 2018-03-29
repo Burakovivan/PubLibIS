@@ -61,7 +61,7 @@ namespace PubLibIS.CoreUI.Controllers
       {
         return null;
       }
-      var id = service.CreateAuthor(author);
+      int id = service.CreateAuthor(author);
       return service.GetAuthorViewModel(id);
     }
 
@@ -77,25 +77,24 @@ namespace PubLibIS.CoreUI.Controllers
       var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
       var filePath = path + $"\\{fileName}";
       System.IO.File.WriteAllText(filePath, json);
-      var plainTextBytes = Encoding.UTF8.GetBytes(filePath);
       return Ok();
 
     }
 
     public class Temp
     {
-      public string json { get; set; }
+      public string Json { get; set; }
     }
 
     [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
-      if (json == null || json.json == null)
+      if (json?.Json == null)
       {
         return NoContent();
       }
-      service.SetJson(json.json);
+      service.SetJson(json.Json);
       return Ok();
     }
 

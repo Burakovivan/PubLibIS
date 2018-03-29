@@ -17,20 +17,21 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public int Create(Book book)
         {
-            var bookAuthors = book.Authors?.Select(a => a.Id);
+            IEnumerable<int> bookAuthors = book.Authors?.Select(a => a.Id);
             book.Authors = null;
             context.Books.Add(book);
-            if (bookAuthors != null)
+            if(bookAuthors == null)
             {
-                var authors = context.Authors.Where(x => bookAuthors.Contains(x.Id));
-                foreach (var author in authors)
+                return 0;
+            }
+            IQueryable<Author> authors = context.Authors.Where(x => bookAuthors.Contains(x.Id));
+            foreach(Author author in authors)
+            {
+                context.AuthorsInBooks.Add(new AuthorInBook
                 {
-                    context.AuthorsInBooks.Add(new AuthorInBook
-                    {
-                        Author = author,
-                        Book = book
-                    });
-                }
+                    Author = author,
+                    Book = book
+                });
             }
 
             context.SaveChanges();
@@ -47,16 +48,16 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         {
             return context.Books.Find(bookId);
         }
-    
 
-        public IEnumerable<Book> Get()
+
+        public IEnumerable<Book> GetList()
         {
             return context.Books.ToList();
         }
 
-        public IEnumerable<Book> Get(int skip, int take)
+        public IEnumerable<Book> GetList(int skip, int take)
         {
-            return context.Books.OrderBy(book=>book.Id).Skip(skip).Take(take).ToList();
+            return context.Books.OrderBy(book => book.Id).Skip(skip).Take(take).ToList();
         }
 
         public void Update(Book book)
@@ -65,7 +66,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             var current = context.Books.Find(book.Id);
             var bookAuthors = book.Authors.Select(a => a.Id);
             var authors = context.Authors.Where(x => bookAuthors.Contains(x.Id));
-            foreach (var author in authors)
+            foreach(var author in authors)
             {
                 context.AuthorsInBooks.Add(new AuthorInBook
                 {
@@ -92,7 +93,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.Books.SelectMany(selector).ToList();
         }
 
-        public IEnumerable<Book> Get(IEnumerable<int> idList)
+        public IEnumerable<Book> GetList(IEnumerable<int> idList)
         {
             return context.Books.Where(a => idList.Contains(a.Id)).ToList();
         }

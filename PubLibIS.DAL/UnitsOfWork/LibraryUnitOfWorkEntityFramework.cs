@@ -34,17 +34,20 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (authorRepository == null)
+                if(authorRepository == null)
+                {
                     authorRepository = new AuthorRepository(db);
-                return authorRepository;
+                } return authorRepository;
             }
         }
         public IAuthorInBookRepository AuthorsInBooks
         {
             get
             {
-                if (authorInBookRepository == null)
+                if(authorInBookRepository == null)
+                {
                     authorInBookRepository = new AuthorInBookRepository(db);
+                }
                 return authorInBookRepository;
             }
         }
@@ -53,8 +56,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (bookRepository == null)
+                if(bookRepository == null)
+                {
                     bookRepository = new BookRepository(db);
+                }
                 return bookRepository;
             }
         }
@@ -63,8 +68,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (brochureRepository == null)
+                if(brochureRepository == null)
+                {
                     brochureRepository = new BrochureRepository(db);
+                }
                 return brochureRepository;
             }
         }
@@ -72,8 +79,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (periodicalRepository == null)
+                if(periodicalRepository == null)
+                {
                     periodicalRepository = new PeriodicalRepository(db);
+                }
                 return periodicalRepository;
             }
         }
@@ -82,8 +91,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (periodicalEditionRepository == null)
+                if(periodicalEditionRepository == null)
+                {
                     periodicalEditionRepository = new PeriodicalEditionRepository(db);
+                }
                 return periodicalEditionRepository;
             }
         }
@@ -92,8 +103,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (publishingHouseRepository == null)
+                if(publishingHouseRepository == null)
+                {
                     publishingHouseRepository = new PublishingHouseRepository(db);
+                }
                 return publishingHouseRepository;
             }
         }
@@ -102,8 +115,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (publishedBookRepository == null)
+                if(publishedBookRepository == null)
+                {
                     publishedBookRepository = new PublishedBookRepository(db);
+                }
                 return publishedBookRepository;
             }
         }
@@ -112,8 +127,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (userProfileManager == null)
+                if(userProfileManager == null)
+                {
                     userProfileManager = new UserProfileManager(db);
+                }
                 return userProfileManager;
             }
         }
@@ -122,8 +139,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (userManager == null)
+                if(userManager == null)
+                {
                     userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+                }
                 return userManager;
             }
         }
@@ -132,8 +151,10 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             get
             {
-                if (roleManager == null)
+                if(roleManager == null)
+                {
                     roleManager = new ApplicationRoleManager(new RoleStore<ApplicationUserRole>(db));
+                }
                 return roleManager;
             }
         }

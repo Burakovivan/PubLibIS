@@ -1,0 +1,27 @@
+<div id="book-list">
+  <div class="row">
+    <h1>Books</h1>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 " *ngFor="let book of bookCatalog.books">
+      <a class="catalog-element" href="/book/publication/{{book.id}}">
+        <h3 class="catalog-element-capation">{{book.capation}}</h3>
+        <p>{{book.releaseDate}}</p>
+        <p>Publictaions:{{book.countOfPublication}}</p>
+        <p>{{book.authors}}</p>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div [ngClass]="bookCatalog.skip > 0 ? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="prevPage()">
+      <span id="book-prev" class="glyphicon glyphicon-chevron-left  btn btn-primary"></span>
+    </div>
+    <div [ngClass]="bookCatalog.isSeeMore? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'">
+      <a href="/book"><div class="btn btn-primary">See more...</div></a>
+    </div>
+    <div [ngClass]="bookCatalog.hasNextPage? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="nextPage()">
+      <span id="book-next" class="glyphicon glyphicon-chevron-right btn btn-primary"></span>
+    </div>
+  </div>
+</div>
+

@@ -28,7 +28,8 @@
     "jquery": "^3.3.1",
     "@types/jquery": "^3.3.1",
     "angular2-jwt": "^0.2.3",
-    "jwt-decode": "^2.2.0"
+    "jwt-decode": "^2.2.0",
+    "angular2-multiselect-dropdown": "2.6.0"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

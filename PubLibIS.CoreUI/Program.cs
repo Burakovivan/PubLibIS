@@ -21,7 +21,7 @@ namespace PubLibIS.CoreUI
         WebHost.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((hostingContext, config) =>
             {
-              var env = hostingContext.HostingEnvironment;
+              IHostingEnvironment env = hostingContext.HostingEnvironment;
 
               config.AddJsonFile("appsettings.json", optional: true)
                   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);

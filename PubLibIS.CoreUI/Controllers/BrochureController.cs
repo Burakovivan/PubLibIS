@@ -32,12 +32,28 @@ namespace PubLibIS.CoreUI.Controllers
     {
       return service.GetBrochureViewModelList();
     }
+
+    [AllowAnonymous]
+    [HttpGet("getcatalog")]
+    public BrochureCatalogViewModel GetCatalog([FromQuery]int? skip, [FromQuery]int? take)
+    {
+      take = take ?? 0;
+      if (!skip.HasValue)
+      {
+        return service.GetBrochureCatalogViewModel(0, take.Value);
+      }
+
+      return service.GetBrochureCatalogViewModel(skip.Value, take.Value);
+
+    }
+
     [HttpGet("phlist/{id}")]
     public SelectList GetPublishingHouseSelectList(int id)
     {
-      var phId = service.GetBrochureViewModel(id).PublishingHouse_Id;
+      
+        int? phId = id>0?service.GetBrochureViewModel(id).PublishingHouse_Id:0;
+
       var selectList = new SelectList();
-      selectList.Items = new List<SelectListItem>();
       phService.GetPublishingHouseViewModelSlimList().ToList()
           .ForEach(ph =>
           selectList.Items.Add(new SelectListItem { Value = ph.Id, Text = ph.Description, Selected = ph.Id == phId }));
@@ -69,14 +85,14 @@ namespace PubLibIS.CoreUI.Controllers
 
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public BrochureViewModel Create([FromBody]BrochureViewModel Brochure)
+    public IActionResult Create([FromBody]BrochureViewModel Brochure)
     {
-      if (Brochure.ReleaseDate == DateTime.MinValue)
+      if (Brochure.ReleaseDate <= new DateTime(1970,1,1))
       {
-        return null;
+        return BadRequest(new {message="Release date might be greater than passed"});
       }
-      var id = service.CreateBrochure(Brochure);
-      return service.GetBrochureViewModel(id);
+      int id = service.CreateBrochure(Brochure);
+      return Json(service.GetBrochureViewModel(id));
     }
 
     [HttpPost("getJson")]
@@ -91,25 +107,24 @@ namespace PubLibIS.CoreUI.Controllers
       var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
       var filePath = path + $"\\{fileName}";
       System.IO.File.WriteAllText(filePath, json);
-      var plainTextBytes = Encoding.UTF8.GetBytes(filePath);
       return Ok();
 
     }
 
     public class Temp
     {
-      public string json { get; set; }
+      public string Json { get; set; }
     }
 
     [Authorize(Roles = "admin")]
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
-      if (json == null || json.json == null)
+      if (json?.Json == null)
       {
         return NoContent();
       }
-      service.SetJson(json.json);
+      service.SetJson(json.Json);
       return Ok();
     }
 

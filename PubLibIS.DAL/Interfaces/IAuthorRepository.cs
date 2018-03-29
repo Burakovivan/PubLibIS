@@ -5,11 +5,11 @@ namespace PubLibIS.DAL.Interfaces
 {
     public interface IAuthorRepository
     {
-        int Create(Author auhtor);
         Author Get(int authorId);
-        IEnumerable<Author> Get();
-        IEnumerable<Author> Get(IEnumerable<int> idList);
-        IEnumerable<Author> Get(int skip, int take);
+        IEnumerable<Author> GetList();
+        IEnumerable<Author> GetList(IEnumerable<int> idList);
+        IEnumerable<Author> GetList(int skip, int take);
+        int Create(Author auhtor);
         void Update(Author author);
         void Delete(int authorId);
     }

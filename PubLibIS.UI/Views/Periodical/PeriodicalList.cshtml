@@ -14,7 +14,7 @@
                     <p>@Html.DisplayFor(modelItem => Periodical.Foundation)</p>
                     
                     <p>Publictaions:@Periodical.PeriodicalEditions.Count()</p>
-                    <p>@Periodical.PublishingHouse?.ListBoxInfo</p>
+                    <p>@(Periodical.PublishingHouse?.ShortInfo)</p>
                 </a>
             </div>
         }

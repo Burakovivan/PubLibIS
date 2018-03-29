@@ -14,7 +14,9 @@ export class BrochureService {
     getBrochureList() {
         return this.http.get(this.url);
     }
-
+  getCatalog(skip: number = null, take: number = null) {
+    return this.http.get(this.url + '/getcatalog/?skip=' + skip + "&take=" + take);
+  }
     getBrochure(id: number) {
         var a: Brochure = new Brochure();
         this.http.get(this.url + '/' + id);

@@ -1,4 +1,4 @@
-﻿import { Author } from "./author";
+import { Author } from "./author";
 
 export class Book {
     constructor(
@@ -11,3 +11,4 @@ export class Book {
         public publicationsCount?: number,
         public authorsFormated?: string) { }
 }
+

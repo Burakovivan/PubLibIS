@@ -35,7 +35,7 @@
     </ng-template>
     <tr>
       <ng-template [ngIf]="book?.id != -1" [ngIfElse]="editB">
-        <td colspan="7" class="create-new-item-row" (click)="createBook()"> <span class="glyphicon glyphicon-plus"></span> </td>
+        <td colspan="8" class="create-new-item-row" (click)="createBook()"> <span class="glyphicon glyphicon-plus"></span> </td>
       </ng-template>
     </tr>
   </tbody>
@@ -55,8 +55,10 @@
   <td>
     <input type="text" readonly [(ngModel)]="book.releaseDate" class="form-control" />
   </td>
-  <td>
-    <input type="text" readonly [(ngModel)]="book.authorsFormated" class="form-control" />
+  <td colspan="2">
+    <angular2-multiselect [data]="authorList" [(ngModel)]="selectedAuthorList"
+                         [settings]="dropdownSettings" >
+    </angular2-multiselect>
   </td>
   <td>
     <div (click)="saveBook()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>

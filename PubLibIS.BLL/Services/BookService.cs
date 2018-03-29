@@ -24,20 +24,24 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<BookViewModel> GetBookViewModelList()
         {
-            var books = db.Books.Get();
+            IEnumerable<Book> books = db.Books.GetList();
             return mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModel>>(books);
         }
 
 
         public IEnumerable<BookViewModelSlim> GetBookViewModelListSlim()
         {
-            var books = db.Books.Get();
+            IEnumerable<Book> books = db.Books.GetList();
             return mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModelSlim>>(books);
         }
 
         public BookCatalogViewModel GetBookCatalogViewModel(int skip, int take)
         {
-            var books = db.Books.Get().OrderBy(b => b.Id).Skip(skip).Take(take);
+            if(take == 0)
+            {
+                take = db.Books.Count();
+            }
+            IEnumerable<Book> books = db.Books.GetList().OrderBy(b => b.Id).Skip(skip).Take(take);
 
             var result = new BookCatalogViewModel
             {
@@ -51,7 +55,7 @@ namespace PubLibIS.BLL.Services
 
         public BookViewModel GetBookViewModel(int id)
         {
-            var book = db.Books.Get(id);
+            Book book = db.Books.Get(id);
             return mapper.Map<Book, BookViewModel>(book);
         }
 
@@ -64,7 +68,7 @@ namespace PubLibIS.BLL.Services
 
         public void UpdateBook(BookViewModel book)
         {
-            var mappedBook = mapper.Map<BookViewModel, Book>(book);
+            Book mappedBook = mapper.Map<BookViewModel, Book>(book);
 
             db.Books.Update(mappedBook);
             db.Save();
@@ -72,23 +76,23 @@ namespace PubLibIS.BLL.Services
 
         public int CreateBook(BookViewModel book)
         {
-            var mappedBook = mapper.Map<BookViewModel, Book>(book);
-            var newId = db.Books.Create(mappedBook);
+            Book mappedBook = mapper.Map<BookViewModel, Book>(book);
+            int newId = db.Books.Create(mappedBook);
             db.Save();
             return newId;
         }
 
         public int CreatePublication(PublishedBookViewModel publication)
         {
-            var mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
-            var newId = db.PublishedBooks.Create(mappedPublication);
+            PublishedBook mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
+            int newId = db.PublishedBooks.Create(mappedPublication);
             db.Save();
             return newId;
         }
 
         public IEnumerable<PublishedBookViewModel> GetPublishedBookViewModelListByBook(int id)
         {
-            var publications = db.PublishedBooks.GetPublishedBookByBookId(id);
+            IEnumerable<PublishedBook> publications = db.PublishedBooks.GetPublishedBookByBookId(id);
             return mapper.Map<IEnumerable<PublishedBook>, IEnumerable<PublishedBookViewModel>>(publications);
         }
 
@@ -100,13 +104,13 @@ namespace PubLibIS.BLL.Services
 
         public PublishedBookViewModel GetPublication(int id)
         {
-            var publication = db.PublishedBooks.Get(id);
+            PublishedBook publication = db.PublishedBooks.Get(id);
             return mapper.Map<PublishedBook, PublishedBookViewModel>(publication);
         }
 
         public void UpdatePublication(PublishedBookViewModel publication)
         {
-            var mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
+            PublishedBook mappedPublication = mapper.Map<PublishedBookViewModel, PublishedBook>(publication);
             db.PublishedBooks.Update(mappedPublication);
             db.Save();
         }
@@ -114,7 +118,7 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            var BookList = db.Books.Get(idList).ToList();
+            var BookList = db.Books.GetList(idList).ToList();
             BookList.ForEach(book => book.PublishedBooks = db.PublishedBooks.GetPublishedBookByBookId(book.Id).ToList());
             var result = JsonConvert.SerializeObject(new BookJsonAggregator { Books = BookList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
@@ -122,32 +126,37 @@ namespace PubLibIS.BLL.Services
 
         public void SetJson(string json)
         {
-            var deserRes = JsonConvert.DeserializeObject<BookJsonAggregator>(json);
+            BookJsonAggregator deserRes = JsonConvert.DeserializeObject<BookJsonAggregator>(json);
 
-            if (deserRes != null)
+            if(deserRes == null)
             {
-                foreach (var book in deserRes.Books)
-                {
-                    var aInBs = book.Authors;
-                    var publishedBooks = book.PublishedBooks;
-                    book.Authors = null;
-                    book.PublishedBooks = null;
-                    int bookId = db.Books.Create(book);
-                    foreach (var ainb in aInBs)
-                    {
-                        var authorId = db.Authors.Create(ainb.Author);
-                        ainb.Book = book;
-                        db.AuthorsInBooks.Create(ainb);
-                    }
-
-                    foreach (var publishedBook in publishedBooks)
-                    {
-                        publishedBook.Book = book;
-                        db.PublishedBooks.Create(publishedBook);
-                    }
-                }
-                db.Save();
+                return;
             }
+            foreach(Book book in deserRes.Books)
+            {
+                ICollection<AuthorInBook> aInBs = book.Authors;
+                ICollection<PublishedBook> publishedBooks = book.PublishedBooks;
+                book.Authors = null;
+                book.PublishedBooks = null;
+                int bookId = db.Books.Create(book);
+                Book newbook = db.Books.Get(bookId);
+                foreach(AuthorInBook ainb in aInBs)
+                {
+                    var authorId = db.Authors.Create(ainb.Author);
+                    ainb.Author = db.Authors.Get(authorId);
+                    var newainb = new AuthorInBook { Author_Id = authorId, Book_Id = bookId };
+                    db.AuthorsInBooks.Create(newainb);
+                }
+
+                foreach(PublishedBook publishedBook in publishedBooks)
+                {
+                    publishedBook.Book = newbook;
+                    publishedBook.Book_Id = newbook.Id;
+                    db.PublishedBooks.Create(publishedBook);
+                }
+            }
+            db.Save();
+
         }
 
 

@@ -5,6 +5,7 @@ import { Periodical } from '../../models/periodical';
 import { SelectList } from '../../models/selectList';
 import { resetFakeAsyncZone, fakeAsync } from '@angular/core/testing';
 import * as $ from "jquery";
+import { PeriodicalType } from '../../models/periodicalType';
 
 @Component({
     templateUrl: './periodical.component.html',
@@ -44,11 +45,15 @@ export class PeriodicalComponent implements OnInit {
         this.cancel();
     }
 
+  loadSelectList() {
+    this.dataService.getPublishingHouseSelectList(this.periodical.id as number).subscribe((phList: SelectList) => this.publishigHouseSelectList = phList);
+    this.dataService.getTypeSelectList(this.periodical.id as number).subscribe((typeList: SelectList) => this.typeSelectList = typeList);
+
+  }
     editItem(a: Periodical) {
       this.periodical = a;
-      this.dataService.getPublishingHouseSelectList(this.periodical.id as number).subscribe((phList: SelectList) => this.publishigHouseSelectList = phList);
-      this.dataService.getTypeSelectList(this.periodical.id as number).subscribe((typeList :SelectList)=> this.typeSelectList = typeList);
-    }
+      this.loadSelectList();
+     }
 
     cancel() {
         this.periodical = new Periodical();
@@ -60,9 +65,13 @@ export class PeriodicalComponent implements OnInit {
     }
 
     create() {
-        this.periodical = new Periodical();
+      this.periodical = new Periodical();
+      this.periodical.type = new PeriodicalType(0);
         this.periodical.id = -1;
-  }
+      this.loadSelectList();
+      console.log(this.typeSelectList);
+      console.log(this.publishigHouseSelectList);
+    }
   getJson() {
     var ids: string[] = $("input:checked[name=backup]").toArray().map((e) => e.id);
     console.log(this.dataService.getJson(ids));

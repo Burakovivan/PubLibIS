@@ -8,9 +8,9 @@ namespace PubLibIS.DAL.Interfaces
     {
         int Create(PublishingHouse publishingHouse);
         PublishingHouse Get(int publishingHouseId);
-        IEnumerable<PublishingHouse> Get();
-        IEnumerable<PublishingHouse> Get(IEnumerable<int> IdList);
-        IEnumerable<PublishingHouse> Get(int skip, int take);
+        IEnumerable<PublishingHouse> GetList();
+        IEnumerable<PublishingHouse> GetList(IEnumerable<int> IdList);
+        IEnumerable<PublishingHouse> GetList(int skip, int take);
         void Update(PublishingHouse publishingHouse);
         void Delete(int publishingHouseId);
     }

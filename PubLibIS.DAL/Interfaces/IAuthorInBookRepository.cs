@@ -8,11 +8,11 @@ namespace PubLibIS.DAL.Interfaces
         int Create(AuthorInBook book);
         AuthorInBook Get(int ainbId);
         IEnumerable<AuthorInBook> GetByBookId(int bookId);
-        IEnumerable<AuthorInBook> GetByBookId(IEnumerable<int> idList);
+        IEnumerable<AuthorInBook> GetByBookIdList(IEnumerable<int> idList);
         IEnumerable<AuthorInBook> GetByAuthorId(int authorId);
-        IEnumerable<AuthorInBook> GetByAuthorId(IEnumerable<int> idList);
-        IEnumerable<AuthorInBook> Get();
-        IEnumerable<AuthorInBook> Get(int skip, int take);
+        IEnumerable<AuthorInBook> GetByAuthorIdList(IEnumerable<int> idList);
+        IEnumerable<AuthorInBook> GetList();
+        IEnumerable<AuthorInBook> GetList(int skip, int take);
         void Update(AuthorInBook book);
         void Delete(int bookId);
     }

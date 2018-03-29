@@ -24,13 +24,13 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<BrochureViewModel> GetBrochureViewModelList()
         {
-            var brochures = db.Brochures.Get();
+            IEnumerable<Brochure> brochures = db.Brochures.GetList();
             return mapper.Map<IEnumerable<Brochure>, IEnumerable<BrochureViewModel>>(brochures);
         }
 
         public BrochureViewModel GetBrochureViewModel(int id)
         {
-            var brochure = db.Brochures.Get(id);
+            Brochure brochure = db.Brochures.Get(id);
             return mapper.Map<Brochure, BrochureViewModel>(brochure);
         }
 
@@ -43,14 +43,14 @@ namespace PubLibIS.BLL.Services
 
         public void UpdateBrochure(BrochureViewModel brochure)
         {
-            var mappedBrochure = mapper.Map<BrochureViewModel, Brochure>(brochure);
+            Brochure mappedBrochure = mapper.Map<BrochureViewModel, Brochure>(brochure);
             db.Brochures.Update(mappedBrochure);
             db.Save();
         }
 
         public int CreateBrochure(BrochureViewModel brochure)
         {
-            var mappedBrochure = mapper.Map<BrochureViewModel, Brochure>(brochure);
+            Brochure mappedBrochure = mapper.Map<BrochureViewModel, Brochure>(brochure);
             var newId = db.Brochures.Create(mappedBrochure);
             db.Save();
             return newId;
@@ -58,29 +58,33 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            var BrochureList = db.Brochures.Get(idList).ToList();
+            var BrochureList = db.Brochures.GetList(idList).ToList();
             var result = JsonConvert.SerializeObject(new BrochureJsonAggregator { Brochures = BrochureList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
 
         public void SetJson(string json)
         {
-            var deserRes = JsonConvert.DeserializeObject<BrochureJsonAggregator>(json);
+            BrochureJsonAggregator deserRes = JsonConvert.DeserializeObject<BrochureJsonAggregator>(json);
 
-            if (deserRes != null)
+            if(deserRes == null)
             {
-                foreach (var brochure in deserRes.Brochures)
+
+                return;
+            }
+
+                foreach (Brochure brochure in deserRes.Brochures)
                 {
-                    db.PublishingHouses.Create(brochure.PublishingHouse);
+                   var newId =  db.PublishingHouses.Create(brochure.PublishingHouse);
+                    brochure.PublishingHouse_Id = newId;
                     db.Brochures.Create(brochure);
                 }
                 db.Save();
-            }
         }
 
         public BrochureCatalogViewModel GetBrochureCatalogViewModel(int skip, int take)
         {
-            var brochureList = db.Brochures.Get().OrderBy(b => b.Id).Skip(skip).Take(take);
+            IEnumerable<Brochure> brochureList = db.Brochures.GetList().OrderBy(b => b.Id).Skip(skip).Take(take);
 
             var result = new BrochureCatalogViewModel
             {

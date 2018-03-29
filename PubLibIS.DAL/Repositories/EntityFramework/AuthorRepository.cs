@@ -32,17 +32,17 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
             return context.Authors.Find(authtorId);
         }
 
-        public IEnumerable<Author> Get()
+        public IEnumerable<Author> GetList()
         {
             return context.Authors.ToList();
         }
 
-        public IEnumerable<Author> Get(IEnumerable<int> ids)
+        public IEnumerable<Author> GetList(IEnumerable<int> ids)
         {
             return context.Authors.Where(a => ids.Contains(a.Id)).ToList();
         }
 
-        public IEnumerable<Author> Get(int skip, int take)
+        public IEnumerable<Author> GetList(int skip, int take)
         {
             return context.Authors.Skip(skip).Take(take).AsEnumerable();
         }

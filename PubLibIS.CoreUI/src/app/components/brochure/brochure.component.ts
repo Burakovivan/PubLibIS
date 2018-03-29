@@ -34,12 +34,13 @@ export class BrochureComponent implements OnInit {
 
     save() {
         if (this.brochure.id == null || this.brochure.id == -1) {
-            let newBrochure: Brochure = new Brochure();
-            this.dataService.createBrochure(this.brochure).subscribe(Brochure => newBrochure = Brochure)
-            this.brochureList.push(newBrochure);
+          let newBrochure: Brochure = new Brochure();
+          this.dataService.createBrochure(this.brochure).subscribe((brochure: Brochure) => this.brochureList.push(brochure),
+            (err: { error?: { message?: string } }) => { alert(err.error.message); this.loadList() })
+           ;
         } else {
-            this.dataService.updateBrochure(this.brochure).subscribe(data =>
-                this.loadList());
+          this.dataService.updateBrochure(this.brochure).subscribe(data =>
+            this.loadList(), err => this.loadList());
         }
         this.cancel();
     }
@@ -60,7 +61,9 @@ export class BrochureComponent implements OnInit {
     }
 
     create() {
-        this.brochure = new Brochure();
+      this.dataService.getPublishingHouseSelectList(this.brochure.id as number).subscribe((phs: SelectList) => this.publishigHouseSelectList = phs);
+      this.brochure = new Brochure();
+      console.log("hello");
         this.brochure.id = -1;
   }
   getJson() {

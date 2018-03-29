@@ -8,11 +8,11 @@ namespace PubLibIS.DAL.Interfaces
     {
         int Create(PeriodicalEdition periodicalEdition);
         PeriodicalEdition Get(int periodicalEditionId);
-        IEnumerable<PeriodicalEdition> Get();
-        IEnumerable<PeriodicalEdition> Get(int skip, int take);
+        IEnumerable<PeriodicalEdition> GetList();
+        IEnumerable<PeriodicalEdition> GetList(int skip, int take);
         void Update(PeriodicalEdition periodicalEdition);
         void Delete(int periodicalEditionId);
-        IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int id);
+        IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int periodicalId);
 
     }
 }

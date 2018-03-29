@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,10 +30,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.Extension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Extension.1.0.0.1\lib\net45\Dapper.Extension.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -80,6 +88,7 @@
     <Compile Include="LibraryEntityFrameworkContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationUserRole.cs" />
+    <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Repositories\Dapper\AuthorInBookRepository.cs" />
     <Compile Include="Repositories\Dapper\AuthorRepository.cs" />
@@ -89,6 +98,7 @@
     <Compile Include="Repositories\Dapper\PeriodicalRepository.cs" />
     <Compile Include="Repositories\Dapper\PublishedBookRepository.cs" />
     <Compile Include="Repositories\Dapper\PublishingHouseRepository.cs" />
+    <Compile Include="Repositories\Dapper\Repository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorInBookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorRepository.cs" />
     <Compile Include="Repositories\EntityFramework\BookRepository.cs" />
@@ -104,7 +114,7 @@
     <Compile Include="LibraryInitializer.cs" />
     <Compile Include="Models\Periodical.cs" />
     <Compile Include="Models\PeriodicalEdition.cs" />
-    <Compile Include="Models\PeriodicalType.cs" />
+    <Compile Include="Enums\PeriodicalType.cs" />
     <Compile Include="Models\PublishedBook.cs" />
     <Compile Include="Models\PublishingHouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

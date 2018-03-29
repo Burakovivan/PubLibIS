@@ -19,24 +19,20 @@ export class AuthComponent {
   constructor(private dataService: AuthService) { }
 
   public SignUp() {
+    if (this.userRegister.password != this.userRegister.confirmPassword)
+    {
+      $("#up.error-message").text("Passwords are different");
+      return;
+    }
 
-    if (this.userRegister != null && this.userRegister.password == this.userRegister.confirmPassword) {
-      console.log(this.userRegister);
-      this.dataService.SignUp(this.userRegister);
+    if (this.userRegister != null) {
+      this.dataService.SignUp(this.userRegister, "#up.error-message");
     }
   }
 
   public SignIn() {
     if (this.userLogin != null) {
-      var result = this.dataService.SignIn(this.userLogin);
-      (result[0] as Subscription).add(() => {
-        if (this.dataService.isAuthenticated()) {
-          window.location.pathname = "/home";
-        }
-      });
-      if (result[0].toString() != "") {
-        $(".error-message").val(result[0].toString());
-      }
+      this.dataService.SignIn(this.userLogin, "#in.error-message");
     }
   }
 

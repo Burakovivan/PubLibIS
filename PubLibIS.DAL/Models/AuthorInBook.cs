@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    public class AuthorInBook
+    [Table("AuthorInBooks", Schema = "dbo")]
+    public class AuthorInBook : BaseEntity
     {
-        public int Id { get; set; }
 
-        public int Author_Id { get; set; } 
-        public int Book_Id { get; set; } 
+        public int Author_Id { get; set; }
+        public int Book_Id { get; set; }
 
         [Required]
         [ForeignKey("Author_Id")]

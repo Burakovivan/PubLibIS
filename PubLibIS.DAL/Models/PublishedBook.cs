@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    public class PublishedBook
+    [Table("PublishedBooks", Schema = "dbo")]
+    public class PublishedBook : BaseEntity
     {
-        public int Id { get; set; }
+
         public int Volume { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? DateOfPublication { get; set; }
