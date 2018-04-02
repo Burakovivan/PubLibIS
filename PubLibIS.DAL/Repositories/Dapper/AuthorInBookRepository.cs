@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using System.Data;
-using DapperExtensions;
 using System.Linq.Expressions;
 
 namespace PubLibIS.DAL.Repositories.Dapper
@@ -17,34 +16,40 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public IEnumerable<AuthorInBook> GetByAuthorId(int authorId)
         {
-            IFieldPredicate predicate = Predicates.Field<AuthorInBook>(a => a.Author_Id, Operator.Ge, authorId);
-            return GetList(predicate);
+            return GetList().Where(ainb => ainb.Author_Id == authorId);
         }
 
         public IEnumerable<AuthorInBook> GetByAuthorIdList(IEnumerable<int> idList)
         {
-            IFieldPredicate[] fieldPredicateList =
-                    idList.Select(id =>
-                    Predicates.Field<AuthorInBook>(a => a.Author_Id, Operator.Eq, id))
-                    .ToArray();
-            IPredicateGroup predicate = Predicates.Group(GroupOperator.Or, fieldPredicateList);
-            return GetList(predicate);
+            return GetList().Where(ainb => idList.Contains(ainb.Author_Id));
         }
 
         public IEnumerable<AuthorInBook> GetByBookId(int bookId)
         {
-            IFieldPredicate predicate = Predicates.Field<AuthorInBook>(a => a.Book_Id, Operator.Ge, bookId);
-            return GetList(predicate);
+            return GetList().Where(ainb => ainb.Book_Id == bookId);
         }
 
         public IEnumerable<AuthorInBook> GetByBookIdList(IEnumerable<int> idList)
         {
-            IFieldPredicate[] fieldPredicateList =
-                    idList.Select(id =>
-                    Predicates.Field<AuthorInBook>(a => a.Book_Id, Operator.Eq, id))
-                    .ToArray();
-            IPredicateGroup predicate = Predicates.Group(GroupOperator.Or, fieldPredicateList);
-            return GetList(predicate);
+            return GetList().Where(ainb => idList.Contains(ainb.Book_Id));
         }
+
+        public override void LoadNavigationProperties(AuthorInBook entity, IDbConnection connection)
+        {
+            if(entity.Book == null && SuperReference!=typeof(Book))
+            {
+                var repo = new BookRepository(dapperConnectionFactory);
+                entity.Book = repo.Get(entity.Book_Id);
+
+            }
+            if(entity.Author == null && SuperReference != typeof(Author))
+            {
+                var repo = new AuthorRepository(dapperConnectionFactory);
+                repo.SuperReference = typeof(AuthorInBookRepository);
+                entity.Author = repo.Get(entity.Author_Id);
+            }
+        }
+
+
     }
 }

@@ -10,9 +10,9 @@ namespace PubLibIS.UI.Helpers
 {
     public class PeriodicalHelper
     {
-        private IPeriodicalService service;
+        private PeriodicalService service;
 
-        public PeriodicalHelper(IPeriodicalService service)
+        public PeriodicalHelper(PeriodicalService service)
         {
             this.service = service;
         }

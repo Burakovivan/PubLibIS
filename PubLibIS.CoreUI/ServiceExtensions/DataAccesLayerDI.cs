@@ -15,10 +15,10 @@ namespace PubLibIS.CoreUI.ServiceExtensions
         public static void AddBLLDI(this IServiceCollection service)
         {
             service.AddSingleton<AuthorService>();
-            service.AddSingleton<IBookService, BookService>();
-            service.AddSingleton<IPublishingHouseService, PublishingHouseService>();
-            service.AddSingleton<IBrochureService, BrochureService>();
-            service.AddSingleton<IPeriodicalService, PeriodicalService>();
+            service.AddSingleton< BookService>();
+            service.AddSingleton< PublishingHouseService>();
+            service.AddSingleton< BrochureService>();
+            service.AddSingleton< PeriodicalService>();
             service.AddSingleton<IServiceCreator, ServiceCreator>();
             service.AddSingleton<IUserService, UserService>();
             service.AddSingleton(provider =>

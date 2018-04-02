@@ -10,9 +10,9 @@ namespace PubLibIS.UI.Helpers
 {
     public class PublishingHouseHelper
     {
-        private IPublishingHouseService service;
+        private PublishingHouseService service;
 
-        public PublishingHouseHelper(IPublishingHouseService service)
+        public PublishingHouseHelper(PublishingHouseService service)
         {
             this.service = service;
         }

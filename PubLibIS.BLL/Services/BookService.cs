@@ -11,7 +11,7 @@ using PubLibIS.BLL.JsonModels;
 
 namespace PubLibIS.BLL.Services
 {
-    public class BookService : IBookService
+    public class BookService : IJsonProcessor
     {
         private IUnitOfWork db;
         private IMapper mapper;

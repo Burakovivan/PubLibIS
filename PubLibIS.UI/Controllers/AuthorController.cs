@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using PubLibIS.BLL.Interfaces;
+using PubLibIS.BLL.Services;
 using PubLibIS.ViewModels;
 
 namespace PubLibIS.UI.Controllers
@@ -13,8 +13,8 @@ namespace PubLibIS.UI.Controllers
     [Authorize(Order = 2, Roles = "admin, user")]
     public class AuthorController : Controller
     {
-        private IAuthorService service;
-        public AuthorController(IAuthorService service)
+        private AuthorService service;
+        public AuthorController(AuthorService service)
         {
             this.service = service;
         }

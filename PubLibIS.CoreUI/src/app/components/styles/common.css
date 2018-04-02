@@ -1,0 +1,68 @@
+.create-new-item-row {
+    column-span: all;
+    background-color: green;
+    text-align: center;
+}
+
+.gly-spin {
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+    font-size: 50px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.row-controls {
+    min-width: 90px;
+}
+.error-message{
+  color:red;
+}
+
+.catalog-element {
+  transition: background-color 0.5s ease;
+  background: #e4e9eb;
+  margin: 15px 0;
+  padding: 0 15px;
+  height: 100%;
+  display: block;
+  text-decoration: none;
+  color: #6f859b;
+  text-align: right;
+  border: solid 2px #f2e8e2;
+  border-radius: 3px;
+}
+
+
+  .catalog-element:hover {
+    transition: all .25s ease;
+    background-color: #c2c5cb;
+    text-decoration: none;
+  }
+
+
+  .catalog-element:focus {
+    text-decoration: none;
+  }
+
+
+  .catalog-element > h3 {
+    text-align: left;
+  }
+
+
+.catalog-element-capation {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

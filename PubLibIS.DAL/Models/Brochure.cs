@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Dapper.Contrib.Extensions;
+using System;
 
 namespace PubLibIS.DAL.Models
 {
-    [Table("Brochures", Schema = "dbo")]
+    [Table("Brochures")]
     public class Brochure : BaseEntity
     {
         public string Capation { get; set; }
@@ -12,6 +12,7 @@ namespace PubLibIS.DAL.Models
         public int Circulation { get; set; }//тираж
         public int? PublishingHouse_Id { get; set; }
 
+        [Write(false)]
         public virtual PublishingHouse PublishingHouse { get; set; }
     }
 }

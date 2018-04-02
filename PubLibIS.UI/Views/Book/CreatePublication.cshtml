@@ -4,7 +4,7 @@
 
 <td>
     @Html.HiddenFor(model => model.Book_Id)
-    @Html.DropDownListFor(model => model.PublishingHouse_Id, Model.PublishingHouseSelectList, new { @class = "form-control " })
+    @Html.DropDownListFor(model => model.PublishingHouse_Id, Model.PublishingHouseSelectList.GetMvcSelectList(), new { @class = "form-control " })
     @Html.ValidationMessageFor(model => model.PublishingHouse_Id, "", new { @class = "text-danger" })
 </td>
 <td>

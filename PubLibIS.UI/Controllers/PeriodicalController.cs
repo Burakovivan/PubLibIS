@@ -16,10 +16,10 @@ namespace PubLibIS.UI.Controllers
     [Authorize(Order = 2, Roles = "admin, user")]
     public class PeriodicalController : Controller
     {
-        private IPeriodicalService service;
+        private PeriodicalService service;
         private PublishingHouseHelper publishingHouseHelper;
         private PeriodicalHelper periodicalHelper;
-        public PeriodicalController(IPeriodicalService service, IPublishingHouseService publishingHouseService)
+        public PeriodicalController(PeriodicalService service, PublishingHouseService publishingHouseService)
         {
             this.service = service;
             periodicalHelper = new PeriodicalHelper(service);

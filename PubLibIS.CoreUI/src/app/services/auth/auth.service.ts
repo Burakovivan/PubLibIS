@@ -57,7 +57,6 @@ export class AuthService {
   public SignOut() {
     localStorage.removeItem("email");
     localStorage.removeItem("token");
-
   }
 
 }

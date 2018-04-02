@@ -5,7 +5,6 @@ using System.Linq;
 using Dapper;
 using System.Data;
 using System;
-using DapperExtensions;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
@@ -17,23 +16,19 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public IEnumerable<PublishedBook> GetPublishedBookByBookId(int bookId)
         {
-            IFieldPredicate predicate = Predicates.Field<PublishedBook>(a => a.Book_Id, Operator.Ge, bookId);
-            return GetList(predicate);
+            return GetList().Where(pb => pb.Id == bookId);
         }
 
-        //public void LoadNavigationProperties(PublishedBook b, IDbConnection db)
-        //{
-        //    if(b == null)
-        //    {
-        //        return;
-        //    }
-        //    b.PublishingHouse = db.QuerySingleOrDefault<PublishingHouse>($"SELECT * FROM [{schema}].[PublishingHouses] WHERE Id = @id  ORDER BY Id", new { id = b.PublishingHouse_Id });
-        //}
+        public override void LoadNavigationProperties(PublishedBook b, IDbConnection db)
+        {
+            if(b?.PublishingHouse == null)
+            {
+                var publishingHouseRepository = new PublishingHouseRepository(dapperConnectionFactory);
+                b.PublishingHouse = b.PublishingHouse_Id.HasValue ? publishingHouseRepository.Get(b.PublishingHouse_Id.Value) : null;
+            }
 
-        //public void LoadNavigationProperties(IEnumerable<PublishedBook> periodicals, IDbConnection db)
-        //{
-        //    periodicals = periodicals.ToList();
-        //    ((List<PublishedBook>)periodicals).ForEach(p => LoadNavigationProperties(p, db));
-        //}
+        }
+
+       
     }
 }

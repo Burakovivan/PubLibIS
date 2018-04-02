@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    [Table("PeriodicalEditions", Schema = "dbo")]
+    [Dapper.Contrib.Extensions.Table("PeriodicalEditions")]
     public class PeriodicalEdition : BaseEntity
     {
     
@@ -14,6 +15,7 @@ namespace PubLibIS.DAL.Models
         public int Periodical_Id { get; set; }
 
         [ForeignKey("Periodical_Id")]
+        [Write(false)]
         public virtual Periodical Periodical { get; set; }
     }
 }

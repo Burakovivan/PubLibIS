@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { BookService } from '../../services/book.service';
-import { PublishedBook } from '../../models/publishedBook';
+import { BookService } from '../../../services/book.service';
+import { PublishedBook } from '../../../models/publishedBook';
 import { resetFakeAsyncZone, fakeAsync } from '@angular/core/testing';
-import { SelectList } from '../../models/selectList';
-import { Book } from '../../models/book';
+import { SelectList } from '../../../models/selectList';
+import { Book } from '../../../models/book';
 
 @Component({
   templateUrl: './published-book.component.html',

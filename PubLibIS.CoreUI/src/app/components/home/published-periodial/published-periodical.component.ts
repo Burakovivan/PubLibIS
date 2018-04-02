@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PeriodicalService } from '../../services/periodical.service';
-import { PublishedPeriodical } from '../../models/publishedPeriodical';
-import { SelectList } from '../../models/selectList';
+import { PeriodicalService } from '../../../services/periodical.service';
+import { PublishedPeriodical } from '../../../models/publishedPeriodical';
+import { SelectList } from '../../../models/selectList';
 import { resetFakeAsyncZone, fakeAsync } from '@angular/core/testing';
-import { Periodical } from '../../models/periodical';
+import { Periodical } from '../../../models/periodical';
 
 @Component({
     templateUrl: './published-periodical.component.html',

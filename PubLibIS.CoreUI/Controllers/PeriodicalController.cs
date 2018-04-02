@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using PubLibIS.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
+using PubLibIS.BLL.Services;
 
 namespace PubLibIS.CoreUI.Controllers
 {
@@ -15,11 +16,11 @@ namespace PubLibIS.CoreUI.Controllers
   [Route("api/[controller]")]
   public class PeriodicalController : Controller
   {
-    private IPeriodicalService service;
-    private IPublishingHouseService phService;
+    private PeriodicalService service;
+    private PublishingHouseService phService;
     private IHostingEnvironment hostingEnvironment;
 
-    public PeriodicalController(IPeriodicalService service, IPublishingHouseService phService, IHostingEnvironment hostingEnvironment)
+    public PeriodicalController(PeriodicalService service, PublishingHouseService phService, IHostingEnvironment hostingEnvironment)
     {
       this.service = service;
       this.phService = phService;

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    [Table("PublishingHouses", Schema = "dbo")]
+    [Table("PublishingHouses")]
     public class PublishingHouse : BaseEntity
     {
         public PublishingHouse()
@@ -22,8 +22,11 @@ namespace PubLibIS.DAL.Models
         public string PostalCode { get; set; }
         public DateTime FoundationDate { get; set; }
 
+        [Write(false)]
         public virtual ICollection<PublishedBook> Books { get; set; }
+        [Write(false)]
         public virtual ICollection<Periodical> Periodicals { get; set; }
+        [Write(false)]
         public virtual ICollection<Brochure> Brochures { get; set; }
     }
 }

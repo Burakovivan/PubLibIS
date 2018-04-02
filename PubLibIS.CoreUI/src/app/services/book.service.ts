@@ -40,7 +40,8 @@ export class BookService {
   }
 
   updateBook(book: Book) {
-    return this.http.put(this.url + '/', book);
+    console.log(book);
+    return this.http.put(this.url , book);
   }
 
   deleteBook(id: number) {

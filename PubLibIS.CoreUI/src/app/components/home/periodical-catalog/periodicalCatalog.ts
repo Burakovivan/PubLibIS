@@ -1,4 +1,4 @@
-import { Periodical } from "./periodical";
+import { Periodical } from "../../../models/periodical";
 
 export class PeriodicalCatalog {
   constructor(

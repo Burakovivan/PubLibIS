@@ -19,8 +19,8 @@ namespace PubLibIS.UI.Controllers
         //TODO: RESOLVE HELPER's PROBLEM
         private AuthorHelper authorHelper;
         private PublishingHouseHelper publishingHouseHelper;
-        private IBookService service;
-        public BookController(IBookService service, IAuthorService authorService, IPublishingHouseService publishingHouseService)
+        private BookService service;
+        public BookController(BookService service, AuthorService authorService, PublishingHouseService publishingHouseService)
         {
             this.service = service;
             authorHelper = new AuthorHelper(authorService);

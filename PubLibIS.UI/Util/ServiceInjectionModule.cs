@@ -28,11 +28,11 @@ namespace PubLibIS.UI.Util
         }
         private void AddBindings()
         {
-            kernel.Bind<IAuthorService>().To<AuthorService>();
-            kernel.Bind<IBookService>().To<BookService>();
-            kernel.Bind<IBrochureService>().To<BrochureService>();
-            kernel.Bind<IPeriodicalService>().To<PeriodicalService>();
-            kernel.Bind<IPublishingHouseService>().To<PublishingHouseService>();
+            kernel.Bind<AuthorService>().ToSelf();
+            kernel.Bind<BookService>().ToSelf();
+            kernel.Bind<BrochureService>().ToSelf();
+            kernel.Bind<PeriodicalService>().ToSelf();
+            kernel.Bind<PublishingHouseService>().ToSelf();
         }
     }
 }

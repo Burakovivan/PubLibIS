@@ -13,7 +13,7 @@ using PubLibIS.DAL.Enums;
 
 namespace PubLibIS.BLL.Services
 {
-    public class PeriodicalService : IPeriodicalService
+    public class PeriodicalService : IJsonProcessor
     {
         private IUnitOfWork db;
         private IMapper mapper;

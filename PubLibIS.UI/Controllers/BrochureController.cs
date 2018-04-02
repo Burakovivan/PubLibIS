@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using PubLibIS.BLL.Interfaces;
+using PubLibIS.BLL.Services;
 using PubLibIS.UI.Helpers;
 using PubLibIS.ViewModels;
 
@@ -14,9 +14,9 @@ namespace PubLibIS.UI.Controllers
     [Authorize(Order = 2, Roles = "admin, user")]
     public class BrochureController : Controller
     {
-        private IBrochureService service;
+        private BrochureService service;
         private PublishingHouseHelper publishingHouseHelper;
-        public BrochureController(IBrochureService service, IPublishingHouseService publishingHouseService)
+        public BrochureController(BrochureService service, PublishingHouseService publishingHouseService)
         {
             this.service = service;
             this.publishingHouseHelper = new PublishingHouseHelper(publishingHouseService);

@@ -7,6 +7,7 @@ using PubLibIS.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using PubLibIS.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using PubLibIS.BLL.Services;
 
 namespace PubLibIS.CoreUI.Controllers
 {
@@ -14,10 +15,10 @@ namespace PubLibIS.CoreUI.Controllers
   [Route("api/[controller]")]
   public class AuthorController : Controller
   {
-    private IAuthorService service;
+    private AuthorService service;
     private IHostingEnvironment hostingEnvironment;
 
-    public AuthorController(IAuthorService service, IHostingEnvironment hostingEnvironment)
+    public AuthorController(AuthorService service, IHostingEnvironment hostingEnvironment)
     {
       this.service = service;
       this.hostingEnvironment = hostingEnvironment;

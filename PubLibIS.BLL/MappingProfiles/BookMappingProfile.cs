@@ -52,6 +52,9 @@ namespace PubLibIS.BLL.MappingProfiles
                     opt => opt.MapFrom(pBook => pBook.Book_Id));
 
             CreateMap<AuthorViewModel, AuthorInBook>()
+            .ForMember(
+                    ainb => ainb.Author_Id,
+                    opt => opt.MapFrom(avm => avm.Id))
                 .ForMember(
                     ainb => ainb.Author,
                     opt => opt.MapFrom(avm => avm));

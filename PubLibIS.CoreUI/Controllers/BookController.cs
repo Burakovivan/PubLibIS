@@ -8,18 +8,19 @@ using Microsoft.AspNetCore.Authorization;
 using PubLibIS.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
+using PubLibIS.BLL.Services;
 
 namespace PubLibIS.CoreUI.Controllers
 {
   [Authorize(Roles = "admin, user")]
-  [Route("api/[controller]")]
+  [Route("api/book")]
   public class BookController : Controller
   {
-    private IBookService service;
-    private IAuthorService authorService;
+    private BookService service;
+    private AuthorService authorService;
     private IHostingEnvironment hostingEnvironment;
 
-    public BookController(IBookService service, IAuthorService authorService, IHostingEnvironment hostingEnvironment)
+    public BookController(BookService service, AuthorService authorService, IHostingEnvironment hostingEnvironment)
     {
       this.service = service;
       this.hostingEnvironment = hostingEnvironment;
@@ -30,7 +31,7 @@ namespace PubLibIS.CoreUI.Controllers
     [HttpGet]
     public IEnumerable<BookViewModel> Get()
     {
-      return service.GetBookViewModelList();
+       return service.GetBookViewModelList();
     }
 
     [AllowAnonymous]

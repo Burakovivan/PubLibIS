@@ -12,5 +12,12 @@ namespace PubLibIS.DAL.Repositories.Dapper
     {
         public PublishingHouseRepository(DapperConnectionFactory dapperConnectionFactory)
         : base(dapperConnectionFactory) { }
+
+        public override void LoadNavigationProperties(PublishingHouse entity, IDbConnection connection)
+        {
+           
+        }
+
+
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Dapper;
-using DapperExtensions;
+using Dapper.Contrib.Extensions;
 namespace PubLibIS.DAL.Models
 {
-    [Table("Authors", Schema = "dbo")]
+    [Table("Authors")]
     public class Author : BaseEntity
     {
         public Author()
@@ -23,6 +22,7 @@ namespace PubLibIS.DAL.Models
         [DataType(DataType.DateTime)]
         public DateTime? DateOfDeath { get; set; }
        
+        [Write(false)]
         public virtual ICollection<AuthorInBook> Books { get; set; }
     }
 }

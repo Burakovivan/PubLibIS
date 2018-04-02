@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <None Remove="src\app\components\account\style.css" />
+    <None Remove="src\app\components\home\home.module.ts" />
     <None Remove="src\app\models\authorSelectList.ts" />
     <None Remove="src\app\models\bookCatalog.ts" />
     <None Remove="src\app\models\bookSlim.ts" />
@@ -62,8 +63,9 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="src\app\components\account\style.css" />
+    <TypeScriptCompile Include="src\app\components\home\home.module.ts" />
     <TypeScriptCompile Include="src\app\models\authorSelectList.ts" />
-    <TypeScriptCompile Include="src\app\models\periodicalCatalog.ts" />
+    <TypeScriptCompile Include="src\app\components\home\periodical-catalog\periodicalCatalog.ts" />
     <TypeScriptCompile Include="src\app\models\brochureCatalog.ts" />
     <TypeScriptCompile Include="src\app\models\bookCatalog.ts" />
     <TypeScriptCompile Include="src\app\models\bookSlim.ts" />

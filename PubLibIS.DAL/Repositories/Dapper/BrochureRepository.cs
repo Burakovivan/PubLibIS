@@ -13,21 +13,13 @@ namespace PubLibIS.DAL.Repositories.Dapper
         public BrochureRepository(DapperConnectionFactory dapperConnectionFactory)
         : base(dapperConnectionFactory) { }
 
+        public override void LoadNavigationProperties(Brochure entity, IDbConnection connection)
+        {
+            var publishingHouseRepository = new PublishingHouseRepository(dapperConnectionFactory);
+            entity.PublishingHouse = entity.PublishingHouse_Id.HasValue?publishingHouseRepository.Get(entity.PublishingHouse_Id.Value):null;
+        }
 
+        
 
-        //private void LoadNavigationProperties(Brochure brochure, IDbConnection db)
-        //{
-        //    if(brochure.PublishingHouse_Id == null)
-        //    {
-        //        return;
-        //    }
-        //    brochure.PublishingHouse = db.QuerySingleOrDefault<PublishingHouse>($"SELECT * FROM [PublishingHouses] WHERE Id = @id", new { id = brochure.PublishingHouse_Id });
-        //}
-
-        //private void LoadNavigationProperties(IEnumerable<Brochure> brochures, IDbConnection db)
-        //{
-        //    brochures = brochures.ToList();
-        //    ((List<Brochure>)brochures).ForEach(p => LoadNavigationProperties(p, db));
-        //}
     }
 }

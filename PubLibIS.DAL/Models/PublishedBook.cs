@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    [Table("PublishedBooks", Schema = "dbo")]
+    [Dapper.Contrib.Extensions.Table("PublishedBooks")]
     public class PublishedBook : BaseEntity
     {
 
@@ -15,8 +16,10 @@ namespace PubLibIS.DAL.Models
         public int? Book_Id { get; set; }
 
         [ForeignKey("Book_Id")]
+        [Write(false)]
         public virtual Book Book { get; set; }
         [ForeignKey("PublishingHouse_Id")]
+        [Write(false)]
         public virtual PublishingHouse PublishingHouse { get; set; }
     }
 }

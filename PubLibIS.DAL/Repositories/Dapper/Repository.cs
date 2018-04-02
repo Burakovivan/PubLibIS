@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DapperExtensions;
 using System.Data;
-
+using PubLibIS.DAL.Interfaces;
+using Dapper.Contrib.Extensions;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
-    public class Repository<TEntity> where TEntity : BaseEntity
+    public abstract class Repository<TEntity> : ILazyLoad<TEntity> where TEntity : BaseEntity
     {
         protected DapperConnectionFactory dapperConnectionFactory;
+        public Type SuperReference;
 
         public Repository(DapperConnectionFactory dapperConnectionFactory)
         {
@@ -23,30 +24,26 @@ namespace PubLibIS.DAL.Repositories.Dapper
         {
             using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
-                return db.Get<TEntity>(id);
+                TEntity result = db.Get<TEntity>(id);
+                LoadNavigationProperties(result, db);
+                return result;
             }
         }
-        public IEnumerable<TEntity> GetList()
-        {
-            return GetList((IPredicate)default);
-        }
 
-        protected IEnumerable<TEntity> GetList(IPredicate predicate = null)
+
+        public IEnumerable<TEntity> GetList()
         {
             using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
-                return db.GetList<TEntity>(predicate).ToList();
+                List<TEntity> result = db.GetAll<TEntity>().ToList();
+                LoadNavigationProperties(result, db);
+                return result;
             }
         }
 
         public IEnumerable<TEntity> GetList(IEnumerable<int> idList)
         {
-            IFieldPredicate[] fieldPredicateList =
-                   idList.Select(id =>
-                   Predicates.Field<TEntity>(a => a.Id, Operator.Eq, id))
-                   .ToArray();
-            IPredicateGroup predicate = Predicates.Group(GroupOperator.Or, fieldPredicateList);
-            return GetList(predicate);
+            return idList.Select(id => Get(id)).ToList();
         }
 
         public IEnumerable<TEntity> GetList(int skip, int take)
@@ -58,7 +55,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
         {
             using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
-                return db.Insert(entity);
+                return (int)db.Insert(entity);
             }
         }
 
@@ -78,13 +75,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
             }
         }
 
-        public void Delete(IPredicate predicate)
-        {
-            using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                db.Delete(predicate);
-            }
-        }
+
 
         public void Update(TEntity entity)
         {
@@ -94,16 +85,16 @@ namespace PubLibIS.DAL.Repositories.Dapper
             }
         }
 
-        protected int Count(IPredicate predicate = null)
-        {
-            using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
-            {
-                return db.Count<TEntity>(predicate);
-            }
-        }
         public int Count()
         {
-            return Count(null);
+
+            return GetList().Count();
+        }
+        public abstract void LoadNavigationProperties(TEntity entity, IDbConnection connection);
+
+        public void LoadNavigationProperties(IEnumerable<TEntity> entityList, IDbConnection connection)
+        {
+            entityList.ToList().ForEach(entity => LoadNavigationProperties(entity, connection));
         }
 
     }

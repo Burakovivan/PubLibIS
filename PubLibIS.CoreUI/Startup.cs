@@ -58,6 +58,7 @@ namespace PubLibIS.CoreUI
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
       app.UseAuthentication();
+      app.UseDeveloperExceptionPage();
       app.Use(async (context, next) =>
       {
         await next();

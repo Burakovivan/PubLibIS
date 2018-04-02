@@ -38,13 +38,16 @@ export class BookComponent implements OnInit {
   // получаем данные через сервис
   loadBooks() {
     this.loaded = false;
-    this.dataService.getBookList().subscribe((books: Book[]) => this.books = books);
+    this.dataService.getBookList().subscribe((books: Book[]) => { this.books = books; console.log(this.books); });
+    
     this.loaded = true;
   }
 
   // сохранение данных
   saveBook() {
     this.book.authors = this.selectedAuthorList.map(a => new Author(a.id));
+    console.log(this.book);
+    console.log(this.selectedAuthorList);
     if (this.book.id == null || this.book.id == -1) {
       this.dataService.createBook(this.book).subscribe((book: Book) => this.books.push(book))
     } else {

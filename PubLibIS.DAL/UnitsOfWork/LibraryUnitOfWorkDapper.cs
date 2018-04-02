@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using DapperExtensions.Mapper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PubLibIS.DAL.Identity;
 using PubLibIS.DAL.Interfaces;
@@ -18,7 +17,6 @@ namespace PubLibIS.DAL.UnitsOfWork
         {
             db = new LibraryEntityFrameworkContext(connectionName);
             dapperConnectionFactory = new DapperConnectionFactory(connectionName);
-            DapperExtensions.DapperExtensions.DefaultMapper = typeof(PluralizedAutoClassMapper<>);
         }
 
         private AuthorRepository authorRepository;

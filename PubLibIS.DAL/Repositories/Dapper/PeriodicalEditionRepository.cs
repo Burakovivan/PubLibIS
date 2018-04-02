@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using System.Data;
-using DapperExtensions;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
@@ -16,8 +15,13 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public IEnumerable<PeriodicalEdition> GetPeriodicalEditionByPeriodicalId(int id)
         {
-            IFieldPredicate predicate = Predicates.Field<PeriodicalEdition>(a => a.Periodical_Id, Operator.Ge, id);
-            return GetList(predicate);
+            return GetList().Where(p => p.Id == id);
         }
+
+        public override void LoadNavigationProperties(PeriodicalEdition entity, IDbConnection connection)
+        {
+        }
+
+        
     }
 }

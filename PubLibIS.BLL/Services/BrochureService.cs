@@ -11,7 +11,7 @@ using PubLibIS.BLL.JsonModels;
 
 namespace PubLibIS.BLL.Services
 {
-    public class BrochureService : IBrochureService
+    public class BrochureService : IJsonProcessor
     {
         private IUnitOfWork db;
         private IMapper mapper;

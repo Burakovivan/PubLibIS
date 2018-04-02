@@ -30,7 +30,7 @@ export class PeriodicalComponent implements OnInit {
     loadList() {
       this.loaded = false;
       this.dataService.getPeriodicalList().subscribe((Periodicals: Periodical[])=> this.periodicalList = Periodicals);
-        this.loaded = true;
+      this.loaded = true;
     }
 
     save() {

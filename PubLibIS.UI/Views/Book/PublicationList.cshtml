@@ -28,7 +28,7 @@
     {
         <tr id="pub_@item.Id" ondblclick="EditPublication(@item.Id)" class="publication-row">
             <td class="col-xs-5">
-                @Html.DisplayFor(modelItem => item.PublishingHouse.ListBoxInfo)
+                @Html.DisplayFor(modelItem => item.PublishingHouse.ShortInfo)
             </td>
             <td class="col-xs-3">
                 @Html.DisplayFor(modelItem => item.DateOfPublication)

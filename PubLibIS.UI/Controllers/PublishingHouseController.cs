@@ -13,8 +13,8 @@ namespace PubLibIS.UI.Controllers
     [Authorize(Order = 2, Roles = "admin, user")]
     public class PublishingHouseController : Controller
     {
-        private IPublishingHouseService service;
-        public PublishingHouseController(IPublishingHouseService service)
+        private PublishingHouseService service;
+        public PublishingHouseController(PublishingHouseService service)
         {
             this.service = service;
         }

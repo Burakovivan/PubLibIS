@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PubLibIS.DAL.Models
 {
-    [Table("Books", Schema = "dbo")]
+    [Table("Books")]
     public class Book : BaseEntity
     {
         public string ISBN { get; set; }
@@ -12,7 +11,9 @@ namespace PubLibIS.DAL.Models
         public string AdditionalData { get; set; }
 
 
+        [Write(false)]
         public virtual ICollection<PublishedBook> PublishedBooks { get; set; }
+        [Write(false)]
         public virtual ICollection<AuthorInBook> Authors { get; set; }
     }
 }

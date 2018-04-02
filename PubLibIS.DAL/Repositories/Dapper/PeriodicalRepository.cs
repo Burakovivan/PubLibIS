@@ -13,18 +13,17 @@ namespace PubLibIS.DAL.Repositories.Dapper
         public PeriodicalRepository(DapperConnectionFactory dapperConnectionFactory)
         : base(dapperConnectionFactory) { }
 
-        //public void LoadNavigationProperties(Periodical p, IDbConnection db)
-        //{
+        public override void LoadNavigationProperties(Periodical entity, IDbConnection connection)
+        {
+            var publishingHouseRepository = new PublishingHouseRepository(dapperConnectionFactory);
+            publishingHouseRepository.SuperReference = typeof(Periodical);
+            entity.PublishingHouse = entity.PublishingHouse_Id.HasValue ? publishingHouseRepository.Get(entity.PublishingHouse_Id.Value) : null;
+            var PeriodicalEditionRepository = new PeriodicalEditionRepository(dapperConnectionFactory);
+            entity.PeriodicalEditions = PeriodicalEditionRepository.GetPeriodicalEditionByPeriodicalId(entity.Id).ToArray();
+        }
 
-        //    p.PeriodicalEditions = db.Query<PeriodicalEdition>($"SELECT * FROM [PeriodicalEditions] WHERE Periodical_Id = @id  ORDER BY Id", new { id = p.Id }).ToList();
-        //    p.PublishingHouse = db.QuerySingleOrDefault<PublishingHouse>($"SELECT * FROM [PublishingHouses] WHERE Id = @id", new { id = p.PublishingHouse_Id });
+       
 
-        //}
-
-        //public void LoadNavigationProperties(IEnumerable<Periodical> periodicals, IDbConnection db)
-        //{
-        //    periodicals = periodicals.ToList();
-        //    ((List<Periodical>)periodicals).ForEach(p => LoadNavigationProperties(p, db));
-        //}
+     
     }
 }
