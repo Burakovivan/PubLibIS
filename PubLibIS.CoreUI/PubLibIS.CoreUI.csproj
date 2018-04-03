@@ -14,19 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="src\app\components\account\style.css" />
-    <None Remove="src\app\components\home\home.module.ts" />
-    <None Remove="src\app\models\authorSelectList.ts" />
-    <None Remove="src\app\models\bookCatalog.ts" />
-    <None Remove="src\app\models\bookSlim.ts" />
-    <None Remove="src\app\models\brochureCatalog.ts" />
-    <None Remove="src\app\models\login.ts" />
-    <None Remove="src\app\models\periodicalCatalog.ts" />
-    <None Remove="src\app\models\publishedPeriodical.ts" />
-    <None Remove="src\app\models\register.ts" />
-    <None Remove="src\app\services\auth.service.ts" />
-    <None Remove="src\app\services\auth\jwt.interceptor.ts" />
-    <None Remove="src\app\services\auth\token.interceptor.ts" />
+    <None Remove="src\app\account.module.ts" />
+    <None Remove="src\app\home\book-catalog\book-catalog.service.ts" />
+    <None Remove="src\app\library.module.ts" />
+    <None Remove="src\app\account\style.css" />
+    <None Remove="src\app\home\home.module.ts" />
+    <None Remove="src\app\library\library.routing.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,19 +55,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="src\app\components\account\style.css" />
-    <TypeScriptCompile Include="src\app\components\home\home.module.ts" />
-    <TypeScriptCompile Include="src\app\models\authorSelectList.ts" />
-    <TypeScriptCompile Include="src\app\components\home\periodical-catalog\periodicalCatalog.ts" />
-    <TypeScriptCompile Include="src\app\models\brochureCatalog.ts" />
-    <TypeScriptCompile Include="src\app\models\bookCatalog.ts" />
-    <TypeScriptCompile Include="src\app\models\bookSlim.ts" />
-    <TypeScriptCompile Include="src\app\models\login.ts" />
-    <TypeScriptCompile Include="src\app\models\publishedPeriodical.ts" />
-    <TypeScriptCompile Include="src\app\models\register.ts" />
-    <TypeScriptCompile Include="src\app\services\auth\auth.service.ts" />
-    <TypeScriptCompile Include="src\app\services\auth\jwt.interceptor.ts" />
-    <TypeScriptCompile Include="src\app\services\auth\token.interceptor.ts" />
+    <TypeScriptCompile Include="src\app\account\account.module.ts" />
+    <TypeScriptCompile Include="src\app\home\shared\catalog.service.ts" />
+    <TypeScriptCompile Include="src\app\library\library.module.ts" />
+    <TypeScriptCompile Include="src\app\account\shared\style.css" />
+    <TypeScriptCompile Include="src\app\home\home.module.ts" />
+    <TypeScriptCompile Include="src\app\home\periodical-catalog\periodical-catalog.model.ts" />
+    <TypeScriptCompile Include="src\app\home\brochure-catalog\brochure-catalog.model.ts" />
+    <TypeScriptCompile Include="src\app\home\book-catalog\book-catalog.model.ts" />
+    <TypeScriptCompile Include="src\app\library\book\shared\book-slim.model.ts" />
+    <TypeScriptCompile Include="src\app\account\shared\login.model.ts" />
+    <TypeScriptCompile Include="src\app\library\library.routing.ts" />
+    <TypeScriptCompile Include="src\app\library\periodical\shared\published-periodical.model.ts" />
+    <TypeScriptCompile Include="src\app\account\shared\register.model.ts" />
+    <TypeScriptCompile Include="src\app\account\account.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="src\app\shared\token.interceptor.ts" />
   </ItemGroup>
 
 </Project>

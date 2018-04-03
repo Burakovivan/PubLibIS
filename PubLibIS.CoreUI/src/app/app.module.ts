@@ -1,79 +1,47 @@
-import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule, Routes } from "@angular/router"
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from './services/auth/jwt.interceptor';
-import { TokenInterceptor } from './services/auth/token.interceptor';
+import { JwtInterceptor } from './shared/jwt.interceptor';
+import { TokenInterceptor } from './shared/token.interceptor';
 
-import { RouterModule, Routes } from "@angular/router"
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
 
-import { AuthService } from './services/auth/auth.service';
-import { AppComponent } from './components/app/app.component';
-import { HomeComponent } from './components/home/home.component';
-import { AuthComponent } from './components/auth/auth.component';
-import { BookComponent } from './components/book/book.component';
-import { PublishedPeriodical } from './models/publishedPeriodical';
-import { AuthorComponent } from './components/author/author.component';
-import { AccountComponent } from './components/account/account.component';
-import { BrochureComponent } from './components/brochure/brochure.component';
-import { PeriodicalComponent } from './components/periodical/periodical.component';
-import { BookCatalogComponent } from './components/book-catalog/book-catalog.component';
-import { PublishedBookComponent } from './components/home/published-book/published-book.component';
-import { PublishingHouseComponent } from './components/publishing-house/publishing-house.component';
-import { BrochureCatalogComponent } from './components/brochure-catalog/brochure-catalog.component';
-import { PeriodicalCatalogComponent } from './components/home/periodical-catalog/periodical-catalog.component';
-import { PublishedPeriodicalComponent } from './components/home/published-periodial/published-periodical.component';
+import { AccountModule } from './account/account.module';
+import { LibraryModule } from './library/library.module';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { NavMenuComponent } from './navmenu/navmenu.component';
 
 const appRoutes: Routes = [
-  { path: 'home', component: HomeComponent, data: { title: "Home" } },
-  { path: 'author', component: AuthorComponent, data: { title: "Authors" } },
-  { path: 'book', component: BookComponent, data: { title: "Books" } },
-  { path: 'book/publication/:id', component: PublishedBookComponent, data: { title: "Book publications" } },
-  { path: 'brochure', component: BrochureComponent, data: { title: "Brochures" } },
-  { path: 'periodical', component: PeriodicalComponent, data: { title: "Periodicals" } },
-  { path: 'periodical/publication/:id', component: PublishedPeriodicalComponent, data: { title: "Periodical publications" } },
-  { path: 'ph', component: PublishingHouseComponent, data: { title: "Publishing houses" } },
-  { path: 'account', component: AuthComponent, data: { title: "Account" } },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  { path: '**', component: HomeComponent }
+  { path: '', redirectTo: 'home'},
+  { path: '**', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'account', loadChildren: 'AccountModule' },
+  { path: 'library', loadChildren: 'LibraryModule' },
+
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
-    AccountComponent,
-
-    BookCatalogComponent,
-    BrochureCatalogComponent,
-    PeriodicalCatalogComponent,
-
     HomeComponent,
-    AuthorComponent,
-    BookComponent,
-    BrochureComponent,
-    PeriodicalComponent,
-    PublishedBookComponent,
-    PeriodicalComponent,
-    PublishedPeriodicalComponent,
-    PublishingHouseComponent,
-    AuthComponent
+    NavMenuComponent,
   ],
+
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     AngularMultiSelectModule,
+
+    AccountModule,
+    LibraryModule,
+
     BrowserModule,
     FormsModule,
-    HttpModule,
     HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
@@ -81,7 +49,7 @@ const appRoutes: Routes = [
     )
   ],
   providers: [
-    AuthService,
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
