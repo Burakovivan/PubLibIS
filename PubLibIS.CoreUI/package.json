@@ -29,7 +29,21 @@
     "@types/jquery": "^3.3.1",
     "angular2-jwt": "^0.2.3",
     "jwt-decode": "^2.2.0",
-    "angular2-multiselect-dropdown": "2.6.0"
+    "angular2-multiselect-dropdown": "2.6.0",
+
+    "@progress/kendo-drawing": "^1.0.0",
+    "@progress/kendo-angular-grid": "3.0.1-dev.201804030748",
+    "@progress/kendo-data-query": "1.2.2",
+    "@progress/kendo-angular-popup": "2.2.0-dev.201803261225",
+    "@progress/kendo-angular-l10n": "1.1.0",
+    "@progress/kendo-angular-excel-export": "2.0.0-dev.201803281515",
+    "@progress/kendo-angular-dateinputs": "3.0.0-dev.201803281359",
+    "@progress/kendo-angular-buttons": "4.0.0",
+    "@progress/kendo-angular-intl": "1.4.0",
+    "@progress/kendo-angular-dropdowns": "2.1.1-dev.201803221443",
+    "@progress/kendo-angular-inputs": "3.0.0-dev.201804040924",
+    "@progress/kendo-theme-default": "2.50.0-dev.e685a1ea"
+
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

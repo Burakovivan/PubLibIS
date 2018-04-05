@@ -1,102 +1,59 @@
-<button class="btn btn-sm btn-primary" (click)="getJson()">Get backup</button>
-<button class="btn btn-sm btn-primary" (click)="setJson()">Restore backup</button>
-<input type="file" (change)="setFile($event.target.files)"  />
-<table class="table table-striped">
-
-  <thead>
-    <tr>
-      <th></th>
-      <th>Name</th>
-      <th>Surname</th>
-      <th>Patronymic</th>
-      <th>Date of birth</th>
-      <th>Date of death</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-template [ngIf]="loaded" [ngIfElse]="loading">
-      <tr *ngFor="let item of authors">
-        <ng-template [ngIf]="author?.id != item.id" [ngIfElse]="edit">
-          <th><input type="checkbox" name="backup" id="{{item.id}}" /></th>
-          <td>{{item.firstName}}</td>
-          <td>{{item.secondName}}</td>
-          <td>{{item.patronymic}}</td>
-          <td>{{item.dateOfBirth}}</td>
-          <td>{{item.dateOfDeath}}</td>
-          <td>
-            <button class="btn btn-sm btn-primary" (click)="editAuthor(item)"><span class="glyphicon glyphicon-edit"></span></button>
-            <button class="btn btn-sm btn-danger" (click)="delete(item)"><span class="glyphicon glyphicon-remove"></span></button>
-
-          </td>
-        </ng-template>
-
-      </tr>
+<form novalidate #myForm="ngForm">
+  <kendo-grid [data]="view | async"
+              [height]="533"
+              [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+              [pageable]="true" [sortable]="true"
+              (dataStateChange)="onStateChange($event)"
+              (selectionChange)="selectionChange($event)"
+              (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event, myForm)"
+              [navigable]="true"
+              [selectable]="selectableSettings">
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoGridAddCommand type="button">Add new</button>
+      <button (click)="getJson()" kendoButton class="" type="button">Get JSON</button>
+      <button kendoButton (click)="ChooseButtonClick()" [icon]="'folder'">Choose JSON</button>
+      <input (change)="setFile($event)" style="display:none;" type="file" />
+      <button (click)="setJson()" kendoButton type="button">Set JSON</button>
     </ng-template>
-    <tr>
-      <ng-template [ngIf]="author?.id != -1" [ngIfElse]="edit">
-        <td colspan="7" class="create-new-item-row" (click)="createAuthor()"> <span class="glyphicon glyphicon-plus"></span> </td>
+    <kendo-grid-checkbox-column field="backup"></kendo-grid-checkbox-column>
+    <kendo-grid-column field="firstName" title="First name">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.firstName" kendoGridFocusable name="firstName" class="k-textbox" />
       </ng-template>
-    </tr>
-  </tbody>
-</table>
+    </kendo-grid-column>
+    <kendo-grid-column field="secondName" title="Second name">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.secondName" kendoGridFocusable name="secondName" class="k-textbox" />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="patronymic" title="Patronymic">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.patronymic" kendoGridFocusable name="patronymic" class="k-textbox" />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="dateOfBirth" [editor]="date" title="Date of birth">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.dateOfBirth" kendoGridFocusable name="dateOfBirth" class="k-textbox" required />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="dateOfDeath" [editor]="date" title="Date of death">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.dateOfDeath" kendoGridFocusable name="dateOfDeath" class="k-textbox" />
+      </ng-template>
+    </kendo-grid-column>
 
-<ng-template #loading>
-  <tr>
-    <td colspan="6" class="text-center">
-      <span class="glyphicon glyphicon-refresh gly-spin"></span>
-    </td>
-  </tr>
-</ng-template>
-
-<!--шаблон для редактирования-->
-<ng-template #edit>
-  <td></td>
-  <td>
-    <input type="text" [(ngModel)]="author.firstName" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="author.secondName" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="author.patronymic" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="author.dateOfBirth" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="author.dateOfDeath" class="form-control" />
-  </td>
-  <td>
-    <div (click)="save()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
-    <div (click)="cancel()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
-  </td>
-</ng-template>
-
-<!--шаблон для добавления-->
-<ng-template #create>
-  <div class="form-group">
-    <label>Name</label>
-    <input type="text" [(ngModel)]="author.firstName" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Surname</label>
-    <input type="text" [(ngModel)]="author.secondName" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Patronymic</label>
-    <input type="text" [(ngModel)]="author.patronymic" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Date of birth</label>
-    <input type="text" [(ngModel)]="author.dateOfBirth" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Date of death</label>
-    <input type="text" [(ngModel)]="author.dateOfDeath" class="form-control" />
-  </div>
-  <div>
-    <input type="button" value="Save" (click)="save()" class="btn btn-success" />
-    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
-  </div>
-</ng-template>
+    <kendo-grid-command-column title="command" width="220">
+      <ng-template kendoGridCellTemplate let-isNew="isNew">
+        <button kendoGridEditCommand type="button" class="k-primary">Edit</button>
+        <button kendoGridRemoveCommand type="button">Remove</button>
+        <button kendoGridSaveCommand type="button"
+                [disabled]="myForm.invalid || myForm.pristine">
+          {{ isNew ? 'Add' : 'Update' }}
+        </button>
+        <button kendoGridCancelCommand type="button">{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+  </kendo-grid>
+</form>

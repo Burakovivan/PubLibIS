@@ -88,7 +88,6 @@ namespace PubLibIS.CoreUI.Controllers
     [Authorize(Roles = "admin")]
     public BookViewModel Create([FromBody]BookViewModel book)
     {
-
       int id = service.CreateBook(book);
       return service.GetBookViewModel(id);
     }

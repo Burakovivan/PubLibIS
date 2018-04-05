@@ -4,7 +4,7 @@
   </div>
   <div class="row">
     <div class="col-xs-3 " *ngFor="let brochure of brochureCatalog.brochures">
-      <a class="catalog-element" href="/brochure">
+      <a class="catalog-element" href="library/brochure">
         <h3 class="catalog-element-capation">{{brochure.capation}}</h3>
         <p>{{brochure.releaseDate}}</p>
         <p>{{brochure.volem}} pages</p>
@@ -17,7 +17,7 @@
       <span id="brochure-prev" class="glyphicon glyphicon-chevron-left  btn btn-primary"></span>
     </div>
     <div [ngClass]="brochureCatalog.isSeeMore? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'">
-      <a href="/brochure"><div class="btn btn-primary">See more...</div></a>
+      <a href="library/brochure"><div class="btn btn-primary">See more...</div></a>
     </div>
     <div [ngClass]="brochureCatalog.hasNextPage? 'col-xs-4 text-center' : 'col-xs-4 text-center invisible'" (click)="nextPage()">
       <span id="brochure-next" class="glyphicon glyphicon-chevron-right btn btn-primary"></span>

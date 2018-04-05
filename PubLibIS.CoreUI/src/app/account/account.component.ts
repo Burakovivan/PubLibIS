@@ -7,7 +7,7 @@ import { PACKAGE_ROOT_URL } from '@angular/core/src/application_tokens';
   selector: "account",
   templateUrl: './account.component.html',
   providers: [AccountService],
-  styleUrls: ['./shaerd/style.css']
+  styleUrls: ['./shared/style.css']
 })
 export class AccountComponent implements OnInit {
 

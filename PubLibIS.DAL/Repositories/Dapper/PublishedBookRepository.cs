@@ -16,7 +16,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public IEnumerable<PublishedBook> GetPublishedBookByBookId(int bookId)
         {
-            return GetList().Where(pb => pb.Id == bookId);
+            return GetList().Where(pb => pb.Book_Id == bookId);
         }
 
         public override void LoadNavigationProperties(PublishedBook b, IDbConnection db)

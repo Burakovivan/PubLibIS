@@ -15,11 +15,13 @@
 
   <ItemGroup>
     <None Remove="src\app\account.module.ts" />
+    <None Remove="src\app\app-routing.module.ts" />
     <None Remove="src\app\home\book-catalog\book-catalog.service.ts" />
     <None Remove="src\app\library.module.ts" />
     <None Remove="src\app\account\style.css" />
-    <None Remove="src\app\home\home.module.ts" />
+    <None Remove="src\app\library\book\published-book\published-book.service.ts" />
     <None Remove="src\app\library\library.routing.ts" />
+    <None Remove="src\app\shared\only-logged-in-users.guard.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,11 +57,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="src\app\account\account.module.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\home\shared\catalog.service.ts" />
+    <TypeScriptCompile Include="src\app\library\book\published-book\published-book.service.ts" />
     <TypeScriptCompile Include="src\app\library\library.module.ts" />
     <TypeScriptCompile Include="src\app\account\shared\style.css" />
-    <TypeScriptCompile Include="src\app\home\home.module.ts" />
     <TypeScriptCompile Include="src\app\home\periodical-catalog\periodical-catalog.model.ts" />
     <TypeScriptCompile Include="src\app\home\brochure-catalog\brochure-catalog.model.ts" />
     <TypeScriptCompile Include="src\app\home\book-catalog\book-catalog.model.ts" />
@@ -70,6 +72,7 @@
     <TypeScriptCompile Include="src\app\account\shared\register.model.ts" />
     <TypeScriptCompile Include="src\app\account\account.service.ts" />
     <TypeScriptCompile Include="src\app\shared\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="src\app\shared\only-logged-in-users.guard.ts" />
     <TypeScriptCompile Include="src\app\shared\token.interceptor.ts" />
   </ItemGroup>
 

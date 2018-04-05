@@ -3,53 +3,52 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router"
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-
+import { routing } from './app-routing.module'
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './shared/jwt.interceptor';
 import { TokenInterceptor } from './shared/token.interceptor';
 
 
-import { AccountModule } from './account/account.module';
 import { LibraryModule } from './library/library.module';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './navmenu/navmenu.component';
+import { HomeComponent } from './home/home.component';
+import { BookCatalogComponent } from './home/book-catalog/book-catalog.component';
+import { BrochureCatalogComponent } from './home/brochure-catalog/brochure-catalog.component';
+import { PeriodicalCatalogComponent } from './home/periodical-catalog/periodical-catalog.component';
+import { AccountComponent } from './account/account.component';
+import { AuthenticateComponent } from './account/authenticate/authenticate.component';
 
-const appRoutes: Routes = [
-  { path: '', redirectTo: 'home'},
-  { path: '**', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'account', loadChildren: 'AccountModule' },
-  { path: 'library', loadChildren: 'LibraryModule' },
-
-];
+import { AccountService } from './account/account.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     NavMenuComponent,
+
+    HomeComponent,
+    BookCatalogComponent,
+    BrochureCatalogComponent,
+    PeriodicalCatalogComponent,
+
+    AccountComponent,
+    AuthenticateComponent,
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
-    AngularMultiSelectModule,
 
-    AccountModule,
+    routing,
+    RouterModule,
     LibraryModule,
-
+    
     BrowserModule,
     FormsModule,
-    HttpClientModule,
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
-    )
+    HttpClientModule
   ],
   providers: [
-
+    AccountService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

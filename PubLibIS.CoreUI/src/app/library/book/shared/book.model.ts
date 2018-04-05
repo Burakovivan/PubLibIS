@@ -3,7 +3,7 @@ import { Author } from "../../author/author.model";
 export class Book {
     constructor(
         public id?: number,
-        public isnb?: string,
+        public isbn?: string,
         public capation?: string,
         public additionalData?: string,
         public releaseDate?: string,

@@ -13,7 +13,7 @@ using PubLibIS.BLL.Services;
 namespace PubLibIS.CoreUI.Controllers
 {
   [Authorize(Roles = "admin, user")]
-  [Route("api/[controller]")]
+  [Route("api/publishedbook")]
   public class PublishedBookController : Controller
   {
     private BookService service;

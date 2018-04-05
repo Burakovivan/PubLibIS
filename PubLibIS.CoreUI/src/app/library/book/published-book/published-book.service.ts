@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Book } from './shared/book.model';
+import { PublishedBook } from '../shared/published-book.model';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { tap } from 'rxjs/operators/tap';
 import { map } from 'rxjs/operators/map';
-import { Author } from '../author/author.model';
+import { PublishingHouse } from '../../publishing-house/publishing-house.model';
 
 const CREATE_ACTION = 'create';
 const UPDATE_ACTION = 'update';
 const REMOVE_ACTION = 'destroy';
 
 @Injectable()
-export class BookService extends BehaviorSubject<any[]> {
+export class PublishedBookService extends BehaviorSubject<any[]> {
 
-  private url = "/api/book";
-
+  private url = "/api/PublishedBook";
+  public bookId: number|string;
   constructor(private http: HttpClient) {
-    super(Array<Book>());
+    super(Array<PublishedBook>());
   }
   private data: any[] = [];
 
@@ -76,10 +76,10 @@ export class BookService extends BehaviorSubject<any[]> {
 
   private fetch(action: string = '', data?: any): Observable<any[]> {
     if (action == '') {
-      return this.http.get(this.url).pipe(map(res => <any[]>res));
+      return this.http.get(`${this.url}/${this.bookId}`).pipe(map(res => <any[]>res));
     }
     if (action == CREATE_ACTION) {
-      console.log(data);
+      data.book_Id = this.bookId;
       return this.http
         .post(this.url, data)
         .pipe(map(res => <any[]>res));
@@ -90,15 +90,14 @@ export class BookService extends BehaviorSubject<any[]> {
         .pipe(map(res => <any[]>res));
     }
     if (action == UPDATE_ACTION) {
-      console.log(data);
       return this.http
         .put(this.url, data)
         .pipe(map(res => <any[]>res));
     }
   }
 
-  public getAuthorList() {
-    return this.http.get('api/author').pipe(map(res => <Author[]>res)); 
+  public getPublishingHousehList() {
+    return this.http.get('api/publishinghouse').pipe(map(res => <PublishingHouse[]>res));
   }
 
   private serializeModels(data?: any): string {

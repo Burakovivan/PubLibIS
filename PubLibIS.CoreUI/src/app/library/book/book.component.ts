@@ -1,8 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BookService } from './book.service';
 import { Book } from './shared/book.model';
-import { SelectList } from '../shared/select-list.model';
+import { resetFakeAsyncZone, fakeAsync } from '@angular/core/testing';
 import * as $ from "jquery";
+
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { GridDataResult, SelectionEvent } from '@progress/kendo-angular-grid';
+import { State, process } from '@progress/kendo-data-query';
+import { map } from 'rxjs/operators/map';
+import { Observable } from 'rxjs/Observable';
+import { SelectableSettings } from '@progress/kendo-angular-grid/dist/es2015/selection/selectable-settings';
+import { Button } from "@progress/kendo-angular-buttons";
+import { AuthorService } from '../author/author.service';
 import { Author } from '../author/author.model';
 
 @Component({
@@ -11,99 +22,110 @@ import { Author } from '../author/author.model';
   styleUrls: []
 })
 export class BookComponent implements OnInit {
-  book: Book = new Book();  
-  authorList: { id: number, itemName: string }[] = new Array<{ id: number, itemName: string }>();
-  selectedAuthorList: { id: number, itemName: string }[] = new Array<{ id: number, itemName: string }>();
-  dropdownSettings = {
-  singleSelection: false,
-  text: "Select Author",
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  enableSearchFilter: true,
-}; 
-  books: Book[];                
+  editedBook: Book;   // изменяемый товар
+  public view: Observable<GridDataResult>;         // массив товаров
   loaded: boolean = true;
   jsonBackUpText: string;
+  selectedIds: number[] = Array<number>();
+  bookService: BookService;
+  public authorList: Author[];
+  public gridState: State = {
+    sort: [],
+    skip: 0,
+    take: 10
+  };
+  public selectableSettings: SelectableSettings = {
+    checkboxOnly: false,
+    mode: 'multiple'
+  };
 
-  constructor(private dataService: BookService) {
+  private editedRowIndex: number;
+
+  constructor( @Inject(BookService) bookServiceFactory: any, ) {
+    this.bookService = bookServiceFactory;
   }
 
-  ngOnInit() {
-
-    this.loadBooks();    
-  }
-  
-  loadBooks() {
-    this.loaded = false;
-    this.dataService.getBookList().subscribe((books: Book[]) => { this.books = books; console.log(this.books); });
-    
-    this.loaded = true;
-  }
-
-  // сохранение данных
-  saveBook() {
-    this.book.authors = this.selectedAuthorList.map(a => new Author(a.id));
-    console.log(this.book);
-    console.log(this.selectedAuthorList);
-    if (this.book.id == null || this.book.id == -1) {
-      this.dataService.createBook(this.book).subscribe((book: Book) => this.books.push(book))
-    } else {
-      this.dataService.updateBook(this.book).subscribe(() =>
-        this.loadBooks());
-    }
-    this.cancelBook();
-  }
-
-  loadAuthorSelecList() {
-    this.authorList = new Array<{ id: number, itemName: string }>();
-    this.selectedAuthorList = new Array<{ id: number, itemName: string }>();
-    this.dataService.getAuthorListByBook(this.book.id).subscribe((authorSelectList: SelectList) => {
-      for (var i = 0; i < authorSelectList.items.length; i++) {
-        var item = authorSelectList.items[i];
-        if (item.selected) {
-          this.selectedAuthorList.push({ id: item.value, itemName: item.text });
-        }
-        this.authorList.push({ id: item.value, itemName: item.text });
-
-      }
-
+  public ngOnInit(): void {
+    this.view = this.bookService.pipe(map(data => process(data, this.gridState)));
+    this.bookService.getAuthorList().subscribe(author => {
+      this.authorList = author;
     });
-  }
-  editBook(a: Book) {
-    this.book = a;
-    this.loadAuthorSelecList();
+    this.bookService.read();
+
   }
 
-
-  cancelBook() {
-    this.book = new Book();
+  public onStateChange(state: State) {
+    this.gridState = state;
+    console.log(this.gridState);
+    this.bookService.read();
+  }
+  public selectionChange(event: SelectionEvent) {
+    event.selectedRows.forEach(e => this.selectedIds.push(e.dataItem.id));
+    event.deselectedRows.forEach(e => this.selectedIds = this.selectedIds.filter(item => item != e.dataItem.id));
+    console.log(this.selectedIds);
   }
 
-  deleteBook(p: Book) {
-    this.dataService.deleteBook(p.id as number)
-      .subscribe(data => this.loadBooks());
+  public addHandler({ sender }, formInstance) {
+    formInstance.reset();
+    this.closeEditor(sender);
+    var newBook = new Book();
+    sender.addRow(newBook);
   }
 
-  createBook() {
-    this.book = new Book();
-    this.book.id = -1;
-    this.loadAuthorSelecList();
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
+    this.editedRowIndex = rowIndex;
+    this.editedBook = Object.assign({}, dataItem);
+    console.log(sender);
+    sender.editRow(rowIndex);
+  }
+
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+
+  public saveHandler({ sender, rowIndex, dataItem, isNew }) {
+    this.bookService.save(dataItem, isNew);
+
+    sender.closeRow(rowIndex);
+
+    this.editedRowIndex = undefined;
+    this.editedBook = undefined;
+  }
+
+  public removeHandler({ dataItem }) {
+    this.bookService.remove(dataItem);
+  }
+  public multiselectValueChange() {
+    
+  }
+
+  private closeEditor(grid, rowIndex = this.editedRowIndex) {
+    grid.closeRow(rowIndex);
+    this.bookService.resetItem(this.editedBook);
+    this.editedRowIndex = undefined;
+    this.editedBook = undefined;
+  }
+  ChooseButtonClick() {
+    $("input[type=file]").click();
   }
   getJson() {
-    var ids: string[] = $("input:checked[name=backup]").toArray().map((e) => e.id);
-    console.log(this.dataService.getJson(ids));
-    console.log(ids);
+    console.log(this.bookService.getJson(this.selectedIds));
   }
   setJson() {
     console.log(this.jsonBackUpText);
-    this.dataService.setJson(this.jsonBackUpText);
+    this.bookService.setJson(this.jsonBackUpText);
   }
-  setFile(files: FileList) {
+
+  setFile(event: any) {
+    let files: FileList = event.target.files;
     let blob: Blob = files.item(0).slice(0, files.item(0).size, files.item(0).type);
     let reader = new FileReader();
     reader.addEventListener("load", () => {
       this.jsonBackUpText = reader.result;
+      console.log(this.jsonBackUpText)
     }, false);
     reader.readAsText(blob, "");
+    console.log(this.jsonBackUpText)
   }
 }

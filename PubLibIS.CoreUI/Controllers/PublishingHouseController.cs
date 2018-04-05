@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
-using System.Text;
 using PubLibIS.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using PubLibIS.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using PubLibIS.BLL.Services;
 

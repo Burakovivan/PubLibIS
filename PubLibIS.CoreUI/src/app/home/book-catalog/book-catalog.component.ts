@@ -4,6 +4,7 @@ import { CatalogService } from '../shared/catalog.service';
 import { BookCatalog } from './book-catalog.model';
 
 @Component({
+  
   selector:"book-catalog",
   templateUrl: './book-catalog.component.html',
   providers: [CatalogService],

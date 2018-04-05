@@ -1,75 +1,73 @@
-<button class="btn btn-sm btn-primary" (click)="getJson()">Get backup</button>
-<button class="btn btn-sm btn-primary" (click)="setJson()">Restore backup</button>
-<input type="file" (change)="setFile($event.target.files)" />
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>ISBN</th>
-      <th>Capation</th>
-      <th>Additional data</th>
-      <th>Release Date</th>
-      <th>Authors</th>
-      <th>Publication</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-template [ngIf]="loaded" [ngIfElse]="loading">
-      <tr *ngFor="let item of books">
-        <ng-template [ngIf]="book?.id != item.id" [ngIfElse]="editB">
-          <th><input type="checkbox" name="backup" id="{{item.id}}" /></th>
-          <td>{{item.isbn}}</td>
-          <td>{{item.capation}}</td>
-          <td>{{item.additionalData}}</td>
-          <td>{{item.releaseDate}}</td>
-          <td>{{item.authorsFormated}}</td>
-          <td><a href="book/publication/{{item.id}}">{{item.publicationsCount}}</a></td>
-          <td>
-            <button class="btn btn-sm btn-primary" (click)="editBook(item)"><span class="glyphicon glyphicon-edit"></span></button>
-            <button class="btn btn-sm btn-danger" (click)="deleteBook(item)"><span class="glyphicon glyphicon-remove"></span></button>
-          </td>
-        </ng-template>
-
-      </tr>
+<form novalidate #myForm="ngForm">
+  <kendo-grid [data]="view | async"
+              [height]="533"
+              [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+              [pageable]="true" [sortable]="true"
+              (dataStateChange)="onStateChange($event)"
+              (selectionChange)="selectionChange($event)"
+              (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event, myForm)"
+              [navigable]="true"
+              [selectable]="selectableSettings">
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoGridAddCommand type="button">Add new</button>
+      <button (click)="getJson()" kendoButton class="" type="button">Get JSON</button>
+      <button kendoButton (click)="ChooseButtonClick()" [icon]="'folder'">Choose JSON</button>
+      <input (change)="setFile($event)" style="display:none;" type="file" />
+      <button (click)="setJson()" kendoButton type="button">Set JSON</button>
     </ng-template>
-    <tr>
-      <ng-template [ngIf]="book?.id != -1" [ngIfElse]="editB">
-        <td colspan="8" class="create-new-item-row" (click)="createBook()"> <span class="glyphicon glyphicon-plus"></span> </td>
+    <kendo-grid-checkbox-column field="backup"></kendo-grid-checkbox-column>
+    <kendo-grid-column field="isbn" title="ISBN">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.isbn" kendoGridFocusable name="isbn" class="k-textbox" required/>
       </ng-template>
-    </tr>
-  </tbody>
-</table>
+    </kendo-grid-column>
+    <kendo-grid-column field="capation" title="Capation">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.capation" kendoGridFocusable name="capation" class="k-textbox" />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="additionalData" title="Additional data">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.additionalData" kendoGridFocusable name="additionalData" class="k-textbox" />
+      </ng-template>
+    </kendo-grid-column>
 
-<ng-template #editB>
-  <td></td>
-  <td>
-    <input type="text" [(ngModel)]="book.isbn" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="book.capation" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="book.additionalData" class="form-control" />
-  </td>
-  <td>
-    <input type="text" readonly [(ngModel)]="book.releaseDate" class="form-control" />
-  </td>
-  <td colspan="2">
-    <angular2-multiselect [data]="authorList" [(ngModel)]="selectedAuthorList"
-                         [settings]="dropdownSettings" >
-    </angular2-multiselect>
-  </td>
-  <td>
-    <div (click)="saveBook()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
-    <div (click)="cancelBook()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
-  </td>
-</ng-template>
-
-<ng-template #loading>
-  <tr>
-    <td colspan="6" class="text-center">
-      <span class="glyphicon glyphicon-refresh gly-spin"></span>
-    </td>
-  </tr>
-</ng-template>
+    <kendo-grid-column field="authorsFormated" title="Authors">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <kendo-multiselect #list
+                           [data]="authorList"
+                           [(ngModel)]="dataItem.authors"
+                           [ngModelOptions]="{standalone: true}"
+                           [filterable]="true"
+                            (valueChange)="multiselectValueChange($event)"
+                           textField="secondName"
+                           valueField="id"
+                           placeholder="Authors">
+        </kendo-multiselect>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="releaseDate" [editable]="false" title="Release date">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.releaseDate" kendoGridFocusable name="releaseDate" class="k-textbox" required />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-command-column field="publicationsCount"  title="PublicatonsCount">
+      <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+        <a href="library/book/publication/{{dataItem.id}}">{{dataItem.publicationsCount}}</a>
+      </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-command-column title="command" width="220">
+      <ng-template kendoGridCellTemplate let-isNew="isNew">
+        <button kendoGridEditCommand type="button" class="k-primary">Edit</button>
+        <button kendoGridRemoveCommand type="button">Remove</button>
+        <button kendoGridSaveCommand type="button"
+                [disabled]="myForm.invalid">
+          {{ isNew ? 'Add' : 'Update' }}
+        </button>
+        <button kendoGridCancelCommand type="button">{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+  </kendo-grid>
+</form>

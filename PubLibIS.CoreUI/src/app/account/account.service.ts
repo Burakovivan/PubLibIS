@@ -20,7 +20,8 @@ export class AccountService {
   public isAuthenticated(): boolean {
     // get the token
     const token = this.getToken();
-    return decode.tokenNotExpired(null, token);
+    return this.getToken() != null;
+//    return decode.tokenNotExpired(null, token);
   }
 
   public SignIn(loginModel: LoginModel, errorElement : string) {

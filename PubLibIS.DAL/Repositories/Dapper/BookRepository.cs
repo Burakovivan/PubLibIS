@@ -48,5 +48,10 @@ namespace PubLibIS.DAL.Repositories.Dapper
                 authorInBookRepo.Create(new AuthorInBook { Book_Id = b.Id, Author_Id = ainb.Author_Id });
             });
         }
+        public new int Create(Book b){
+            var newId = base.Create(b);
+            ResetAuthors(b);
+            return newId;
+        }
     }
 }

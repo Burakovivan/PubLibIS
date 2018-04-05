@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { AccountService } from '../account.service';
 import { LoginModel } from '../shared/login.model';
 import { RegisterModel } from '../shared/register.model';
-import { Subscription } from 'rxjs/Subscription';
 import * as $ from "jquery";
 
 @Component({
   templateUrl: './authenticate.component.html',
   providers: [AccountService],
-  styleUrls: []
 })
-export class AuthenticateComponent {
+export class AuthenticateComponent implements OnInit {
+
+  ngOnInit(): void {
+    console.log("hello from authenticate");
+  }
   userLogin: LoginModel = new LoginModel();
   userRegister: RegisterModel = new RegisterModel();
   loaded: boolean = true;
@@ -19,8 +20,7 @@ export class AuthenticateComponent {
   constructor(private dataService: AccountService) { }
 
   public SignUp() {
-    if (this.userRegister.password != this.userRegister.confirmPassword)
-    {
+    if (this.userRegister.password != this.userRegister.confirmPassword) {
       $("#up.error-message").text("Passwords are different");
       return;
     }

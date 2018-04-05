@@ -1,61 +1,57 @@
-
-<a href="book">Back to books</a>
-<h3>Publications of <strong>"{{book.capation}}"</strong></h3>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Volume</th>
-      <th>Date of publication</th>
-      <th>Publishing house</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-template [ngIf]="loaded" [ngIfElse]="loading">
-      <tr *ngFor="let item of publishedBookList">
-        <ng-template [ngIf]="publishedBook?.id != item.id " [ngIfElse]="editP">
-          <td>{{item.volume}}</td>
-          <td>{{item.dateOfPublication}}</td>
-          <td>{{item.publishingHouse?.shortInfo}}</td>
-          <td>
-            <button class="btn btn-sm btn-primary" (click)="editPublishedBook(item)"><span class="glyphicon glyphicon-edit"></span></button>
-            <button class="btn btn-sm btn-danger" (click)="deletePublishedBook(item)"><span class="glyphicon glyphicon-remove"></span></button>
-          </td>
-        </ng-template>
-
-      </tr>
+<form novalidate #myForm="ngForm">
+  <kendo-grid [data]="view | async"
+              [height]="533"
+              [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+              [pageable]="true" [sortable]="true"
+              (dataStateChange)="onStateChange($event)"
+              (selectionChange)="selectionChange($event)"
+              (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event, myForm)"
+              [navigable]="true"
+              [selectable]="selectableSettings">
+    <ng-template kendoGridToolbarTemplate>
+      <button (click)="goBack()" kendoButton type="button"><span class="glyphicon glyphicon-arrow-left"style="padding-right:5px"></span>Books</button>
+      <button kendoGridAddCommand type="button">Add new</button>
+      <button (click)="getJson()" kendoButton class="" type="button">Get JSON</button>
+      <button kendoButton (click)="ChooseButtonClick()" [icon]="'folder'">Choose JSON</button>
+      <input (change)="setFile($event)" style="display:none;" type="file" />
+      <button (click)="setJson()" kendoButton type="button">Set JSON</button>
     </ng-template>
-    <tr>
-      <ng-template [ngIf]="publishedBook?.id != -1" [ngIfElse]="editP">
-        <td colspan="4" class="create-new-item-row" (click)="createPublishedBook()"> <span class="glyphicon glyphicon-plus"></span> </td>
+    <kendo-grid-checkbox-column field="backup"></kendo-grid-checkbox-column>
+    <kendo-grid-column field="volume" title="Volume">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.volume" kendoGridFocusable name="isbn" class="k-textbox" required />
       </ng-template>
-    </tr>
-  </tbody>
-</table>
-
-<ng-template #editP>
-  <td>
-    <input type="text" [(ngModel)]="publishedBook.volume" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="publishedBook.dateOfPublication" class="form-control" />
-  </td>
-  <td>
-    <select [(ngModel)]="publishedBook.publishingHouse_Id" ng-model="publishedBook.publishingHouse_Id" class="form-control">
-      <option selected="{{item.selected?'selected':''}}" *ngFor="let item of publishigHouseSelectList.items" value="{{item.value}}">{{item.text}}</option>
-    </select>
-  </td>
-
-  <td>
-    <div (click)="savePublishedBook()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></div>
-    <div (click)="cancelPublishedBook()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove"></span></div>
-  </td>
-</ng-template>
-
-<ng-template #loading>
-  <tr>
-    <td colspan="6" class="text-center">
-      <span class="glyphicon glyphicon-refresh gly-spin"></span>
-    </td>
-  </tr>
-</ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="dateOfPublication" title="Date of publication">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <input [(ngModel)]="dataItem.dateOfPublication" kendoGridFocusable name="dateOfPublication" class="k-textbox" />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="publishingHouse.shortInfo" title="Publishing House">
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+        <kendo-dropdownlist  #list
+                           [data]="phList"
+                           [(ngModel)]="dataItem.publishingHouse"
+                           [ngModelOptions]="{standalone: true}"
+                           [filterable]="true"
+                           textField="shortInfo"
+                           valueField="id"
+                           placeholder="Publishing house">
+        </kendo-dropdownlist>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-command-column title="command" width="220">
+      <ng-template kendoGridCellTemplate let-isNew="isNew">
+        <button kendoGridEditCommand type="button" class="k-primary">Edit</button>
+        <button kendoGridRemoveCommand type="button">Remove</button>
+        <button kendoGridSaveCommand type="button"
+                [disabled]="myForm.invalid">
+          {{ isNew ? 'Add' : 'Update' }}
+        </button>
+        <button kendoGridCancelCommand type="button">{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+  </kendo-grid>
+</form>

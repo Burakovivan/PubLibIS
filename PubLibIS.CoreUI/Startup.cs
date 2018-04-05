@@ -47,6 +47,8 @@ namespace PubLibIS.CoreUI
       {
         opt.SerializerSettings.DateFormatString = ViewModels.Util.CultureFormatsModule.GetCustomDateFormat();
         opt.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTime;
+        opt.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+        opt.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Ignore;
       });
       services.AddDALDI(connectionString);
       services.AddBLLDI();
