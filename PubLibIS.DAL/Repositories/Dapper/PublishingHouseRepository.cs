@@ -1,10 +1,5 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
-using System.Collections.Generic;
-using System.Linq;
-using Dapper;
-using System.Data;
-using System;
+using PubLibIS.Domain.Entities;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
@@ -12,12 +7,6 @@ namespace PubLibIS.DAL.Repositories.Dapper
     {
         public PublishingHouseRepository(DapperConnectionFactory dapperConnectionFactory)
         : base(dapperConnectionFactory) { }
-
-        public override void LoadNavigationProperties(PublishingHouse entity, IDbConnection connection)
-        {
-           
-        }
-
 
     }
 }

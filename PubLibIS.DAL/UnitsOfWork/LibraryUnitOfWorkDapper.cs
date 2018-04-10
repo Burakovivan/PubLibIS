@@ -2,7 +2,6 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using PubLibIS.DAL.Identity;
 using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
 using PubLibIS.DAL.Repositories.Dapper;
 
 namespace PubLibIS.DAL.UnitsOfWork
@@ -23,6 +22,7 @@ namespace PubLibIS.DAL.UnitsOfWork
         private AuthorInBookRepository authorInBookRepository;
         private BookRepository bookRepository;
         private BrochureRepository brochureRepository;
+        private BackupFileRepository backupFileRepository;
         private PeriodicalRepository periodicalRepository;
         private PeriodicalEditionRepository periodicalEditionRepository;
         private PublishedBookRepository publishedBookRepository;
@@ -76,6 +76,18 @@ namespace PubLibIS.DAL.UnitsOfWork
                     brochureRepository = new BrochureRepository(dapperConnectionFactory);
                 }
                 return brochureRepository;
+            }
+        }
+
+        public IBackupFileRepository BackupFiles
+        {
+            get
+            {
+                if(backupFileRepository == null)
+                {
+                    backupFileRepository = new BackupFileRepository(dapperConnectionFactory);
+                }
+                return backupFileRepository;
             }
         }
 
@@ -145,7 +157,7 @@ namespace PubLibIS.DAL.UnitsOfWork
             {
                 if(userManager == null)
                 {
-                    userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+                    userManager = new ApplicationUserManager(new ApplicationUserStore(db));
                 }
                 return userManager;
             }
@@ -157,7 +169,7 @@ namespace PubLibIS.DAL.UnitsOfWork
             {
                 if(roleManager == null)
                 {
-                    roleManager = new ApplicationRoleManager(new RoleStore<ApplicationUserRole>(db));
+                    roleManager = new ApplicationRoleManager(new ApplicationRoleStore(db));
                 }
                 return roleManager;
             }

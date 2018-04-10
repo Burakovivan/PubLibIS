@@ -1,17 +1,15 @@
-﻿using PubLibIS.DAL.UnitsOfWork;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PubLibIS.ViewModels;
-using PubLibIS.BLL.Interfaces;
 using System.Linq;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
-using PubLibIS.DAL.Models;
 using Newtonsoft.Json;
-using PubLibIS.BLL.JsonModels;
+using PubLibIS.Domain.Entities;
+using PubLibIS.DAL.ResponseModels;
 
 namespace PubLibIS.BLL.Services
 {
-    public class AuthorService :IJsonProcessor
+    public class AuthorService 
     {
         private IUnitOfWork db;
         private IMapper mapper;
@@ -24,14 +22,14 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<AuthorViewModel> GetAuthorViewModelList()
         {
-            IEnumerable<Author> authors = db.Authors.GetList();
-            return mapper.Map<IEnumerable<Author>, IEnumerable<AuthorViewModel>>(authors);
+            IEnumerable<GetAuthorResponseModel> authorList = db.Authors.GetAuthorResponseModelList();
+            return mapper.Map<IEnumerable<GetAuthorResponseModel>, IEnumerable<AuthorViewModel>>(authorList);
         }
 
         public AuthorViewModel GetAuthorViewModel(int id)
         {
-            Author author = db.Authors.Get(id);
-            return mapper.Map<Author, AuthorViewModel>(author);
+            GetAuthorResponseModel author = db.Authors.GetAuthorResponseModel(id);
+            return mapper.Map<GetAuthorResponseModel, AuthorViewModel>(author);
         }
 
         public void DeleteAuthor(int id)
@@ -57,58 +55,56 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<int> GetAuthorIdListByBook(int id)
         {
-            return db.Books.Get(id).Authors.Select(x => x.Author.Id);
+            return db.Books.GetBookResponseModel(id).Authors.Select(x => x.Author.Id);
         }
 
         public string GetJson(IEnumerable<int> idList)
         {
             var serializer = new JsonSerializer { Culture = new System.Globalization.CultureInfo("ru-RU"), NullValueHandling = NullValueHandling.Ignore };
-            IEnumerable<Author> authorList = db.Authors.GetList(idList);
+            IEnumerable<GetAuthorResponseModel> authorList = db.Authors.GetAuthorResponseModelList(idList);
 
-            foreach (Author author in authorList)
-            {
-                foreach (Book book in author.Books.Select(x => x.Book))
-                {
-                    book.PublishedBooks = db.PublishedBooks.GetPublishedBookByBookId(book.Id).ToList();
-                }
-            }
-            string result = JsonConvert.SerializeObject(new AuthorJsonAggregator { Authors = authorList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+           
+            string result = JsonConvert.SerializeObject(authorList , Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
 
         public void SetJson(string json)
         {
-            AuthorJsonAggregator deserRes = JsonConvert.DeserializeObject<AuthorJsonAggregator>(json);
-            if (deserRes?.Authors == null)
+            var deserRes = JsonConvert.DeserializeObject<IEnumerable<GetAuthorResponseModel>>(json);
+            if (deserRes == null)
             {
                 return;
             }
 
-            foreach (Author author in deserRes.Authors)
-            {
-                ICollection<AuthorInBook> books = author.Books;
-                author.Books = null;
-                var authorId = db.Authors.Create(author);
+            //foreach (GetAuthorResponseModel author in deserRes)
+            //{
+            //    IEnumerable<GetAuthorInBookResponseModel> books = author.Books;
+            //    author.Books = null;
+            //    Author clearAuthor = mapper.Map<Author>(author);
+            //    var authorId = db.Authors.Create(clearAuthor);
 
-                foreach (AuthorInBook AuthorInBook in books)
-                {
-                    ICollection<PublishedBook> published = AuthorInBook.Book.PublishedBooks;
-                    AuthorInBook.Book.PublishedBooks = null;
-                    int bookId = db.Books.Create(AuthorInBook.Book);
-                    AuthorInBook.Author = db.Authors.Get(authorId);
-                    AuthorInBook.Book = db.Books.Get(bookId);
-                    db.AuthorsInBooks.Create(AuthorInBook);
+            //    foreach (GetAuthorInBookResponseModel book in books)
+            //    {
+            //        IEnumerable<PublishedBook> published = book.Book.PublishedBooks;
+            //        Book clearBook = mapper.Map<Book>(book);
+            //        int bookId = db.Books.Create(clearBook);
+            //        AuthorInBook ainb = new AuthorInBook
+            //        {
+            //            Author_Id = authorId,
+            //            Book_Id = bookId
+            //        };
+            //        db.AuthorsInBooks.Create(ainb);
 
 
-                    foreach (PublishedBook pBook in published)
-                    {
-                        pBook.Book = db.Books.Get(bookId);
-                        int PubHouseId = db.PublishingHouses.Create(pBook.PublishingHouse);
-                        pBook.PublishingHouse = db.PublishingHouses.Get(PubHouseId);
-                        db.PublishedBooks.Create(pBook);
-                    }
-                }
-            }
+            //        foreach (PublishedBook pBook in published)
+            //        {
+            //            pBook.Book = db.Books.Get(bookId);
+            //            int PubHouseId = db.PublishingHouses.Create(pBook.PublishingHouse);
+            //            pBook.PublishingHouse = db.PublishingHouses.Get(PubHouseId);
+            //            db.PublishedBooks.Create(pBook);
+            //        }
+            //    }
+            //}
             db.Save();
         }
     }

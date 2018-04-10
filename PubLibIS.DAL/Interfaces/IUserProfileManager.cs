@@ -1,4 +1,4 @@
-﻿using PubLibIS.DAL.Models;
+﻿using PubLibIS.Domain.Entities;
 using System;
 
 namespace PubLibIS.DAL.Interfaces

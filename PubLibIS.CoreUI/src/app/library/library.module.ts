@@ -30,6 +30,7 @@ import { PublishingHouseComponent } from './publishing-house/publishing-house.co
 import { OnlyLoggedInUsersGuard } from '../shared/only-logged-in-users.guard';
 import { LibraryRoutingModule } from './library.routing';
 
+const URL_FILE_PATH: string = "api/file";
 
 
 @NgModule({

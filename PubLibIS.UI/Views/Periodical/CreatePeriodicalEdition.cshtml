@@ -3,7 +3,7 @@
 
 
 <td>
-    @Html.HiddenFor(model => model.PeriodicalId)
+    @Html.HiddenFor(model => model.Periodical_Id)
     @Html.EditorFor(model => model.ReleaseNumber, new { htmlAttributes = new { @class = "form-control " } })
     @Html.ValidationMessageFor(model => model.ReleaseNumber, "", new { @class = "text-danger" })
 </td>
@@ -27,7 +27,7 @@
             $('#submit-edition').ready($('#submit-edition').click(function (e) {
                 e.preventDefault();
                 var edition = {
-                    PeriodicalId: $("#PeriodicalId").val(),
+                    Periodical_Id: $("#Periodical_Id").val(),
                     ReleaseDate: $("#ReleaseDate").val(),
                     ReleaseNumber: $("#ReleaseNumber").val(),
                     Circulation: $("#Circulation").val()
@@ -39,10 +39,10 @@
                     type: 'POST',
                     cache: false,
                     complete: function () {
-                        $.get("@Url.Action("PeriodicalEditionList", new { id = Model.PeriodicalId }) #edition-list", function (data) {
+                        $.get("@Url.Action("PeriodicalEditionList", new { id = Model.Periodical_Id }) #edition-list", function (data) {
                             $("#edition-list").replaceWith(data);
                         });
-                        //$('#edition-list').load('@Url.Action("PeriodicalEditionList", new { id = Model.PeriodicalId })');
+                        //$('#edition-list').load('@Url.Action("PeriodicalEditionList", new { id = Model.Periodical_Id })');
                     }
                 });
             })

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using PubLibIS.DAL.Models;
-using PubLibIS.ViewModels;
 using PubLibIS.BLL.MappingProfiles;
 
 namespace PubLibIS.BLL

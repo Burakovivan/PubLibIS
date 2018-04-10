@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PubLibIS.BLL.Services;
-using PubLibIS.BLL.Interfaces;
+
 using Ninject;
 using System.Web.Mvc;
 

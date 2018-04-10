@@ -8,13 +8,13 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Host.SystemWeb;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using PubLibIS.BLL.Interfaces;
 using PubLibIS.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using PubLibIS.BLL.Services;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PubLibIS.CoreUI.Controllers
@@ -22,9 +22,9 @@ namespace PubLibIS.CoreUI.Controllers
   [Authorize]
   public class AccountController : Controller
   {
-    private IUserService userService;
+    private UserService userService;
     private IConfiguration configuration;
-    public AccountController(IUserService UserService, IConfiguration configuration)
+    public AccountController(UserService UserService, IConfiguration configuration)
     {
       this.configuration = configuration;
       this.userService = UserService;

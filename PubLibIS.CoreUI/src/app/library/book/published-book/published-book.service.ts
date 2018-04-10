@@ -8,6 +8,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tap } from 'rxjs/operators/tap';
 import { map } from 'rxjs/operators/map';
 import { PublishingHouse } from '../../publishing-house/publishing-house.model';
+import { BackupFile } from '../../shared/file';
+import { AppSetting } from '../../../../app.setting';
 
 const CREATE_ACTION = 'create';
 const UPDATE_ACTION = 'update';
@@ -16,7 +18,7 @@ const REMOVE_ACTION = 'destroy';
 @Injectable()
 export class PublishedBookService extends BehaviorSubject<any[]> {
 
-  private url = "/api/PublishedBook";
+  private url = AppSetting.PUBLISHED_BOOK_URL;
   public bookId: number|string;
   constructor(private http: HttpClient) {
     super(Array<PublishedBook>());
@@ -107,7 +109,7 @@ export class PublishedBookService extends BehaviorSubject<any[]> {
   getJson(ids: number[] | string[]) {
     var url = this.url + '/getjson';
     console.log(url);
-    return this.http.post(this.url + '/getjson', ids).subscribe(() => { });
+    return this.http.post(this.url + '/getjson', ids).subscribe((file: BackupFile) => { window.location.href = `${AppSetting.FILE_URL}/${file.fileNameBase64}` });
   }
   setJson(json: string) {
 

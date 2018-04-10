@@ -5,9 +5,9 @@ using System.IO;
 using System.Text;
 using PubLibIS.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using PubLibIS.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using PubLibIS.BLL.Services;
+using Microsoft.AspNet.Identity;
 
 namespace PubLibIS.CoreUI.Controllers
 {
@@ -16,12 +16,14 @@ namespace PubLibIS.CoreUI.Controllers
   public class AuthorController : Controller
   {
     private AuthorService service;
+    private BackupFileService backupFileService;
     private IHostingEnvironment hostingEnvironment;
 
-    public AuthorController(AuthorService service, IHostingEnvironment hostingEnvironment)
+    public AuthorController(AuthorService service, BackupFileService backupFileService, IHostingEnvironment hostingEnvironment)
     {
       this.service = service;
       this.hostingEnvironment = hostingEnvironment;
+      this.backupFileService = backupFileService;
     }
 
     // GET: Author
@@ -38,14 +40,14 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     [HttpPut]
-     [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public AuthorViewModel Edit([FromBody]AuthorViewModel author)
     {
       service.UpdateAuthor(author);
       return service.GetAuthorViewModel(author.Id);
     }
 
-     [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -58,7 +60,7 @@ namespace PubLibIS.CoreUI.Controllers
     [Authorize(Roles = "admin")]
     public AuthorViewModel Create([FromBody]AuthorViewModel author)
     {
-      if (author.DateOfBirth == DateTime.MinValue)
+      if(author.DateOfBirth == DateTime.MinValue)
       {
         return null;
       }
@@ -67,18 +69,25 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     [HttpPost("getJson")]
-    public ActionResult GetJson([FromBody]IEnumerable<int> idList)
+    public BackupFileViewModel GetJson([FromBody]IEnumerable<int> idList)
     {
       var json = service.GetJson(idList);
-      var path = MapLocalPath($"\\Backups\\{this.GetType().Name.Replace("Controller", "")}");
-      if (!Directory.Exists(path))
+      var pathToFolder = MapLocalPath($"\\Backups\\{this.GetType().Name.Replace("Controller", "")}");
+      if(!Directory.Exists(pathToFolder))
       {
-        Directory.CreateDirectory(path);
+        Directory.CreateDirectory(pathToFolder);
       }
       var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
-      var filePath = path + $"\\{fileName}";
+      var filePath = Path.Combine(pathToFolder, fileName);
       System.IO.File.WriteAllText(filePath, json);
-      return Ok();
+
+      BackupFileViewModel file = new BackupFileViewModel
+      {
+        FileNameBase64 = backupFileService.GetBase64EncodedFileName(fileName, Encoding.UTF8.CodePage),
+        User_Id = User.Identity.GetUserId()
+      };
+      var fileId = backupFileService.CreateBackupFile(file, pathToFolder);
+      return backupFileService.GetBackupFileViewModel(fileId); 
 
     }
 
@@ -91,7 +100,7 @@ namespace PubLibIS.CoreUI.Controllers
     [HttpPost("setJson")]
     public ActionResult SetJson([FromBody]Temp json)
     {
-      if (json?.Json == null)
+      if(json?.Json == null)
       {
         return NoContent();
       }

@@ -7,20 +7,21 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { tap } from 'rxjs/operators/tap';
 import { map } from 'rxjs/operators/map';
+import { BackupFile } from '../shared/file';
+import { AppSetting } from '../../../app.setting';
 
 const CREATE_ACTION = 'create';
 const UPDATE_ACTION = 'update';
 const REMOVE_ACTION = 'destroy';
-
 @Injectable()
 export class AuthorService extends BehaviorSubject<any[]> {
 
-  private url = "/api/author";
+  private url = AppSetting.AUTHOR_URL;
 
   constructor(private http: HttpClient) {
     super(Array<Author>());
   }
-  private data: any[] =[];
+  private data: any[] = [];
 
   public getData() {
     this.read();
@@ -31,7 +32,7 @@ export class AuthorService extends BehaviorSubject<any[]> {
       return super.next(this.data);
     }
 
-    this.fetch() 
+    this.fetch()
       .pipe(
       tap(data => {
         this.data = data;
@@ -61,7 +62,7 @@ export class AuthorService extends BehaviorSubject<any[]> {
   public resetItem(dataItem: any) {
     if (!dataItem) { return; }
 
-    
+
     // find orignal data item
     const originalDataItem = this.data.find(item => item.id == dataItem.id);
     console.log(this.data);
@@ -83,7 +84,7 @@ export class AuthorService extends BehaviorSubject<any[]> {
     }
     if (action == CREATE_ACTION) {
       return this.http
-        .post(this.url,data)
+        .post(this.url, data)
         .pipe(map(res => <any[]>res));
     }
     if (action == REMOVE_ACTION) {
@@ -105,13 +106,13 @@ export class AuthorService extends BehaviorSubject<any[]> {
   getJson(ids: number[] | string[]) {
     var url = this.url + '/getjson';
     console.log(url);
-    return this.http.post(this.url + '/getjson', ids).subscribe(() => { });
+    return this.http.post(this.url + '/getjson', ids).subscribe((file: BackupFile) => { window.location.href = `${AppSetting.FILE_URL}/${file.fileNameBase64}` });
   }
   setJson(json: string) {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     var postObj = { json: json };
-    this.http.post(this.url + '/setjson', postObj, { headers: headers}).subscribe(() => { });
+    this.http.post(this.url + '/setjson', postObj, { headers: headers }).subscribe(() => { });
   }
 
 }

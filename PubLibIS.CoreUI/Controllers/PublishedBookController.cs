@@ -5,10 +5,11 @@ using System.IO;
 using System.Text;
 using PubLibIS.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using PubLibIS.BLL.Interfaces;
+
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 using PubLibIS.BLL.Services;
+using Microsoft.AspNet.Identity;
 
 namespace PubLibIS.CoreUI.Controllers
 {
@@ -18,13 +19,15 @@ namespace PubLibIS.CoreUI.Controllers
   {
     private BookService service;
     private PublishingHouseService phService;
+    private BackupFileService backupFileService;
     private IHostingEnvironment hostingEnvironment;
 
-    public PublishedBookController(BookService service,PublishingHouseService phService, IHostingEnvironment hostingEnvironment)
+    public PublishedBookController(BookService service,PublishingHouseService phService, BackupFileService backupFileService, IHostingEnvironment hostingEnvironment)
     {
       this.service = service;
       this.phService = phService;
       this.hostingEnvironment = hostingEnvironment;
+      this.backupFileService = backupFileService;
     }
 
     // GET: PublishedBook
@@ -72,18 +75,24 @@ namespace PubLibIS.CoreUI.Controllers
     }
 
     [HttpPost("getJson")]
-    public ActionResult GetJson([FromBody]IEnumerable<int> idList)
+    public BackupFileViewModel GetJson([FromBody]IEnumerable<int> idList)
     {
       var json = service.GetJson(idList);
-      var path = MapLocalPath($"\\Backups\\{this.GetType().Name.Replace("Controller", "")}");
-      if (!Directory.Exists(path))
+      var pathToFolder = MapLocalPath($"\\Backups\\{this.GetType().Name.Replace("Controller", "")}");
+      if (!Directory.Exists(pathToFolder))
       {
-        Directory.CreateDirectory(path);
+        Directory.CreateDirectory(pathToFolder);
       }
       var fileName = $"{DateTime.Now:dd.MM.yyyy hh-m-ss}.json";
-      var filePath = path + $"\\{fileName}";
+      var filePath = pathToFolder + $"\\{fileName}";
       System.IO.File.WriteAllText(filePath, json);
-      return Ok();
+      BackupFileViewModel file = new BackupFileViewModel
+      {
+        FileNameBase64 = backupFileService.GetBase64EncodedFileName(fileName, Encoding.UTF8.CodePage),
+        User_Id = User.Identity.GetUserId()
+      };
+      var fileId = backupFileService.CreateBackupFile(file, pathToFolder);
+      return backupFileService.GetBackupFileViewModel(fileId);
 
     }
 

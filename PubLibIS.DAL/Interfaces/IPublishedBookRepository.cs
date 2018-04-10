@@ -1,9 +1,6 @@
-﻿using PubLibIS.DAL.Models;
-using System;
+﻿using PubLibIS.DAL.ResponseModels;
+using PubLibIS.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PubLibIS.DAL.Interfaces
 {

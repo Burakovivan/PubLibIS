@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
-using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
+using PubLibIS.Domain.Entities;
 using PubLibIS.ViewModels;
 using System;
 using System.Linq;
@@ -10,13 +9,17 @@ using System.Threading.Tasks;
 
 namespace PubLibIS.BLL.Services
 {
-    public class UserService : IUserService
+    public class UserService: IDisposable
     {
         IUnitOfWork Database { get; set; }
 
         public UserService(IUnitOfWork uow)
         {
             Database = uow;
+        }
+
+        public UserService()
+        {
         }
 
         public async Task Create(RegisterModel registerModel)

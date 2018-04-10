@@ -1,5 +1,6 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
+using PubLibIS.DAL.ResponseModels;
+using PubLibIS.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,31 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public Author Get(int authtorId)
         {
             return context.Authors.Find(authtorId);
+        }
+
+        public Author GetAuthor(int authorId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public GetAuthorResponseModel GetAuthorResponseModel(int authorId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<GetAuthorResponseModel> GetAuthorResponseModelList()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<GetAuthorResponseModel> GetAuthorResponseModelList(IEnumerable<int> idList)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<GetAuthorResponseModel> GetAuthorResponseModelList(int skip, int take)
+        {
+            throw new System.NotImplementedException();
         }
 
         public IEnumerable<Author> GetList()

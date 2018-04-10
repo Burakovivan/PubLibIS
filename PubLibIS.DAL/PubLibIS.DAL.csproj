@@ -75,12 +75,14 @@
   <ItemGroup>
     <Compile Include="DapperConnectionFactory.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
+    <Compile Include="Identity\ApplicationRoleStore.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="Identity\ApplicationUserStore.cs" />
     <Compile Include="Interfaces\IAuthorInBookRepository.cs" />
     <Compile Include="Interfaces\IAuthorRepository.cs" />
     <Compile Include="Interfaces\IBookRepository.cs" />
     <Compile Include="Interfaces\IBrochureRepository.cs" />
-    <Compile Include="Interfaces\ILazyLoad.cs" />
+    <Compile Include="Interfaces\IFileRepository.cs" />
     <Compile Include="Interfaces\IPeriodicalEditionRepository.cs" />
     <Compile Include="Interfaces\IPeriodicalRepository.cs" />
     <Compile Include="Interfaces\IPublishedBookRepository.cs" />
@@ -88,12 +90,9 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUserProfileManager.cs" />
     <Compile Include="LibraryEntityFrameworkContext.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\ApplicationUserRole.cs" />
-    <Compile Include="Models\BaseEntity.cs" />
-    <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Repositories\Dapper\AuthorInBookRepository.cs" />
     <Compile Include="Repositories\Dapper\AuthorRepository.cs" />
+    <Compile Include="Repositories\Dapper\BackupFileRepository.cs" />
     <Compile Include="Repositories\Dapper\BookRepository.cs" />
     <Compile Include="Repositories\Dapper\BrochureRepository.cs" />
     <Compile Include="Repositories\Dapper\PeriodicalEditionRepository.cs" />
@@ -103,30 +102,34 @@
     <Compile Include="Repositories\Dapper\Repository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorInBookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\AuthorRepository.cs" />
+    <Compile Include="Repositories\EntityFramework\BackupFileRepository.cs" />
     <Compile Include="Repositories\EntityFramework\BookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\BrochureRepository.cs" />
     <Compile Include="Repositories\EntityFramework\PeriodicalEditionRepository.cs" />
     <Compile Include="Repositories\EntityFramework\PeriodicalRepository.cs" />
     <Compile Include="Repositories\EntityFramework\PublishedBookRepository.cs" />
     <Compile Include="Repositories\EntityFramework\PublishingHouseRepository.cs" />
-    <Compile Include="Models\Author.cs" />
-    <Compile Include="Models\AuthorInBook.cs" />
-    <Compile Include="Models\Book.cs" />
-    <Compile Include="Models\Brochure.cs" />
     <Compile Include="LibraryInitializer.cs" />
-    <Compile Include="Models\Periodical.cs" />
-    <Compile Include="Models\PeriodicalEdition.cs" />
-    <Compile Include="Enums\PeriodicalType.cs" />
-    <Compile Include="Models\PublishedBook.cs" />
-    <Compile Include="Models\PublishingHouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EntityFramework\UserProfileManager.cs" />
+    <Compile Include="ResponseModels\GetAuthorInBookResponseModel.cs" />
+    <Compile Include="ResponseModels\GetAuthorResponseModel.cs" />
+    <Compile Include="ResponseModels\GetBookResponseModel.cs" />
+    <Compile Include="ResponseModels\GetBrochureResponseModel.cs" />
+    <Compile Include="ResponseModels\GetPeriodicalResponseModel.cs" />
+    <Compile Include="ResponseModels\GetPublishedBookResponseModel.cs" />
     <Compile Include="UnitsOfWork\LibraryUnitOfWorkDapper.cs" />
     <Compile Include="UnitsOfWork\LibraryUnitOfWorkEntityFramework.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PubLibIS.Domain\PubLibIS.Domain.csproj">
+      <Project>{D175A8E9-9B9F-46C3-93AE-65BADC910F78}</Project>
+      <Name>PubLibIS.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

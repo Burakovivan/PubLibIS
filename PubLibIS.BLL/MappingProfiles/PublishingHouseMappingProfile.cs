@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PubLibIS.DAL.Models;
+using PubLibIS.Domain.Entities;
 using PubLibIS.ViewModels;
 
 namespace PubLibIS.BLL.MappingProfiles

@@ -92,29 +92,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\UoWInjectionModule.cs" />
-    <Compile Include="Interfaces\IServiceCreator.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="Interfaces\JsonProcessor.cs" />
-    <Compile Include="JsonModels\AuthorJsonAggregator.cs" />
-    <Compile Include="JsonModels\BookJsonAggregator.cs" />
-    <Compile Include="JsonModels\BrochureJsonAggregator.cs" />
-    <Compile Include="JsonModels\PeriodicalJsonAggregator.cs" />
-    <Compile Include="JsonModels\PublishingHouseJsonAggregator.cs" />
+    <Compile Include="Infrastructure\UnitOfWorkInjectionModule.cs" />
     <Compile Include="MappingProfiles\AuthorMappingProfile.cs" />
+    <Compile Include="MappingProfiles\BackupFileMappingProfile.cs" />
     <Compile Include="MappingProfiles\BookMappingProfile.cs" />
     <Compile Include="MappingProfiles\BrochureMappingProfile.cs" />
     <Compile Include="MappingProfiles\PeriodicalMappingProfile.cs" />
     <Compile Include="MappingProfiles\PublishingHouseMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthorService.cs" />
+    <Compile Include="Services\BackupFileService.cs" />
     <Compile Include="Services\BookService.cs" />
     <Compile Include="Services\BrochureService.cs" />
-    <Compile Include="Interfaces\IBookService.cs" />
-    <Compile Include="Interfaces\IBrochureService.cs" />
-    <Compile Include="Interfaces\IPeriodicalService.cs" />
-    <Compile Include="Interfaces\IPublishingHouseService.cs" />
-    <Compile Include="Interfaces\IAuthorService.cs" />
     <Compile Include="Services\PeriodicalService.cs" />
     <Compile Include="Services\PublishingHouseService.cs" />
     <Compile Include="MapperConfiguration.cs" />
@@ -130,10 +119,17 @@
       <Project>{7127299f-849e-473f-b201-4273ba25b4a5}</Project>
       <Name>PubLibIS.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PubLibIS.Domain\PubLibIS.Domain.csproj">
+      <Project>{D175A8E9-9B9F-46C3-93AE-65BADC910F78}</Project>
+      <Name>PubLibIS.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PubLibIS.ViewModels\PubLibIS.ViewModels.csproj">
       <Project>{ac8a9ff0-2b2b-4c14-ac58-068cda0a7c8f}</Project>
       <Name>PubLibIS.ViewModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Util\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

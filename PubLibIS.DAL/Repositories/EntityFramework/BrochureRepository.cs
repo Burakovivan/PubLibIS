@@ -1,5 +1,5 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
+using PubLibIS.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,9 +57,9 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public void Update(Brochure brochure)
         {
             var current = Get(brochure.Id);
-            current.PublishingHouse = context.PublishingHouses.Find(brochure.PublishingHouse.Id);
+            current.PublishingHouse = context.PublishingHouses.Find(brochure.PublishingHouse?.Id ?? brochure.PublishingHouse_Id);
             context.Entry(current).CurrentValues.SetValues(brochure);
         }
-      
+
     }
 }

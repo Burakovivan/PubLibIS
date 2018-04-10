@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using PubLibIS.DAL.Models;
+using PubLibIS.DAL.ResponseModels;
+using PubLibIS.Domain.Entities;
 using PubLibIS.ViewModels;
 using System.Linq;
 
@@ -10,11 +11,33 @@ namespace PubLibIS.BLL.MappingProfiles
         public BookMappingProfile()
         {
             CreateMap<BookViewModel, Book>()
-                .ForMember(
-                    book => book.Authors,
-                    opt => opt.MapFrom(bookVM => bookVM.Authors));
+            .ForMember(
+            book => book.CreatedDate,
+            opt => opt.Ignore())
+            .ForMember(
+            book => book.ModifiedDate,
+            opt => opt.Ignore())
+            .ForMember(
+            book => book.CreatedDate,
+            opt => opt.Ignore());
 
-            CreateMap<Book, BookViewModel>()
+            CreateMap<BookViewModel, Book>()
+           .ForMember(
+           book => book.CreatedDate,
+           opt => opt.Ignore())
+           .ForMember(
+           book => book.ModifiedDate,
+           opt => opt.Ignore())
+           .ForMember(
+           book => book.CreatedDate,
+           opt => opt.Ignore()).ReverseMap();
+
+            CreateMap<BookViewModel, GetBookResponseModel>()
+        .ForMember(
+            book => book.Authors,
+            opt => opt.MapFrom(bookVM => bookVM.Authors));
+
+            CreateMap<GetBookResponseModel, BookViewModel>()
                 .ForMember(
                     bookVM => bookVM.ReleaseDate,
                         opt => opt.MapFrom(book => book.PublishedBooks.Any() ? book.PublishedBooks.Select(x => x.DateOfPublication).Min() : null))
@@ -25,7 +48,7 @@ namespace PubLibIS.BLL.MappingProfiles
                     bookVM => bookVM.Publications,
                     opt => opt.MapFrom(book => book.PublishedBooks));
 
-            CreateMap<Book, BookViewModelSlim>()
+            CreateMap<GetBookResponseModel, BookViewModelSlim>()
                .ForMember(
                    bookVM => bookVM.ReleaseDate,
                        opt => opt.MapFrom(book => book.PublishedBooks.Any() ? book.PublishedBooks.Select(x => x.DateOfPublication).Min() : null))
@@ -36,7 +59,8 @@ namespace PubLibIS.BLL.MappingProfiles
                     (string.IsNullOrEmpty(ainb.Author.Patronymic) ? " " : $" {ainb.Author.Patronymic.TrimStart()[0]}.")))))
                .ForMember(
                    bookVM => bookVM.CountOfPublication,
-                   opt => opt.MapFrom(book => book.PublishedBooks.Count));
+                   opt => opt.MapFrom(book => book.PublishedBooks.Count()));
+
 
             CreateMap<PublishedBook, PublishedBookViewModel>()
                 .ForMember(

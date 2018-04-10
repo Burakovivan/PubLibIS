@@ -1,10 +1,9 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
 using System.Collections.Generic;
 using System.Linq;
-using Dapper;
 using System.Data;
-using System;
+using PubLibIS.Domain.Entities;
+using PubLibIS.DAL.ResponseModels;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
@@ -16,19 +15,17 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public IEnumerable<PublishedBook> GetPublishedBookByBookId(int bookId)
         {
-            return GetList().Where(pb => pb.Book_Id == bookId);
-        }
-
-        public override void LoadNavigationProperties(PublishedBook b, IDbConnection db)
-        {
-            if(b?.PublishingHouse == null)
+            var bookRepository = new BookRepository(dapperConnectionFactory);
+            var publishingHouseRepository = new PublishingHouseRepository(dapperConnectionFactory);
+            IEnumerable<PublishedBook> publishedBookList = GetList().Where(pb => pb.Book_Id == bookId);
+            publishedBookList.ToList().ForEach(pb =>
             {
-                var publishingHouseRepository = new PublishingHouseRepository(dapperConnectionFactory);
-                b.PublishingHouse = b.PublishingHouse_Id.HasValue ? publishingHouseRepository.Get(b.PublishingHouse_Id.Value) : null;
-            }
-
+                pb.PublishingHouse = pb.PublishingHouse_Id.HasValue ? publishingHouseRepository.Get(pb.PublishingHouse_Id.Value) : null;
+                pb.Book = pb.Book_Id.HasValue ? bookRepository.Get(pb.Book_Id.Value) : null;
+            });
+            return publishedBookList;
         }
 
-       
+
     }
 }

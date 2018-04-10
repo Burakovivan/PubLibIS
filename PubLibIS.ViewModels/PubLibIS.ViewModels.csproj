@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupFile\BackupFileViewModel.cs" />
     <Compile Include="Book\BookCatalogViewModel.cs" />
     <Compile Include="Brochure\BrochureCatalogViewModel.cs" />
     <Compile Include="PeriodicalEdition\PeriodicalEditionViewModel.cs" />

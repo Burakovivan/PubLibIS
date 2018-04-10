@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PublishingHouse } from './publishing-house.model';
 import 'rxjs/add/operator/map';
+import { BackupFile } from '../shared/file';
+import { AppSetting } from '../../../app.setting';
 
 @Injectable()
 export class PublishingHouseService {
 
-    private url = "/api/publishingHouse";
+  private url = AppSetting.PUBLISHING_HOUSE_URL;
 
   constructor(private http: HttpClient) {
     }
@@ -36,7 +38,7 @@ export class PublishingHouseService {
   getJson(ids: number[] | string[]) {
     var url = this.url + '/getjson';
     console.log(url);
-    return this.http.post(this.url + '/getjson', ids).subscribe(() => { });
+    return this.http.post(this.url + '/getjson', ids).subscribe((file: BackupFile) => { window.location.href = `${AppSetting.FILE_URL}/${file.fileNameBase64}` });
   }
   setJson(json: string) {
 

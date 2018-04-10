@@ -4,12 +4,14 @@ import { Periodical } from './shared/periodical.model';
 import { PeriodicalType } from './shared/periodical-type.model';
 import 'rxjs/add/operator/map';
 import { PublishedPeriodical } from './shared/published-periodical.model';
+import { BackupFile } from '../shared/file';
+import { AppSetting } from '../../../app.setting';
 
 @Injectable()
 export class PeriodicalService {
 
-  private url = "/api/periodical";
-  private publicationUrl = "/api/publishedperiodical"
+  private url = AppSetting.PERIODICAL_URL;
+  private publicationUrl = AppSetting.PUBLISHED_PERIODICAL_URL;
 
   constructor(private http: HttpClient) {
   }
@@ -64,7 +66,7 @@ export class PeriodicalService {
   getJson(ids: number[] | string[]) {
     var url = this.url + '/getjson';
     console.log(url);
-    return this.http.post(this.url + '/getjson', ids).subscribe(() => { });
+    return this.http.post(this.url + '/getjson', ids).subscribe((file: BackupFile) => { window.location.href = `${AppSetting.FILE_URL}/${file.fileNameBase64}` });
   }
   setJson(json: string) {
 

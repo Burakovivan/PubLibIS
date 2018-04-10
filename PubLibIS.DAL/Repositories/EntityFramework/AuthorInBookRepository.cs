@@ -1,5 +1,6 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
+using PubLibIS.DAL.ResponseModels;
+using PubLibIS.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,7 +46,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         }
         public IEnumerable<AuthorInBook> GetByBookId(int bookId)
         {
-            return context.Books.Find(bookId).Authors.ToList();
+            return context.AuthorsInBooks.Where(ainb => ainb.Book_Id == bookId);
         }
         public IEnumerable<AuthorInBook> GetByBookIdList(IEnumerable<int> idList)
         {
@@ -54,7 +55,7 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
 
         public IEnumerable<AuthorInBook> GetByAuthorId(int authorId)
         {
-            return context.Authors.Find(authorId).Books;
+            return context.AuthorsInBooks.Where(ainb => ainb.Author_Id == authorId);
         }
 
         public IEnumerable<AuthorInBook> GetByAuthorIdList(IEnumerable<int> idList)
@@ -65,6 +66,16 @@ namespace PubLibIS.DAL.Repositories.EntityFramework
         public AuthorInBook Get(int ainbId)
         {
             return context.AuthorsInBooks.Find(ainbId);
+        }
+
+        public IEnumerable<GetAuthorInBookResponseModel> GetAuthorInBookResponseModelByAuthorId(int authorId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<GetAuthorInBookResponseModel> GetAuthorInBookResponseModelByBookId(int authorId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

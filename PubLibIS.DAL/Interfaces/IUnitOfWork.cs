@@ -12,6 +12,7 @@ namespace PubLibIS.DAL.Interfaces
         IAuthorRepository Authors { get; }
         IBookRepository Books { get; }
         IBrochureRepository Brochures { get; }
+        IBackupFileRepository BackupFiles { get; }
         IPeriodicalRepository Periodicals { get; }
         IPeriodicalEditionRepository PeriodicalEditions { get; }
         IPublishingHouseRepository PublishingHouses { get; }

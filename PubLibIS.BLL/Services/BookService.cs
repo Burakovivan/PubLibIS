@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using PubLibIS.ViewModels;
 using System.Linq;
-using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
-using PubLibIS.DAL.Models;
 using Newtonsoft.Json;
-using PubLibIS.BLL.JsonModels;
+using PubLibIS.Domain.Entities;
+using PubLibIS.DAL.ResponseModels;
 
 namespace PubLibIS.BLL.Services
 {
-    public class BookService : IJsonProcessor
+    public class BookService
     {
         private IUnitOfWork db;
         private IMapper mapper;
@@ -24,15 +23,15 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<BookViewModel> GetBookViewModelList()
         {
-            IEnumerable<Book> books = db.Books.GetList();
-            return mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModel>>(books);
+            IEnumerable<GetBookResponseModel> books = db.Books.GetBookResponseModelList();
+            return mapper.Map<IEnumerable<BookViewModel>>(books);
         }
 
 
         public IEnumerable<BookViewModelSlim> GetBookViewModelListSlim()
         {
-            IEnumerable<Book> books = db.Books.GetList();
-            return mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModelSlim>>(books);
+            IEnumerable<Book> books = db.Books.GetBookList();
+            return mapper.Map<IEnumerable<BookViewModelSlim>>(books);
         }
 
         public BookCatalogViewModel GetBookCatalogViewModel(int skip, int take)
@@ -41,11 +40,11 @@ namespace PubLibIS.BLL.Services
             {
                 take = db.Books.Count();
             }
-            IEnumerable<Book> books = db.Books.GetList().OrderBy(b => b.Id).Skip(skip).Take(take);
+            IEnumerable<GetBookResponseModel> books = db.Books.GetBookResponseModelList(skip,take);
 
             var result = new BookCatalogViewModel
             {
-                Books = mapper.Map<IEnumerable<Book>, IEnumerable<BookViewModelSlim>>(books),
+                Books = mapper.Map<IEnumerable<BookViewModelSlim>>(books),
                 Skip = skip,
                 IsSeeMore = books.Count() < db.Books.Count(),
                 HasNextPage = db.Books.Count() > skip + take
@@ -69,8 +68,8 @@ namespace PubLibIS.BLL.Services
         public void UpdateBook(BookViewModel book)
         {
             Book mappedBook = mapper.Map<BookViewModel, Book>(book);
-
-            db.Books.Update(mappedBook);
+            IEnumerable<AuthorInBook> mappedAuthor = mapper.Map<IEnumerable<Author>>(book.Authors).Select(a => new AuthorInBook { Author = a, Author_Id = a.Id });
+            db.Books.Update(mappedBook, mappedAuthor);
             db.Save();
         }
 
@@ -118,40 +117,39 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            var BookList = db.Books.GetList(idList).ToList();
+            var BookList = db.Books.GetBookResponseModelList(idList).ToList();
             BookList.ForEach(book => book.PublishedBooks = db.PublishedBooks.GetPublishedBookByBookId(book.Id).ToList());
-            var result = JsonConvert.SerializeObject(new BookJsonAggregator { Books = BookList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            var result = JsonConvert.SerializeObject(BookList, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
 
         public void SetJson(string json)
         {
-            BookJsonAggregator deserRes = JsonConvert.DeserializeObject<BookJsonAggregator>(json);
+            IEnumerable<GetBookResponseModel> deserRes = JsonConvert.DeserializeObject<IEnumerable<GetBookResponseModel>>(json);
 
             if(deserRes == null)
             {
                 return;
             }
-            foreach(Book book in deserRes.Books)
+            foreach(GetBookResponseModel book in deserRes)
             {
-                ICollection<AuthorInBook> aInBs = book.Authors;
-                ICollection<PublishedBook> publishedBooks = book.PublishedBooks;
-                book.Authors = null;
-                book.PublishedBooks = null;
-                int bookId = db.Books.Create(book);
-                Book newbook = db.Books.Get(bookId);
-                foreach(AuthorInBook ainb in aInBs)
+                IEnumerable<GetAuthorInBookResponseModel> aInBs = book.Authors;
+                IEnumerable<PublishedBook> publishedBooks = book.PublishedBooks;
+                Book clearBook = mapper.Map<Book>(book);
+                int bookId = db.Books.Create(clearBook);
+                Book newBook = db.Books.Get(bookId);
+                foreach(GetAuthorInBookResponseModel ainb in aInBs)
                 {
                     var authorId = db.Authors.Create(ainb.Author);
-                    ainb.Author = db.Authors.Get(authorId);
+                    ainb.Author = db.Authors.GetAuthor(authorId);
                     var newainb = new AuthorInBook { Author_Id = authorId, Book_Id = bookId };
                     db.AuthorsInBooks.Create(newainb);
                 }
 
                 foreach(PublishedBook publishedBook in publishedBooks)
                 {
-                    publishedBook.Book = newbook;
-                    publishedBook.Book_Id = newbook.Id;
+                    publishedBook.Book = newBook;
+                    publishedBook.Book_Id = bookId;
                     db.PublishedBooks.Create(publishedBook);
                 }
             }

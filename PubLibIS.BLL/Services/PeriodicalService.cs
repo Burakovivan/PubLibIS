@@ -1,19 +1,18 @@
 ﻿using PubLibIS.DAL.UnitsOfWork;
 using System.Collections.Generic;
 using PubLibIS.ViewModels;
-using PubLibIS.BLL.Interfaces;
 using System.Linq;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
-using PubLibIS.DAL.Models;
 using System;
 using Newtonsoft.Json;
-using PubLibIS.BLL.JsonModels;
-using PubLibIS.DAL.Enums;
+using PubLibIS.Domain.Enums;
+using PubLibIS.Domain.Entities;
+using PubLibIS.DAL.ResponseModels;
 
 namespace PubLibIS.BLL.Services
 {
-    public class PeriodicalService : IJsonProcessor
+    public class PeriodicalService
     {
         private IUnitOfWork db;
         private IMapper mapper;
@@ -26,15 +25,14 @@ namespace PubLibIS.BLL.Services
 
         public IEnumerable<PeriodicalViewModel> GetPeriodicalViewModelList()
         {
-            var periodicals = db.Periodicals.GetList();
-            var ptvm = mapper.Map<PeriodicalType, PeriodicalTypeViewModel>(PeriodicalType.magazine);
-            return mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals);
+            var periodicals = db.Periodicals.GetPeriodicalResponseModelList();
+            return mapper.Map<IEnumerable<PeriodicalViewModel>>(periodicals);
         }
 
         public PeriodicalViewModel GetPeriodicalViewModel(int id)
         {
-            var periodical = db.Periodicals.Get(id);
-            return mapper.Map<Periodical, PeriodicalViewModel>(periodical);
+            var periodical = db.Periodicals.GetPeriodicalResponseModel(id);
+            return mapper.Map< PeriodicalViewModel>(periodical);
         }
 
         public void DeletePeriodical(int id)
@@ -45,13 +43,13 @@ namespace PubLibIS.BLL.Services
 
         public void UpdatePeriodical(PeriodicalViewModel periodical)
         {
-            if (periodical.PublishingHouse_Id == 0)
+            if(periodical.PublishingHouse_Id == 0)
             {
                 periodical.PublishingHouse_Id = (int)periodical.PublishingHouse?.Id;
             }
             else
             {
-                if (periodical.PublishingHouse == null)
+                if(periodical.PublishingHouse == null)
                 {
                     periodical.PublishingHouse = new PublishingHouseViewModel { Id = periodical.PublishingHouse_Id };
                 }
@@ -112,7 +110,7 @@ namespace PubLibIS.BLL.Services
         public IEnumerable<PeriodicalTypeViewModel> GetPeriodicalTypeViewModelList()
         {
             var typesList = new List<PeriodicalTypeViewModel>();
-            foreach (var name in Enum.GetNames(typeof(PeriodicalType)))
+            foreach(var name in Enum.GetNames(typeof(PeriodicalType)))
             {
                 if(Enum.TryParse(name, true, out PeriodicalType pt))
                 {
@@ -131,43 +129,44 @@ namespace PubLibIS.BLL.Services
 
         public string GetJson(IEnumerable<int> idList)
         {
-            var PeriodicalList = db.Periodicals.GetList(idList).ToList();
+            var PeriodicalList = db.Periodicals.GetPeriodicalResponseModelList(idList).ToList();
             PeriodicalList.ForEach(periodical => periodical.PeriodicalEditions = db.PeriodicalEditions.GetPeriodicalEditionByPeriodicalId(periodical.Id).ToList());
-            var result = JsonConvert.SerializeObject(new PeriodicalJsonAggregator { Periodicals = PeriodicalList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            var result = JsonConvert.SerializeObject(PeriodicalList, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
 
         public void SetJson(string json)
         {
-            var deserRes = JsonConvert.DeserializeObject<PeriodicalJsonAggregator>(json);
+            var deserRes = JsonConvert.DeserializeObject<IEnumerable<GetPeriodicalResponseModel>>(json);
 
             if(deserRes == null)
             {
                 return;
             }
-                foreach (var periodical in deserRes.Periodicals)
+            foreach(var periodical in deserRes)
+            {
+                db.PublishingHouses.Create(periodical.PublishingHouse);
+                Periodical clearPeriodical = mapper.Map<Periodical>(periodical);
+                int newPeriodicalId = db.Periodicals.Create(clearPeriodical);
+                clearPeriodical = db.Periodicals.GetPeriodical(newPeriodicalId);
+                foreach(var pe in periodical.PeriodicalEditions)
                 {
-                    db.PublishingHouses.Create(periodical.PublishingHouse);
-                    var edtions = periodical.PeriodicalEditions;
-                    periodical.PeriodicalEditions = null;
-                    db.Periodicals.Create(periodical);
-                    foreach (var pe in edtions)
-                    {
-                        pe.Periodical = periodical;
-                        db.PeriodicalEditions.Create(pe);
-                    }
+                    pe.Periodical = clearPeriodical;
+                    pe.Periodical_Id = newPeriodicalId;
+                    db.PeriodicalEditions.Create(pe);
                 }
-                db.Save();
+            }
+            db.Save();
         }
 
         public PeriodicalCatalogViewModel GetPeriodicalCatalogViewModel(int skip, int take)
         {
-            var periodicals = db.Periodicals.GetList(skip, take).ToList();
+            var periodicals = db.Periodicals.GetPeriodicalResponseModelList(skip, take).ToList();
 
 
             var result = new PeriodicalCatalogViewModel
             {
-                Periodicals = mapper.Map<IEnumerable<Periodical>, IEnumerable<PeriodicalViewModel>>(periodicals),
+                Periodicals = mapper.Map< IEnumerable<PeriodicalViewModel>>(periodicals),
                 Skip = skip,
                 IsSeeMore = periodicals.Count() < db.Periodicals.Count(),
                 HasNextPage = db.Periodicals.Count() > skip + take

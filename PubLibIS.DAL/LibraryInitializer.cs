@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using PubLibIS.DAL.Enums;
 using PubLibIS.DAL.Identity;
-using PubLibIS.DAL.Models;
+using PubLibIS.Domain.Entities;
+using PubLibIS.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -56,7 +56,7 @@ namespace PubLibIS.DAL
         private void SetTriggers()
         {
 
-            string[] tableList = new[] { "Authors", "AuthorInBooks", "Books", "Brochures", "Periodicals", "PeriodicalEditions", "PublishedBooks", "PublishingHouses" };
+            string[] tableList = new[] { "Authors", "AuthorInBooks", "Books", "Brochures", "Periodicals", "PeriodicalEditions", "PublishedBooks", "PublishingHouses", "BackupFiles" };
 
             foreach(var table in tableList)
             {
@@ -331,19 +331,19 @@ $@"CREATE TRIGGER trigger_update_{table}
         private void InitRolesAndUsers()
         {
 
-            var roleManager = new ApplicationRoleManager(new RoleStore<ApplicationUserRole>(context));
-            var r1 = new ApplicationUserRole
+            var roleManager = new ApplicationRoleManager(new ApplicationRoleStore(context));
+            var r1 = new ApplicationRole
             {
                 Name = "admin"
             };
-            var r2 = new ApplicationUserRole
+            var r2 = new ApplicationRole
             {
                 Name = "user"
             };
             roleManager.CreateAsync(r1).GetAwaiter().GetResult();
             roleManager.CreateAsync(r2).GetAwaiter().GetResult();
 
-            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(context));
             var u1 = new ApplicationUser
             {
                 UserName = "admin@lh.ua",

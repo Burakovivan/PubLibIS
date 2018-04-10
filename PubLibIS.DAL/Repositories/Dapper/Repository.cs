@@ -1,5 +1,4 @@
-﻿using PubLibIS.DAL.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,11 @@ using System.Threading.Tasks;
 using System.Data;
 using PubLibIS.DAL.Interfaces;
 using Dapper.Contrib.Extensions;
+using PubLibIS.Domain.Entities;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
-    public abstract class Repository<TEntity> : ILazyLoad<TEntity> where TEntity : BaseEntity
+    public abstract class Repository<TEntity> where TEntity : BaseEntity
     {
         protected DapperConnectionFactory dapperConnectionFactory;
         public Type SuperReference;
@@ -25,7 +25,6 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 TEntity result = db.Get<TEntity>(id);
-                LoadNavigationProperties(result, db);
                 return result;
             }
         }
@@ -36,7 +35,6 @@ namespace PubLibIS.DAL.Repositories.Dapper
             using(IDbConnection db = dapperConnectionFactory.GetConnectionInstance())
             {
                 List<TEntity> result = db.GetAll<TEntity>().ToList();
-                LoadNavigationProperties(result, db);
                 return result;
             }
         }
@@ -90,12 +88,7 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
             return GetList().Count();
         }
-        public abstract void LoadNavigationProperties(TEntity entity, IDbConnection connection);
-
-        public void LoadNavigationProperties(IEnumerable<TEntity> entityList, IDbConnection connection)
-        {
-            entityList.ToList().ForEach(entity => LoadNavigationProperties(entity, connection));
-        }
+       
 
     }
 }

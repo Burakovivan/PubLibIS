@@ -1,9 +1,9 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using System.Data;
+using PubLibIS.Domain.Entities;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
@@ -18,10 +18,5 @@ namespace PubLibIS.DAL.Repositories.Dapper
             return GetList().Where(p => p.Id == id);
         }
 
-        public override void LoadNavigationProperties(PeriodicalEdition entity, IDbConnection connection)
-        {
-        }
-
-        
     }
 }

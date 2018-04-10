@@ -1,17 +1,16 @@
 ﻿using PubLibIS.DAL.UnitsOfWork;
 using System.Collections.Generic;
 using PubLibIS.ViewModels;
-using PubLibIS.BLL.Interfaces;
 using PubLibIS.DAL.Interfaces;
 using AutoMapper;
-using PubLibIS.DAL.Models;
 using System.Linq;
 using Newtonsoft.Json;
-using PubLibIS.BLL.JsonModels;
+using PubLibIS.Domain.Entities;
+using PubLibIS.DAL.ResponseModels;
 
 namespace PubLibIS.BLL.Services
 {
-    public class BrochureService : IJsonProcessor
+    public class BrochureService
     {
         private IUnitOfWork db;
         private IMapper mapper;
@@ -59,13 +58,13 @@ namespace PubLibIS.BLL.Services
         public string GetJson(IEnumerable<int> idList)
         {
             var BrochureList = db.Brochures.GetList(idList).ToList();
-            var result = JsonConvert.SerializeObject(new BrochureJsonAggregator { Brochures = BrochureList }, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            var result = JsonConvert.SerializeObject(BrochureList, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
             return result;
         }
 
         public void SetJson(string json)
         {
-            BrochureJsonAggregator deserRes = JsonConvert.DeserializeObject<BrochureJsonAggregator>(json);
+            IEnumerable<GetBrochureResponseModel> deserRes = JsonConvert.DeserializeObject<IEnumerable<GetBrochureResponseModel>>(json);
 
             if(deserRes == null)
             {
@@ -73,13 +72,14 @@ namespace PubLibIS.BLL.Services
                 return;
             }
 
-                foreach (Brochure brochure in deserRes.Brochures)
-                {
-                   var newId =  db.PublishingHouses.Create(brochure.PublishingHouse);
-                    brochure.PublishingHouse_Id = newId;
-                    db.Brochures.Create(brochure);
-                }
-                db.Save();
+            foreach(GetBrochureResponseModel brochure in deserRes)
+            {
+                var newId = db.PublishingHouses.Create(brochure.PublishingHouse);
+                Brochure clearBrochure = mapper.Map<Brochure>(brochure);
+                clearBrochure.PublishingHouse_Id = newId;
+                db.Brochures.Create(clearBrochure);
+            }
+            db.Save();
         }
 
         public BrochureCatalogViewModel GetBrochureCatalogViewModel(int skip, int take)

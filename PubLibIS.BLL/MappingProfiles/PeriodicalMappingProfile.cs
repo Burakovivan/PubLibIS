@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using PubLibIS.DAL.Enums;
-using PubLibIS.DAL.Models;
+using PubLibIS.DAL.ResponseModels;
+using PubLibIS.Domain.Entities;
+using PubLibIS.Domain.Enums;
 using PubLibIS.ViewModels;
 using System;
 
@@ -10,7 +11,7 @@ namespace PubLibIS.BLL.MappingProfiles
     {
         public PeriodicalMappingProfile()
         {
-            CreateMap<Periodical, PeriodicalViewModel>()
+            CreateMap<GetPeriodicalResponseModel, PeriodicalViewModel>()
                 .ForMember(
                     pvm => pvm.PublishingHouseSelectList,
                     opt => opt.Ignore())

@@ -8,11 +8,10 @@ namespace PubLibIS.ViewModels
 {
     public class BackupFileViewModel
     {
-        public class BackupFile
-        {
-            public int Id { get; set; }
-            public string FileName { get; set; }
-            public string User_Id { get; set; }
-        }
+
+        public int Id { get; set; }
+        public string FileNameBase64 { get; set; }
+        public string User_Id { get; set; }
+
     }
 }

@@ -1,10 +1,11 @@
 ﻿using PubLibIS.DAL.Interfaces;
-using PubLibIS.DAL.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using System.Data;
 using System.Linq.Expressions;
+using PubLibIS.Domain.Entities;
+using PubLibIS.DAL.ResponseModels;
 
 namespace PubLibIS.DAL.Repositories.Dapper
 {
@@ -13,6 +14,18 @@ namespace PubLibIS.DAL.Repositories.Dapper
 
         public AuthorInBookRepository(DapperConnectionFactory dapperConnectionFactory)
         : base(dapperConnectionFactory) { }
+
+        public IEnumerable<GetAuthorInBookResponseModel> GetAuthorInBookResponseModelByAuthorId(int authorId)
+        {
+            IEnumerable<AuthorInBook> authorlList = GetByAuthorId(authorId);
+            return ToResponseModel(authorlList);
+        }
+
+        public IEnumerable<GetAuthorInBookResponseModel> GetAuthorInBookResponseModelByBookId(int authorId)
+        {
+            IEnumerable<AuthorInBook> authorlList = GetByBookId(authorId);
+            return ToResponseModel(authorlList);
+        }
 
         public IEnumerable<AuthorInBook> GetByAuthorId(int authorId)
         {
@@ -34,20 +47,20 @@ namespace PubLibIS.DAL.Repositories.Dapper
             return GetList().Where(ainb => idList.Contains(ainb.Book_Id));
         }
 
-        public override void LoadNavigationProperties(AuthorInBook entity, IDbConnection connection)
+        public IEnumerable<GetAuthorInBookResponseModel> ToResponseModel(IEnumerable<AuthorInBook> source)
         {
-            if(entity.Book == null && SuperReference!=typeof(Book))
+            var authorRepository = new AuthorRepository(dapperConnectionFactory);
+            var bookRepository = new BookRepository(dapperConnectionFactory);
+            IEnumerable<GetAuthorInBookResponseModel> response = source.Select(ainb =>
             {
-                var repo = new BookRepository(dapperConnectionFactory);
-                entity.Book = repo.Get(entity.Book_Id);
-
-            }
-            if(entity.Author == null && SuperReference != typeof(Author))
-            {
-                var repo = new AuthorRepository(dapperConnectionFactory);
-                repo.SuperReference = typeof(AuthorInBookRepository);
-                entity.Author = repo.Get(entity.Author_Id);
-            }
+                return new GetAuthorInBookResponseModel
+                {
+                    Id = ainb.Id,
+                    Author = authorRepository.Get(ainb.Author_Id),
+                    Book = bookRepository.Get(ainb.Book_Id)
+                };
+            });
+            return response;
         }
 
 

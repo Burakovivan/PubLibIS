@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using PubLibIS.BLL.Interfaces;
+using PubLibIS.BLL.Services;
 using PubLibIS.UI.Util;
 using PubLibIS.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,7 +13,7 @@ namespace PubLibIS.UI.Controllers
 {
     public class AccountController : Controller
     {
-        private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
+        private UserService UserService => HttpContext.GetOwinContext().GetUserManager<UserService>();
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
         public ActionResult SwitchConnection()
         {

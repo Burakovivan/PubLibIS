@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using PubLibIS.DAL.Models;
+using PubLibIS.Domain.Entities;
 
 namespace PubLibIS.DAL.Identity
 {
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<ApplicationUser, int>
     {
-        public ApplicationUserManager(UserStore<ApplicationUser> store) : base(store) { }
+        public ApplicationUserManager(IUserStore<ApplicationUser, int> store) : base(store) { }
     }
 }

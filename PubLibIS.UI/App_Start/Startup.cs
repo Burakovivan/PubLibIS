@@ -2,7 +2,6 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using PubLibIS.BLL.Interfaces;
 using PubLibIS.BLL.Services;
 using PubLibIS.UI.Util;
 
@@ -12,7 +11,7 @@ namespace PubLibIS.UI.App_Start
 {
     public class Startup
     {
-        IServiceCreator serviceCreator = new ServiceCreator();
+        ServiceCreator serviceCreator = new ServiceCreator();
         public void Configuration(IAppBuilder app)
         {
             app.CreatePerOwinContext(CreateUserService);
@@ -23,7 +22,7 @@ namespace PubLibIS.UI.App_Start
             });
         }
 
-        private IUserService CreateUserService()
+        private UserService CreateUserService()
         {
             return serviceCreator.CreateUserService(ConnectionStringResolver.CurrentConnectionString);
         }
